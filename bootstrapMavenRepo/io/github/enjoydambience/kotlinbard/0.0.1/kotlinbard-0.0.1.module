@@ -11,7 +11,7 @@
   "createdBy": {
     "gradle": {
       "version": "6.5.1",
-      "buildId": "bzskqtvi2ndm3eknfuly7klnou"
+      "buildId": "veodaxekyzczth3z7izcna3vte"
     }
   },
   "variants": [
@@ -31,10 +31,10 @@
           "name": "kotlinbard-0.0.1.jar",
           "url": "kotlinbard-0.0.1.jar",
           "size": 163718,
-          "sha512": "9f307ac115b4741e05d272a935ce1beb1f268d7c9d265fda264a154bceb9a4ff1acea5999c7983da09a7e0c22c67bc7cbcc81a60e0313ef81301777389e54b08",
-          "sha256": "840fba52695a2f411784aacd854a042cf448f7f6f682782a7ecae7e0c55d0fcd",
-          "sha1": "56e926d489f2cae70624db9531acc0bd0a2fee80",
-          "md5": "2c91513284ea0bcc3e787840eef4edce"
+          "sha512": "d299082bcf91508167b9aac7173056b35217eef5063ee090a2e817301b636591cbeade9c58b190988725fa29b0528868c8d597cfa8ae691073c0fb92e363b5b8",
+          "sha256": "985f4357dade6738eec87c6d495db78eafa44ad6e46ee68c3a3d74ade7fde8ae",
+          "sha1": "f77e7719b2e4acd259897d3b4c3bb8c92001d7d5",
+          "md5": "279e41b8b389d966f30c44f8169f16cd"
         }
       ]
     },
@@ -63,10 +63,10 @@
           "name": "kotlinbard-0.0.1.jar",
           "url": "kotlinbard-0.0.1.jar",
           "size": 163718,
-          "sha512": "9f307ac115b4741e05d272a935ce1beb1f268d7c9d265fda264a154bceb9a4ff1acea5999c7983da09a7e0c22c67bc7cbcc81a60e0313ef81301777389e54b08",
-          "sha256": "840fba52695a2f411784aacd854a042cf448f7f6f682782a7ecae7e0c55d0fcd",
-          "sha1": "56e926d489f2cae70624db9531acc0bd0a2fee80",
-          "md5": "2c91513284ea0bcc3e787840eef4edce"
+          "sha512": "d299082bcf91508167b9aac7173056b35217eef5063ee090a2e817301b636591cbeade9c58b190988725fa29b0528868c8d597cfa8ae691073c0fb92e363b5b8",
+          "sha256": "985f4357dade6738eec87c6d495db78eafa44ad6e46ee68c3a3d74ade7fde8ae",
+          "sha1": "f77e7719b2e4acd259897d3b4c3bb8c92001d7d5",
+          "md5": "279e41b8b389d966f30c44f8169f16cd"
         }
       ]
     }
