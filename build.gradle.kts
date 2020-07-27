@@ -4,6 +4,11 @@ plugins {
     kotlin("jvm") version Versions.Kotlin.plugin
 }
 
+repositories {
+    mavenCentral()
+    maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
+}
+
 
 subprojects {
     repositories {
