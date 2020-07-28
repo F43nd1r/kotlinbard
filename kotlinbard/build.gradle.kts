@@ -15,9 +15,12 @@
  */
 
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm")
+    `java-library`
+
     idea
 
     id("org.jetbrains.dokka") version "0.10.1"
@@ -27,9 +30,8 @@ plugins {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8", version = Versions.Kotlin.stdlib))
-    compileOnly(Deps.kotlinPoet)
+    api(Deps.kotlinPoet)
 
-    testImplementation(Deps.kotlinPoet)
     testImplementation(Deps.Test.jUnit)
     testImplementation(Deps.Test.Kotest.runner)
     testImplementation(Deps.Test.Kotest.assertions)
@@ -41,6 +43,12 @@ pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
         explicitApiWarning()
     }
 }
+
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.kotlinOptions {
+    freeCompilerArgs += listOf("-Xinline-classes")
+}
+
 // codegen
 val generatedSrc = "$buildDir/generated-src"
 val codegenProject = project(":codegen")
