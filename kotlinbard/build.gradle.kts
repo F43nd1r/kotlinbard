@@ -1,10 +1,20 @@
+/*
+ *    Copyright 2020 Benjamin Ye
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
-
-
-val GROUP: String by project
-group = GROUP
-version = "0.0.1"
-
 
 plugins {
     kotlin("jvm")
@@ -12,6 +22,7 @@ plugins {
 
     id("org.jetbrains.dokka") version "0.10.1"
     `maven-publish`
+    id("com.jfrog.bintray") version "1.8.5"
 }
 
 dependencies {
@@ -67,19 +78,19 @@ idea {
 
 // publish
 
-// group and version defined at top of file
+group = "io.github.enjoydambience"
+version = "0.0.1"
+
 tasks.dokka {
     outputFormat = "html"
     outputDirectory = "$buildDir/javadoc"
 }
 val dokkaJar by tasks.creating(Jar::class) {
     group = "documentation"
-    description = "Assembles Kotlin docs with Dokka"
     archiveClassifier.set("javadoc")
     from(tasks.dokka)
 }
 val sourcesJar by tasks.creating(Jar::class) {
-    description = "Assembles sources"
     archiveClassifier.set("sources")
     from(sourceSets.main.get().allSource)
 }
@@ -93,7 +104,23 @@ publishing {
             from(components["java"])
             artifact(dokkaJar)
             artifact(sourcesJar)
-
+            artifactId = "kotlinbard"
+            pom {
+                name.v = "KotlinBard"
+                description.v = "A fluent kotlin dsl to generate kotlin code, built on top of kotlin-poet"
+                licenses {
+                    license {
+                        name.v = "Apache License, Version 2.0"
+                        url.v = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                        distribution.v = "repo"
+                    }
+                }
+                scm {
+                    connection.v = "scm:git:https://github.com/enjoydambience/kotlinbard.git"
+                    developerConnection.v = "scm:git:https://github.com/enjoydambience/kotlinbard.git"
+                    url.v = "https://github.com/enjoydambience/kotlinbard.git"
+                }
+            }
         }
     }
     repositories {
@@ -108,3 +135,24 @@ tasks.create("publishToBoostrapRepository") {
     description = "Publishes to the local bootstrap repository to be used by the codegen module"
     dependsOn("publishMinimalPublicationToBootstrapRepository")
 }
+
+fun getProp(projectProp: String, systemProp: String): String? {
+    return project.findProperty(projectProp) as? String ?: System.getenv(systemProp)
+}
+
+bintray {
+    user = getProp("bintrayUser", "BINTRAY_USER")
+    key = getProp("bintrayKey", "BINTRAY_KEY")
+    setPublications("default")
+    publish = false
+    pkg.apply {
+        repo = "maven"
+        name = "kotlinbard"
+        setLicenses("Apache-2.0")
+        vcsUrl = "https://github.com/enjoydambience/kotlinbard"
+    }
+}
+
+inline var <T> Property<T>.v
+    get() = get()
+    set(value) = set(value)
