@@ -1,3 +1,3 @@
-Contains codegen code for KotlinBard.
+Contains code generation portions for KotlinBard.
 
-see [KotlinBard readme](../kotlinbard/README.md)
+This depends on a previous version of KotlinBard (currently version 0.0.1).

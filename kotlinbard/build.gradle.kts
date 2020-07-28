@@ -96,10 +96,6 @@ val sourcesJar by tasks.creating(Jar::class) {
 }
 publishing {
     publications {
-        create<MavenPublication>("minimal") {
-            from(components["java"])
-            artifact(sourcesJar)
-        }
         create<MavenPublication>("default") {
             from(components["java"])
             artifact(dokkaJar)
@@ -123,17 +119,6 @@ publishing {
             }
         }
     }
-    repositories {
-        maven {
-            name = "bootstrap"
-            url = uri("$rootDir/bootstrapMavenRepo")
-        }
-    }
-}
-tasks.create("publishToBoostrapRepository") {
-    group = "bootstrap"
-    description = "Publishes to the local bootstrap repository to be used by the codegen module"
-    dependsOn("publishMinimalPublicationToBootstrapRepository")
 }
 
 fun getProp(projectProp: String, systemProp: String): String? {
