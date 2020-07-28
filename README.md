@@ -1,13 +1,11 @@
 # KotlinBard
 
-KotlinBard is a kotlin dsl for code generation, built on top of [KotlinPoet](https://github.com/square/kotlinpoet).
-
-Publishing coming (very) soon
+KotlinBard is a kotlin dsl to generate kotlin code, built on top of kotlin-poet [KotlinPoet](https://github.com/square/kotlinpoet).
 
 Current features:
 - `createXXX {}` and `addXXX {}` functions to build and add Specs
 
-This allows you to use KotlinPoet like so:
+This allows you to use generate kotlin code like so:
 ```kotlin
 val file = createFile("", "HelloWorld") {
       val greeterClass = ClassName("", "Greeter")
@@ -28,13 +26,27 @@ val file = createFile("", "HelloWorld") {
       }
   }
 ```
+Kotlin bard is still under development.
+
+To use, add this to your gradle config:
+```groovy
+repositories {
+    maven {
+        url  "https://dl.bintray.com/enjoydambience/maven" 
+    }
+}
+
+dependencies {
+    implementation "io.github.enjoydambience:kotlinbard:0.0.1"
+}
+```
+
 
 Fun fact: KotlinBard uses code generation to generate functions -- it uses a previous version of itself to generate itself!
 
 ## Roadmap:
 - Code and control flow dsl
-- Publish version 0.1.0
-- Modifiers dsl
+- Semantically checked modifiers and types
 - Additional features to be decided
  
 The eventual goal is to be able to write code for code generation that is similar to the output.
