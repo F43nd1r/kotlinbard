@@ -16,18 +16,58 @@
 
 package io.github.enjoydambience.kotlinbard.codegen
 
+import com.squareup.kotlinpoet.FileSpec
+import io.github.enjoydambience.kotlinbard.addAnnotation
+import io.github.enjoydambience.kotlinbard.codegen.generation.FileGenerator
+import io.github.enjoydambience.kotlinbard.codegen.generation.SpecAdd
+import io.github.enjoydambience.kotlinbard.codegen.generation.SpecCreate
+import io.github.enjoydambience.kotlinbard.codegen.generation.SpecGet
+import io.github.enjoydambience.kotlinbard.createFile
 import java.nio.file.Paths
 
 
 /**
  * This is meant to be run from gradle.
  *
- * Single argument = directory to generate to.
+ * Argument = directory to generate to.
  */
 fun main(args: Array<String>) {
     val pathArg = args.firstOrNull()
         ?: throw IllegalArgumentException("Specify a directory to generate code to.")
     val path = Paths.get(pathArg)
     println("generating to $path")
-    CodeGen.generateTo(path)
+    allFileGenerators.forEach {
+        it.createFileSpec().writeTo(path)
+    }
 }
+
+private val allFileGenerators = listOf<FileGenerator>(
+    SpecCreate,
+    SpecGet,
+    SpecAdd
+)
+
+private const val destinationPackage = "io.github.enjoydambience.kotlinbard"
+
+fun FileGenerator.createFileSpec(): FileSpec = createFile(destinationPackage, fileName) {
+    addComment(
+        """
+        NOTE: This file is auto generated from $generatorSourceFileName
+        and should not be modified by hand.
+    """.trimIndent()
+    )
+    addAnnotation(Suppress::class) {
+        listOf(
+            "NO_EXPLICIT_VISIBILITY_IN_API_MODE_WARNING",
+            "unused",
+            "DEPRECATION",
+            "DeprecatedCallableAddReplaceWith"
+        ).forEach {
+            addMember("%S", it)
+        }
+    }
+
+    generate()
+}
+
+

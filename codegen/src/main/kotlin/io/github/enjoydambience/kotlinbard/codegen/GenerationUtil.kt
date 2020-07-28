@@ -111,8 +111,7 @@ fun FunSpec.Builder.delegatesTo(function: KFunction<*>) {
     returns(function.returnType.asTypeName())
     val (call, params) = reflectCodeCall(function)
     addParameters(params)
-    addCode("return ")
-    addCode(call)
+    addStatement("return %L", call)
 }
 
 /**

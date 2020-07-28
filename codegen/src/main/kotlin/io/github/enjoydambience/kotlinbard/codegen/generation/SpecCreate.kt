@@ -71,9 +71,7 @@ object SpecCreate : SpecBasedFileGenerator("_Creators") {
                 defaultValue("{}")
             }
 
-            addCode("return ")
-            addCode(call)
-            addCode(".apply(config).build()")
+            addStatement("return %L.apply(config).build()", call)
         }
     }
 }

@@ -176,8 +176,6 @@ object SpecAdd : SpecBasedFileGenerator("_Adders") {
         addParameters(creatorFun.parameters)
         val builderCall = codeCallNoReceiver(creatorFun)
 
-        addCode("return %N(", delegatesTo)
-        addCode(builderCall)
-        addCode(")")
+        addStatement("return %N(%L)", delegatesTo, builderCall)
     }
 }
