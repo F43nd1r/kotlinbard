@@ -98,8 +98,6 @@ public inline class IfEnd(@PublishedApi internal val builder: CodeBlock.Builder)
 
 }
 
-public infix fun IfEnd.Else(code: String): Unit = Else(code)
-
 /**
  * Adds a while-statement control flow.
  */
@@ -167,7 +165,7 @@ public inline fun CodeBlock.Builder.When(argument: String, vararg args: Any, bod
     }
 }
 
-public open class WhenScope(private val builder: CodeBlock.Builder) {
+public open class WhenScope(@PublishedApi internal val builder: CodeBlock.Builder) {
     // e(String, Format, CodeBlock) then [String, Format, CodeBlock, block {}]
     // is [String, Type, TypeName] then
     // in [String, Format, CodeBlock] then
@@ -188,29 +186,22 @@ public open class WhenScope(private val builder: CodeBlock.Builder) {
     public fun e(format: String, vararg args: Any): WhenArg = WhenArg(CodeBlock.of(format, *args))
 
 
-    public infix fun WhenArg.then(body: CodeBlock.Builder.() -> Unit) {
+    public inline infix fun WhenArg.then(body: CodeBlock.Builder.() -> Unit) {
         builder.add(block)
         builder.controlFlow(" ->", body = body)
     }
 
     public fun WhenArg.then(format: String, vararg args: Any) {
-        builder.apply {
-            add("%L -> ", block)
-            add(format, *args)
-            add("\n")
-        }
+        builder.add("%L -> %L\n", block, CodeBlock.of(format, *args))
     }
 
-    public infix fun WhenArg.then(statement: String) {
-        builder.apply {
-            add("%L -> %L\n", block, statement)
-        }
+    public inline fun Else(config: CodeBlock.Builder.() -> Unit) {
+        WhenArg(CodeBlock.of("else")) then config
     }
 
-    /**
-     * used to indicate the "else" branch of a when statement.
-     */
-    public inline val Else: WhenArg get() = e("else")
+    public fun Else(format: String, vararg args: Any) {
+        builder.add("else -> %L\n", CodeBlock.of(format, *args))
+    }
 }
 
 public class WhenWithArgScope(builder: CodeBlock.Builder) : WhenScope(builder) {
