@@ -26,7 +26,7 @@ import com.squareup.kotlinpoet.FunSpec
  *
  * @see SpecInfo
  */
-abstract class SpecBasedFileGenerator(
+abstract class SpecFunctionFileGenerator(
     override val fileName: String
 ) : FileGenerator {
 

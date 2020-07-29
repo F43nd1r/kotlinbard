@@ -36,6 +36,8 @@ class SpecInfo private constructor(
     /** Class of the builder of spec (e.g. `FileSpec.Builder::class`) */
     val builderClass = specClass.nestedClasses.first { it.simpleName == "Builder" }
 
+    val builderName get() = builderClass.asClassName()
+
     override fun toString(): String = "SpecInfo(${specClass.simpleName})"
 
     companion object {

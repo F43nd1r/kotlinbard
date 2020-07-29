@@ -34,7 +34,7 @@ import kotlin.reflect.full.declaredMemberFunctions
  *
  * These functions have the form `addXXX(creatorFunction(<params>,config))`
  */
-object SpecAdd : SpecBasedFileGenerator("_Adders") {
+object SpecAdd : SpecFunctionFileGenerator("_Adders") {
     /**
      * Represents a _group_ of "add" functions.
      * All functions that match all the name.
@@ -64,7 +64,7 @@ object SpecAdd : SpecBasedFileGenerator("_Adders") {
             generatedName: String = "add" + this.toPascalCase(),
             delegatesTo: String = generatedName
         ) {
-            mappings += AddFunctionGroup("create" + this.toPascalCase(), generatedName, delegatesTo)
+            mappings += AddFunctionGroup(SpecCreate.funPrefix + this.toPascalCase(), generatedName, delegatesTo)
         }
     }
 
@@ -171,12 +171,11 @@ object SpecAdd : SpecBasedFileGenerator("_Adders") {
         creatorFun: FunSpec
     ): FunSpec = createFunction(generatedName) {
         addModifiers(KModifier.INLINE)
-        receiver(builderSpec.builderClass)
-        returns(builderSpec.builderClass)
+        receiver(builderSpec.builderName)
         // Exclude the last config parameter; add our own so still keeps de
         addParameters(creatorFun.parameters)
         val builderCall = codeCallNoReceiver(creatorFun)
 
-        addStatement("return %N(%L)", delegatesTo, builderCall)
+        addStatement("%N(%L)", delegatesTo, builderCall)
     }
 }

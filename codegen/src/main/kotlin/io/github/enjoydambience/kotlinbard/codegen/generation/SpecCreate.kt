@@ -16,7 +16,10 @@
 
 package io.github.enjoydambience.kotlinbard.codegen.generation
 
-import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.FunSpec
+import com.squareup.kotlinpoet.KModifier
+import com.squareup.kotlinpoet.LambdaTypeName
+import com.squareup.kotlinpoet.UNIT
 import io.github.enjoydambience.kotlinbard.addParameter
 import io.github.enjoydambience.kotlinbard.codegen.copyDeprecationOf
 import io.github.enjoydambience.kotlinbard.codegen.reflectCodeCall
@@ -33,8 +36,8 @@ import kotlin.reflect.full.declaredMemberFunctions
  *
  * These functions have the form `XXXSpec.createXxx(<parameters>).apply(config).build()`.
  */
-object SpecCreate : SpecBasedFileGenerator("_Creators") {
-
+object SpecCreate : SpecFunctionFileGenerator("_Creators") {
+    const val funPrefix = "create"
     override fun generateFunctionsForSpec(spec: SpecInfo): List<FunSpec> =
         spec.companionClass.declaredMemberFunctions
             .filter {
@@ -54,7 +57,7 @@ object SpecCreate : SpecBasedFileGenerator("_Creators") {
             funNameMinusBuilder
                 .ifEmpty { spec.name.takeUnless { it == "Fun" } ?: "function" }
         }.let {
-            "create" + it.toPascalCase()
+            funPrefix + it.toPascalCase()
         }
 
         return createFunction(generatedName) {
@@ -67,7 +70,7 @@ object SpecCreate : SpecBasedFileGenerator("_Creators") {
             addParameters(params)
 
             val configParam = LambdaTypeName.get(
-                receiver = spec.builderClass.asTypeName(),
+                receiver = spec.builderName,
                 returnType = UNIT
             )
             addParameter("config", configParam) {
@@ -77,4 +80,5 @@ object SpecCreate : SpecBasedFileGenerator("_Creators") {
             addStatement("return %L.apply(config).build()", call)
         }
     }
+
 }
