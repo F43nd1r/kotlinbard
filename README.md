@@ -25,8 +25,6 @@ val file = buildFile("", "HelloWorld") {
  }
 ```
 KotlinPoet currently consists of mainly KotlinPoet extension functions.
-See [KotlinPoet](https://github.com/square/kotlinpoet) documentation for other information, such
- as templates.
 
 ## Current Features
 `buildXXX` and `addXXX` functions for every builder:
