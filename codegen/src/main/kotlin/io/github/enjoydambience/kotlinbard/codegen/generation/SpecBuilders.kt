@@ -36,7 +36,7 @@ import kotlin.reflect.full.declaredMemberFunctions
  *
  * These functions have the form `XXXSpec.createXxx(<parameters>).apply(config).build()`.
  */
-object SpecCreate : SpecFunctionFileGenerator("_Creators") {
+object SpecBuilders : SpecFunctionFileGenerator("_SpecBuilders") {
     const val funPrefix = "create"
     override fun generateFunctionsForSpec(spec: SpecInfo): List<FunSpec> =
         spec.companionClass.declaredMemberFunctions

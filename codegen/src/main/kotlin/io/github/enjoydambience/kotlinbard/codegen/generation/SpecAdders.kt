@@ -27,20 +27,20 @@ import kotlin.reflect.full.declaredMemberFunctions
 // "creator" refers to functions made by SpecCreate
 /**
  * Generates `addXXX` extension functions for spec builders. These create a spec using a
- * [spec creator][SpecCreate], using a given config, then add them using the builder.
+ * [spec creator][SpecBuilders], using a given config, then add them using the builder.
  *
  * These are derived from spec builder functions that take a single spec as a parameter, and return
  * (its own) builder type.
  *
  * These functions have the form `addXXX(creatorFunction(<params>,config))`
  */
-object SpecAdd : SpecFunctionFileGenerator("_Adders") {
+object SpecAdders : SpecFunctionFileGenerator("_SpecAdders") {
     /**
      * Represents a _group_ of "add" functions.
      * All functions that match all the name.
      */
     private data class AddFunctionGroup(
-        /** The name of the creator function to use ([SpecCreate]] */
+        /** The name of the creator function to use ([SpecBuilders]] */
         val creatorFunName: String,
         /** The name of the resulting generated function */
         val generatedName: String,
@@ -54,7 +54,7 @@ object SpecAdd : SpecFunctionFileGenerator("_Adders") {
         /**
          * Adds a [AddFunctionGroup].
          *
-         * @receiver name of creator function (in [SpecCreate]), without the "create" prefix.
+         * @receiver name of creator function (in [SpecBuilders]), without the "create" prefix.
          * @param generatedName name of created function. Defaults to `add<Reciever>`
          * @param delegatesTo the name of the builder function this delegates to. Defaults to [generatedName]
          */
@@ -63,7 +63,7 @@ object SpecAdd : SpecFunctionFileGenerator("_Adders") {
             generatedName: String = "add" + this.toPascalCase(),
             delegatesTo: String = generatedName
         ) {
-            mappings += AddFunctionGroup(SpecCreate.funPrefix + this.toPascalCase(), generatedName, delegatesTo)
+            mappings += AddFunctionGroup(SpecBuilders.funPrefix + this.toPascalCase(), generatedName, delegatesTo)
         }
     }
 
@@ -145,7 +145,7 @@ object SpecAdd : SpecFunctionFileGenerator("_Adders") {
                     }.singleOrNull()
                     ?: error("Cannot find function ${group.builderFunName} in ${spec.builderClass.qualifiedName}")
                 // get all creator functions that create that type, and have the requested name.
-                val creatorFuns = SpecCreate.functionsBySpec.getValue(createdSpec)
+                val creatorFuns = SpecBuilders.functionsBySpec.getValue(createdSpec)
                     .filter { creatorFun ->
                         creatorFun.name == group.creatorFunName
                     }

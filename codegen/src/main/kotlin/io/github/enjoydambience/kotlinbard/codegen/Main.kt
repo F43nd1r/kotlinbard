@@ -40,9 +40,9 @@ fun main(args: Array<String>) {
 
 private val allFileGenerators = listOf<FileGenerator>(
     BuilderTypeAliases,
-    SpecCreate,
+    SpecBuilders,
     SpecGet,
-    SpecAdd
+    SpecAdders
 )
 
 const val destinationPackage = "io.github.enjoydambience.kotlinbard"

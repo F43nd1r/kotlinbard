@@ -30,7 +30,7 @@ import io.github.enjoydambience.kotlinbard.codegen.destinationPackage
 object BuilderTypeAliases : FileGenerator {
     private val dslAnnotation = AnnotationSpec.builder(ClassName(destinationPackage, "CodegenDsl")).build()
 
-    override val fileName: String get() = "_TypeAliases"
+    override val fileName: String get() = "_BuilderTypeAliases"
 
     override fun FileSpec.Builder.generate() {
         SpecInfo.allSpecs.forEach {
