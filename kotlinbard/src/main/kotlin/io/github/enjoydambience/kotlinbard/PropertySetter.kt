@@ -25,8 +25,7 @@ import kotlin.reflect.KClass
 /**
  * Creates a setter for this property.
  *
- * This will also automatically add the setter parameter
- * with the given [paramName] and [type].
+ * This will also add the setter parameter with the given [paramName] and [type].
  */
 public inline fun PropertySpec.Builder.set(
     paramName: String = "value",
@@ -40,8 +39,7 @@ public inline fun PropertySpec.Builder.set(
 /**
  * Creates a setter for this property.
  *
- * This will also automatically add the setter parameter
- * with the given [paramName] and [type].
+ * This will also add the setter parameter with the given [paramName] and [type].
  */
 public inline fun PropertySpec.Builder.set(
     paramName: String = "value",
@@ -55,8 +53,7 @@ public inline fun PropertySpec.Builder.set(
 /**
  * Creates a setter for this property.
  *
- * This will also automatically add the setter parameter
- * with the given [paramName] and [type].
+ * This will also add a setter parameter with the given [paramName] and [type].
  */
 public inline fun PropertySpec.Builder.set(
     paramName: String = "value",
@@ -66,3 +63,12 @@ public inline fun PropertySpec.Builder.set(
     addParameter(paramName, type)
     config()
 })
+
+
+/**
+ * Creates a setter for this property with no parameter (and should have no body).
+ */
+public inline fun PropertySpec.Builder.set(
+    config: FunSpec.Builder.() -> Unit
+): PropertySpec.Builder =
+    setter(createSetter(config = config))

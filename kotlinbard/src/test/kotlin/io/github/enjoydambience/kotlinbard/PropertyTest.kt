@@ -16,6 +16,7 @@
 
 package io.github.enjoydambience.kotlinbard
 
+import com.squareup.kotlinpoet.KModifier
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 
@@ -62,6 +63,19 @@ class PropertyTest : StringSpec({
             |    println(value)
             |  }
             |""".trimMargin()
-        println(prop.toString())
+    }
+
+    "empty setter" {
+        val prop = createProperty("prop", String::class) {
+            mutable()
+            set {
+                addModifiers(KModifier.PRIVATE)
+            }
+        }
+        prop.toString() shouldBe """
+            |var prop: kotlin.String
+            |  private set
+            """.trimMargin()
+        //add newline when KotlinPoet#953 is released
     }
 })
