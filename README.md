@@ -98,10 +98,9 @@ fun tacos() {
 Fun fact: KotlinBard uses code generation to generate many functions -- it uses a previous version of itself to generate itself!
 
 
-### Use
-Kotlin bard is still under development.
+### Usage
 
-However, if you want to play around, add this to your gradle config:
+Add this to your gradle config:
 ```groovy
 repositories {
     maven {
@@ -113,6 +112,7 @@ dependencies {
     implementation "io.github.enjoydambience:kotlinbard:0.0.1"
 }
 ```
+Kotlin bard is still under development; api is subject to change.
 
 ### Roadmap
 - Semantically checked modifiers and types
