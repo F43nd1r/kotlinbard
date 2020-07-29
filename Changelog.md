@@ -6,6 +6,7 @@
 - Functions for `CodeBlock`s
 - `init` blocks
 - `addConstructor` for secondary constructors
+- `addEnumConstant`
 
 # Version 0.0.1
 - Initial release
