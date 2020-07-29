@@ -48,8 +48,7 @@ object SpecAdd : SpecFunctionFileGenerator("_Adders") {
         val builderFunName: String
     )
 
-    /** Scope for local dsl. */
-    private class MappingsScope {
+    private class GroupBuildingScope {
         val mappings = mutableListOf<AddFunctionGroup>()
 
         /**
@@ -72,12 +71,11 @@ object SpecAdd : SpecFunctionFileGenerator("_Adders") {
     private val allAddGroups: Map<SpecInfo, List<AddFunctionGroup>> = run {
         //local dsl setup
         val result = mutableMapOf<SpecInfo, List<AddFunctionGroup>>()
-        operator fun KClass<*>.invoke(config: MappingsScope.() -> Unit) {
+        operator fun KClass<*>.invoke(config: GroupBuildingScope.() -> Unit) {
             val spec = SpecInfo.of(this)!!
-            result[spec] = MappingsScope().apply(config).mappings
+            result[spec] = GroupBuildingScope().apply(config).mappings
         }
 
-        //begin dsl
         FileSpec::class {
             "annotation"()
             "function"()
@@ -105,12 +103,14 @@ object SpecAdd : SpecFunctionFileGenerator("_Adders") {
             "interface"(delegatesTo = "addType")
             "object"(delegatesTo = "addType")
             "constructor"(generatedName = "primaryConstructor")
+            "constructor"(generatedName = "addConstructor", delegatesTo = "addFunction")
+            "codeBlock"(generatedName = "init", delegatesTo = "addInitializerBlock")
             //no overriding method; that is deprecated
         }
         PropertySpec::class {
             "annotation"()
             "getter"(generatedName = "get", delegatesTo = "getter")
-            //setter are handled separately
+            //setter is handled separately
         }
         FunSpec::class {
             "annotation"()
@@ -142,13 +142,14 @@ object SpecAdd : SpecFunctionFileGenerator("_Adders") {
                         val paramClass = (function.parameters[1].type.classifier as? KClass<*>)
                             ?: return@mapNotNull null
                         return@mapNotNull SpecInfo.of(paramClass) //null if not exist
-                    }.single()
+                    }.singleOrNull()
+                    ?: error("Cannot find function ${group.builderFunName} in ${spec.builderClass.qualifiedName}")
                 // get all creator functions that create that type, and have the requested name.
                 val creatorFuns = SpecCreate.functionsBySpec.getValue(createdSpec)
                     .filter { creatorFun ->
                         creatorFun.name == group.creatorFunName
                     }
-                check(creatorFuns.isNotEmpty()) { "No mappings for $spec, $group" }
+                check(creatorFuns.isNotEmpty()) { "No matching mappings for for $spec, $group" }
                 return@associateWith creatorFuns
             }
             .flatMap { (mapping, creatorFuns) ->

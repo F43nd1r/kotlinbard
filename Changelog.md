@@ -3,6 +3,9 @@
 - Disambiguate `annotation` and `annotationClass`
 - DslMarker for builder scopes
 - Empty setter
+- Functions for `CodeBlock`s
+- `init` blocks
+- `addConstructor` for secondary constructors
 
 # Version 0.0.1
 - Initial release
