@@ -17,6 +17,7 @@
 package io.github.enjoydambience.kotlinbard.codegen.generation
 
 import com.squareup.kotlinpoet.*
+import io.github.enjoydambience.kotlinbard.codegen.destinationPackage
 import kotlin.reflect.KClass
 import kotlin.reflect.full.companionObject
 
@@ -36,7 +37,13 @@ class SpecInfo private constructor(
     /** Class of the builder of spec (e.g. `FileSpec.Builder::class`) */
     val builderClass = specClass.nestedClasses.first { it.simpleName == "Builder" }
 
-    val builderName get() = builderClass.asClassName()
+    /**
+     * Name for the builder, which is actually a type alias.
+     *
+     * Type aliases are used so builders can have a DSL annotation.
+     * @see BuilderTypeAliases
+     */
+    val builderName = ClassName(destinationPackage, specClass.simpleName + "Builder")
 
     override fun toString(): String = "SpecInfo(${specClass.simpleName})"
 
