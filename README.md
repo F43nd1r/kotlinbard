@@ -175,4 +175,4 @@ Kotlin bard is still under development; api is subject to change.
 - Additional features to be decided
 
 If you have feedback or suggestions, feel free to open an issue.
-If you are feeling ambitious, feel free to open a pull request!
+If you are feeling ambitious, feel free to open a pull request.
