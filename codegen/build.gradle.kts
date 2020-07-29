@@ -18,7 +18,7 @@ plugins {
     kotlin("jvm")
 }
 repositories {
-    maven("https://dl.bintray.com/enjoydambience/maven")
+    jcenter()
 }
 
 dependencies {
@@ -26,7 +26,7 @@ dependencies {
     implementation(kotlin("reflect", version = Versions.Kotlin.stdlib))
     implementation(Deps.kotlinPoet)
     implementation(Deps.kaseChange)
-    implementation("io.github.enjoydambience:kotlinbard:0.0.1")
+    implementation("io.github.enjoydambience:kotlinbard:0.0.2")
 
     testImplementation(Deps.Test.jUnit)
     testImplementation(Deps.Test.Kotest.runner)
