@@ -71,7 +71,7 @@ val codegen: Task by tasks.creating {
         }
     }
 }
-tasks.classes { dependsOn(codegen) }
+compileKotlin.dependsOn(codegen)
 
 sourceSets.main {
     java {
