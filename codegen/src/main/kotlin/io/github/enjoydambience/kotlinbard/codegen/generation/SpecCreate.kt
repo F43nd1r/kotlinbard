@@ -48,11 +48,14 @@ object SpecCreate : SpecBasedFileGenerator("_Creators") {
         // "xxxBuilder" -> "createXxx"
         // "builder" -> "create<spec name>"
         val funNameMinusBuilder = function.name.replace("[bB]uilder".toRegex(), "")
-        val generatedName = funNameMinusBuilder
-            .ifEmpty { spec.name.takeUnless { it == "Fun" } ?: "function" }
-            .let {
-                "create" + it.toPascalCase()
-            }
+        val generatedName = if (spec.name == "Type" && funNameMinusBuilder == "annotation") {
+            "annotationClass"
+        } else {
+            funNameMinusBuilder
+                .ifEmpty { spec.name.takeUnless { it == "Fun" } ?: "function" }
+        }.let {
+            "create" + it.toPascalCase()
+        }
 
         return createFunction(generatedName) {
             copyDeprecationOf(function)
@@ -75,4 +78,3 @@ object SpecCreate : SpecBasedFileGenerator("_Creators") {
         }
     }
 }
-

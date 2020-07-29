@@ -39,7 +39,7 @@ object SpecAdd : SpecBasedFileGenerator("_Adders") {
      * Represents a _group_ of "add" functions.
      * All functions that match all the name.
      */
-    private class AddFunctionGroup(
+    private data class AddFunctionGroup(
         /** The name of the creator function to use ([SpecCreate]] */
         val creatorFunName: String,
         /** The name of the resulting generated function */
@@ -82,7 +82,7 @@ object SpecAdd : SpecBasedFileGenerator("_Adders") {
             "annotation"()
             "function"()
             "property"()
-            "annotation"(generatedName = "addAnnotationClass", delegatesTo = "addType")
+            "annotationClass"(delegatesTo = "addType")
             "anonymousClass"(delegatesTo = "addType")
             "class"(delegatesTo = "addType")
             "enum"(delegatesTo = "addType")
@@ -96,7 +96,7 @@ object SpecAdd : SpecBasedFileGenerator("_Adders") {
             "annotation"()
             "function"()
             "property"()
-            "annotation"(generatedName = "addAnnotationClass", delegatesTo = "addType")
+            "annotationClass"(delegatesTo = "addType")
             "anonymousClass"(delegatesTo = "addType")
             "class"(delegatesTo = "addType")
             "enum"(delegatesTo = "addType")
@@ -148,7 +148,7 @@ object SpecAdd : SpecBasedFileGenerator("_Adders") {
                     .filter { creatorFun ->
                         creatorFun.name == group.creatorFunName
                     }
-                check(creatorFuns.isNotEmpty())
+                check(creatorFuns.isNotEmpty()) { "No mappings for $spec, $group" }
                 return@associateWith creatorFuns
             }
             .flatMap { (mapping, creatorFuns) ->
