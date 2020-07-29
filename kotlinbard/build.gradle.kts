@@ -87,7 +87,7 @@ idea {
 // publish
 
 group = "io.github.enjoydambience"
-version = "0.0.1"
+version = "0.0.2"
 
 tasks.dokka {
     outputFormat = "html"
@@ -137,7 +137,7 @@ bintray {
     user = getProp("bintrayUser", "BINTRAY_USER")
     key = getProp("bintrayKey", "BINTRAY_KEY")
     setPublications("default")
-    publish = false
+    publish = true
     pkg.apply {
         repo = "maven"
         name = "kotlinbard"
@@ -145,6 +145,8 @@ bintray {
         vcsUrl = "https://github.com/enjoydambience/kotlinbard"
     }
 }
+
+tasks.publish { dependsOn(tasks.check) }
 
 inline var <T> Property<T>.v
     get() = get()
