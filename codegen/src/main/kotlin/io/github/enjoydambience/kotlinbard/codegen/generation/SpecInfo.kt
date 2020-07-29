@@ -22,6 +22,8 @@ import kotlin.reflect.full.companionObject
 
 /**
  * Reflection-based info about a `XXXSpec`, such as `FileSpec`, `TypeSpec`, etc.
+ *
+ * CodeBlock is also included because it follows a compatible structure.
  */
 class SpecInfo private constructor(
     /** Class of the spec. */
@@ -46,7 +48,8 @@ class SpecInfo private constructor(
             FunSpec::class,
             ParameterSpec::class,
             TypeAliasSpec::class,
-            AnnotationSpec::class
+            AnnotationSpec::class,
+            CodeBlock::class
         ).associateWith { SpecInfo(it) }
 
         val allSpecs get() = allSpecsMap.values

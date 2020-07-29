@@ -115,6 +115,7 @@ object SpecAdd : SpecBasedFileGenerator("_Adders") {
         FunSpec::class {
             "annotation"()
             "parameter"()
+            "codeBlock"(generatedName = "addCode", delegatesTo = "addCode")
         }
         ParameterSpec::class {
             "annotation"()
