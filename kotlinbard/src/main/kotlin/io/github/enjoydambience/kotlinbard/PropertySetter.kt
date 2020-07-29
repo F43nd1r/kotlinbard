@@ -31,7 +31,7 @@ public inline fun PropertySpec.Builder.set(
     paramName: String = "value",
     type: TypeName,
     config: FunSpec.Builder.() -> Unit
-): PropertySpec.Builder = setter(createSetter {
+): PropertySpec.Builder = setter(buildSetter {
     addParameter(paramName, type)
     config()
 })
@@ -45,7 +45,7 @@ public inline fun PropertySpec.Builder.set(
     paramName: String = "value",
     type: Type,
     config: FunSpec.Builder.() -> Unit
-): PropertySpec.Builder = setter(createSetter {
+): PropertySpec.Builder = setter(buildSetter {
     addParameter(paramName, type)
     config()
 })
@@ -59,7 +59,7 @@ public inline fun PropertySpec.Builder.set(
     paramName: String = "value",
     type: KClass<*>,
     config: FunSpec.Builder.() -> Unit
-): PropertySpec.Builder = setter(createSetter {
+): PropertySpec.Builder = setter(buildSetter {
     addParameter(paramName, type)
     config()
 })
@@ -71,4 +71,4 @@ public inline fun PropertySpec.Builder.set(
 public inline fun PropertySpec.Builder.set(
     config: FunSpec.Builder.() -> Unit
 ): PropertySpec.Builder =
-    setter(createSetter(config = config))
+    setter(buildSetter(config = config))

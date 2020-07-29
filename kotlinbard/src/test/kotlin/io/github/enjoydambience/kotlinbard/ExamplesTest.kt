@@ -25,7 +25,7 @@ import io.kotest.matchers.shouldBe
 @OptIn(ExperimentalStdlibApi::class)
 class ExamplesTest : StringSpec({
     "KotlinPoet's first example"{
-        val withBard = createFile("", "HelloWorld") {
+        val withBard = buildFile("", "HelloWorld") {
             val greeterClass = ClassName("", "Greeter")
             addClass(greeterClass) {
                 primaryConstructor {
@@ -74,11 +74,11 @@ class ExamplesTest : StringSpec({
         withBard shouldBe withPoet
     }
     "kotlin.collections.Collection" {
-        val file = createFile("kotlin.collections", "Collections") {
+        val file = buildFile("kotlin.collections", "Collections") {
             addInterface("Collection") {
                 val E = TypeVariableName("E")
                 val outE = TypeVariableName("E", variance = OUT)
-                val unsafeE = E.copy(annotations = listOf(createAnnotation(UnsafeVariance::class)))
+                val unsafeE = E.copy(annotations = listOf(buildAnnotation(UnsafeVariance::class)))
                 addKdoc(
                     """
                      A generic collection of elements. Methods in this interface support only read-only access to the collection;

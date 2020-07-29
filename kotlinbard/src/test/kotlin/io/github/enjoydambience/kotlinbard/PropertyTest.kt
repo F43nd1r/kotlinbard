@@ -22,7 +22,7 @@ import io.kotest.matchers.shouldBe
 
 class PropertyTest : StringSpec({
     "getter" {
-        val prop = createProperty("prop", Int::class) {
+        val prop = buildProperty("prop", Int::class) {
             get {
                 addStatement("return 0")
             }
@@ -33,7 +33,7 @@ class PropertyTest : StringSpec({
             |""".trimMargin()
     }
     "setter" {
-        val prop = createProperty("prop", Int::class) {
+        val prop = buildProperty("prop", Int::class) {
             mutable()
             set("myValue", Int::class) {
                 addStatement("println(myValue)")
@@ -47,7 +47,7 @@ class PropertyTest : StringSpec({
             |""".trimMargin()
     }
     "getter and setter" {
-        val prop = createProperty("prop", String::class) {
+        val prop = buildProperty("prop", String::class) {
             mutable()
             get {
                 addStatement("return %S", "foo")
@@ -66,7 +66,7 @@ class PropertyTest : StringSpec({
     }
 
     "empty setter" {
-        val prop = createProperty("prop", String::class) {
+        val prop = buildProperty("prop", String::class) {
             mutable()
             set {
                 addModifiers(KModifier.PRIVATE)

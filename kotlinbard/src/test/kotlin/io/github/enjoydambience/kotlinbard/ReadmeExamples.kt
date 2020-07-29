@@ -23,7 +23,7 @@ import io.kotest.core.spec.style.StringSpec
 
 class ReadmeExamples : StringSpec({
     "greeter" {
-        val file = createFile("", "HelloWorld") {
+        val file = buildFile("", "HelloWorld") {
             val greeterClass = ClassName("", "Greeter")
             addClass(greeterClass) {
                 primaryConstructor {
@@ -44,7 +44,7 @@ class ReadmeExamples : StringSpec({
         println(file)
     }
     "control flow"{
-        val function = createFunction("analyzeTaco") {
+        val function = buildFunction("analyzeTaco") {
             addCode { //functions are defined in the CodeBlockBuilder scope
                 controlFlow("taco.let") {
                     addStatement("println(it)")
@@ -76,7 +76,7 @@ class ReadmeExamples : StringSpec({
         println(function)
     }
     "prop" {
-        val prop = createProperty("prop", String::class) {
+        val prop = buildProperty("prop", String::class) {
             get {
                 addStatement("return field")
             }
