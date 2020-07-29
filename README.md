@@ -156,12 +156,12 @@ Add this to your gradle config:
 ```groovy
 repositories {
     maven {
-        url  "https://dl.bintray.com/enjoydambience/maven" 
+        jcenter()
     }
 }
 
 dependencies {
-    implementation "io.github.enjoydambience:kotlinbard:0.0.1"
+    implementation "io.github.enjoydambience:kotlinbard:0.1.0"
 }
 ```
 Kotlin bard is still under development; api is subject to change.

@@ -87,7 +87,8 @@ idea {
 // publish
 
 group = "io.github.enjoydambience"
-version = "0.0.2"
+val VERSION: String by project
+version = VERSION
 
 tasks.dokka {
     outputFormat = "html"
@@ -137,7 +138,7 @@ bintray {
     user = getProp("bintrayUser", "BINTRAY_USER")
     key = getProp("bintrayKey", "BINTRAY_KEY")
     setPublications("default")
-    publish = true
+    publish = false
     pkg.apply {
         repo = "maven"
         name = "kotlinbard"
