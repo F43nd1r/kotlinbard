@@ -86,7 +86,7 @@ class ExamplesTest : StringSpec({
                      @param E the type of elements contained in the collection. The collection is covariant on its element type.
                 """.trimIndent()
                 )
-                addTypeVariable(E)
+                addTypeVariable(outE)
                 addSuperinterface(ITERABLE.parameterizedBy(E))
                 addProperty("size", Int::class) {
                     addKdoc("Returns the size of the collection.")
@@ -133,7 +133,7 @@ import kotlin.UnsafeVariance
  * @param E the type of elements contained in the collection. The collection is covariant on its
  * element type.
  */
-interface Collection<E> : Iterable<E> {
+interface Collection<out E> : Iterable<E> {
   /**
    * Returns the size of the collection.
    */
