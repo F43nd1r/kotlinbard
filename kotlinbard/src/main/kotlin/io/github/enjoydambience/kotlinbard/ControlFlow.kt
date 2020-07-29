@@ -20,10 +20,6 @@ package io.github.enjoydambience.kotlinbard
 
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.TypeName
-import com.squareup.kotlinpoet.asTypeName
-import java.lang.reflect.Type
-import kotlin.reflect.KClass
 
 /**
  * Creates a control flow surrounding a [body].
@@ -159,9 +155,9 @@ public inline fun CodeBlock.Builder.When(body: WhenScope.() -> Unit) {
 /**
  * Adds a when-statement control flow with an argument.
  */
-public inline fun CodeBlock.Builder.When(argument: String, vararg args: Any, body: WhenWithArgScope.() -> Unit) {
+public inline fun CodeBlock.Builder.When(argument: String, vararg args: Any, body: WhenScope.() -> Unit) {
     controlFlow("when ($argument)", *args) {
-        WhenWithArgScope(this).body()
+        WhenScope(this).body()
     }
 }
 
@@ -170,7 +166,7 @@ public open class WhenScope(@PublishedApi internal val builder: CodeBlock.Builde
     // is [String, Type, TypeName] then
     // in [String, Format, CodeBlock] then
     /**
-     * Specifies a simple when argument.
+     * Specifies a when argument.
      *
      * Example:
      * ```kotlin
@@ -202,38 +198,6 @@ public open class WhenScope(@PublishedApi internal val builder: CodeBlock.Builde
     public fun Else(format: String, vararg args: Any) {
         builder.add("else -> %L\n", CodeBlock.of(format, *args))
     }
-}
-
-public class WhenWithArgScope(builder: CodeBlock.Builder) : WhenScope(builder) {
-
-    /**
-     * Specifies a `in` when argument.
-     */
-    public fun In(codeBlock: CodeBlock): WhenArg = WhenArg(CodeBlock.of("in %L", codeBlock))
-    public fun In(format: String, vararg args: Any): WhenArg = In(CodeBlock.of(format, *args))
-
-    /**
-     * Specifies a `!in` when argument.
-     */
-    public fun nIn(codeBlock: CodeBlock): WhenArg = WhenArg(CodeBlock.of("!in %L", codeBlock))
-    public fun nIn(format: String, vararg args: Any): WhenArg = nIn(CodeBlock.of(format, *args))
-
-    /**
-     * Specifies a `is` when argument.
-     */
-    public fun Is(type: TypeName): WhenArg = WhenArg(CodeBlock.of("is %T", type))
-    public fun Is(type: KClass<*>): WhenArg = Is(type.asTypeName())
-    public fun Is(type: Type): WhenArg = Is(type.asTypeName())
-    public fun Is(type: String): WhenArg = WhenArg(CodeBlock.of("!is %L", type))
-
-    /**
-     * Specifies a `!is` when argument.
-     */
-    public fun nIs(type: TypeName): WhenArg = WhenArg(CodeBlock.of("!is %T", type))
-    public fun nIs(type: KClass<*>): WhenArg = Is(type.asTypeName())
-    public fun nIs(type: Type): WhenArg = Is(type.asTypeName())
-    public fun nIs(type: String): WhenArg = WhenArg(CodeBlock.of("!is %L", type))
-
 }
 
 public inline class WhenArg(public val block: CodeBlock)

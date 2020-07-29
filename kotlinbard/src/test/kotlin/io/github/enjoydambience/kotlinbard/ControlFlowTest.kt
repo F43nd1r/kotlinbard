@@ -212,54 +212,6 @@ class ControlFlowTest : FreeSpec({
                 |}
                 |""".trimMargin()
         }
-        "in"{
-            val block = createCodeBlock {
-                When("a") {
-                    In("b").then("0")
-                }
-            }
-            block.toString() shouldBe """
-                |when (a) {
-                |  in b -> 0
-                |}
-                |""".trimMargin()
-        }
-        "!in"{
-            val block = createCodeBlock {
-                When("a") {
-                    nIn("b").then("0")
-                }
-            }
-            block.toString() shouldBe """
-                |when (a) {
-                |  !in b -> 0
-                |}
-                |""".trimMargin()
-        }
-        "is"{
-            val block = createCodeBlock {
-                When("a") {
-                    Is(String::class).then("0")
-                }
-            }
-            block.toString() shouldBe """
-                |when (a) {
-                |  is kotlin.String -> 0
-                |}
-                |""".trimMargin()
-        }
-        "!is"{
-            val block = createCodeBlock {
-                When("a") {
-                    nIs(String::class).then("0")
-                }
-            }
-            block.toString() shouldBe """
-                |when (a) {
-                |  !is kotlin.String -> 0
-                |}
-                |""".trimMargin()
-        }
     }
     "full house" {
         val func = createFunction("foo") {
@@ -286,11 +238,9 @@ class ControlFlowTest : FreeSpec({
                     }
                 }
                 When("o") {
-                    In("p").then("q")
-                    nIn("r").then("s")
-                    Is(Int::class).then("t")
-                    Is(String::class).then("u")
-                    Else("v")
+                    e("in p").then("q")
+                    e("!is %T", Int::class).then("r")
+                    Else("s")
                 }
             }
         }
@@ -321,10 +271,8 @@ class ControlFlowTest : FreeSpec({
               }
               when (o) {
                 in p -> q
-                !in r -> s
-                is kotlin.Int -> t
-                is kotlin.String -> u
-                else -> v
+                !is kotlin.String -> r
+                else -> s
               }
             }
             
