@@ -161,10 +161,7 @@ public inline fun CodeBlock.Builder.When(argument: String, vararg args: Any, bod
     }
 }
 
-public open class WhenScope(@PublishedApi internal val builder: CodeBlock.Builder) {
-    // e(String, Format, CodeBlock) then [String, Format, CodeBlock, block {}]
-    // is [String, Type, TypeName] then
-    // in [String, Format, CodeBlock] then
+public inline class WhenScope(@PublishedApi internal val builder: CodeBlock.Builder) {
     /**
      * Specifies a when argument.
      *
