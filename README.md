@@ -162,7 +162,6 @@ dependencies {
     implementation "io.github.enjoydambience:kotlinbard:0.1.0"
 }
 ```
-Kotlin bard is still under development; api is subject to change.
 
 ### Roadmap
 - Semantically checked modifiers and types
