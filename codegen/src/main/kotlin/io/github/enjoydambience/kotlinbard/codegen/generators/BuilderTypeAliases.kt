@@ -14,12 +14,13 @@
  *    limitations under the License.
  */
 
-package io.github.enjoydambience.kotlinbard.codegen.generation
+package io.github.enjoydambience.kotlinbard.codegen.generators
 
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import io.github.enjoydambience.kotlinbard.addTypeAlias
+import io.github.enjoydambience.kotlinbard.codegen.SpecInfo
 import io.github.enjoydambience.kotlinbard.codegen.destinationPackage
 
 /**

@@ -14,10 +14,11 @@
  *    limitations under the License.
  */
 
-package io.github.enjoydambience.kotlinbard.codegen.generation
+package io.github.enjoydambience.kotlinbard.codegen.generators
 
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
+import io.github.enjoydambience.kotlinbard.codegen.SpecInfo
 
 /**
  * File generators that are based on reflecting methods on Spec classes.

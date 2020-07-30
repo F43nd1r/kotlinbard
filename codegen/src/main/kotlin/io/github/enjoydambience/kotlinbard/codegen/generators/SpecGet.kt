@@ -14,10 +14,11 @@
  *    limitations under the License.
  */
 
-package io.github.enjoydambience.kotlinbard.codegen.generation
+package io.github.enjoydambience.kotlinbard.codegen.generators
 
 import com.squareup.kotlinpoet.FunSpec
 import io.github.enjoydambience.kotlinbard.buildFunction
+import io.github.enjoydambience.kotlinbard.codegen.SpecInfo
 import io.github.enjoydambience.kotlinbard.codegen.copyDeprecationOf
 import io.github.enjoydambience.kotlinbard.codegen.delegatesTo
 import kotlin.reflect.full.declaredMemberFunctions

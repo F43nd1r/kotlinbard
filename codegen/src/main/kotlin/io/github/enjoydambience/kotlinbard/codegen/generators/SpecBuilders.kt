@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package io.github.enjoydambience.kotlinbard.codegen.generation
+package io.github.enjoydambience.kotlinbard.codegen.generators
 
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
@@ -22,6 +22,7 @@ import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.UNIT
 import io.github.enjoydambience.kotlinbard.addParameter
 import io.github.enjoydambience.kotlinbard.buildFunction
+import io.github.enjoydambience.kotlinbard.codegen.SpecInfo
 import io.github.enjoydambience.kotlinbard.codegen.copyDeprecationOf
 import io.github.enjoydambience.kotlinbard.codegen.reflectCodeCall
 import net.pearx.kasechange.toPascalCase

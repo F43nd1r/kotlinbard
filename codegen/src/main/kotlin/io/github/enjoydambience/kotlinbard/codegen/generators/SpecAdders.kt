@@ -14,10 +14,11 @@
  *    limitations under the License.
  */
 
-package io.github.enjoydambience.kotlinbard.codegen.generation
+package io.github.enjoydambience.kotlinbard.codegen.generators
 
 import com.squareup.kotlinpoet.*
 import io.github.enjoydambience.kotlinbard.buildFunction
+import io.github.enjoydambience.kotlinbard.codegen.SpecInfo
 import io.github.enjoydambience.kotlinbard.codegen.codeCallNoReceiver
 import net.pearx.kasechange.toPascalCase
 import kotlin.reflect.KClass

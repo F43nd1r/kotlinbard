@@ -19,7 +19,7 @@ package io.github.enjoydambience.kotlinbard.codegen
 import com.squareup.kotlinpoet.FileSpec
 import io.github.enjoydambience.kotlinbard.addAnnotation
 import io.github.enjoydambience.kotlinbard.buildFile
-import io.github.enjoydambience.kotlinbard.codegen.generation.*
+import io.github.enjoydambience.kotlinbard.codegen.generators.*
 import java.nio.file.Paths
 
 
