@@ -16,12 +16,11 @@
 
 package io.github.enjoydambience.kotlinbard.codegen.generators
 
-import com.squareup.kotlinpoet.AnnotationSpec
-import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
+import io.github.enjoydambience.kotlinbard.CodegenDsl
 import io.github.enjoydambience.kotlinbard.addTypeAlias
+import io.github.enjoydambience.kotlinbard.buildAnnotation
 import io.github.enjoydambience.kotlinbard.codegen.SpecInfo
-import io.github.enjoydambience.kotlinbard.codegen.destinationPackage
 
 /**
  * Creates typeAliases for all spec builders.
@@ -29,7 +28,7 @@ import io.github.enjoydambience.kotlinbard.codegen.destinationPackage
  * These aliases are used so builders can have a DSL annotation.
  */
 object BuilderTypeAliases : FileGenerator {
-    private val dslAnnotation = AnnotationSpec.builder(ClassName(destinationPackage, "CodegenDsl")).build()
+    private val dslAnnotation = buildAnnotation(CodegenDsl::class)
 
     override val fileName: String get() = "_BuilderTypeAliases"
 
