@@ -17,8 +17,8 @@
 package io.github.enjoydambience.kotlinbard.codegen.generation
 
 import com.squareup.kotlinpoet.*
+import io.github.enjoydambience.kotlinbard.buildFunction
 import io.github.enjoydambience.kotlinbard.codegen.codeCallNoReceiver
-import io.github.enjoydambience.kotlinbard.createFunction
 import net.pearx.kasechange.toPascalCase
 import kotlin.reflect.KClass
 import kotlin.reflect.full.declaredMemberFunctions
@@ -55,7 +55,7 @@ object SpecAdders : SpecFunctionFileGenerator("_SpecAdders") {
          * Adds a [AddFunctionGroup].
          *
          * @receiver name of creator function (in [SpecBuilders]), without the "create" prefix.
-         * @param generatedName name of created function. Defaults to `add<Reciever>`
+         * @param generatedName name of buildd function. Defaults to `add<Reciever>`
          * @param delegatesTo the name of the builder function this delegates to. Defaults to [generatedName]
          */
         operator fun String.invoke(
@@ -134,7 +134,7 @@ object SpecAdders : SpecFunctionFileGenerator("_SpecAdders") {
             .associateWith { group ->
                 // find builder function, with same name, 1 parameter, that 1 parameter is spec type
                 // The first parameter is the `this` parameter
-                val createdSpec = builderFunctions.asSequence()
+                val builddSpec = builderFunctions.asSequence()
                     .mapNotNull { function ->
                         if (!(function.name == group.builderFunName
                                     && function.parameters.size == 2)
@@ -145,7 +145,7 @@ object SpecAdders : SpecFunctionFileGenerator("_SpecAdders") {
                     }.singleOrNull()
                     ?: error("Cannot find function ${group.builderFunName} in ${spec.builderClass.qualifiedName}")
                 // get all creator functions that create that type, and have the requested name.
-                val creatorFuns = SpecBuilders.functionsBySpec.getValue(createdSpec)
+                val creatorFuns = SpecBuilders.functionsBySpec.getValue(builddSpec)
                     .filter { creatorFun ->
                         creatorFun.name == group.creatorFunName
                     }
@@ -170,7 +170,7 @@ object SpecAdders : SpecFunctionFileGenerator("_SpecAdders") {
         builderSpec: SpecInfo,
         delegatesTo: String,
         creatorFun: FunSpec
-    ): FunSpec = createFunction(generatedName) {
+    ): FunSpec = buildFunction(generatedName) {
         addModifiers(KModifier.INLINE)
         receiver(builderSpec.builderName)
         // Exclude the last config parameter; add our own so still keeps de

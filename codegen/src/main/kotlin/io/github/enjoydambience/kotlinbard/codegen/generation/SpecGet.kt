@@ -17,9 +17,9 @@
 package io.github.enjoydambience.kotlinbard.codegen.generation
 
 import com.squareup.kotlinpoet.FunSpec
+import io.github.enjoydambience.kotlinbard.buildFunction
 import io.github.enjoydambience.kotlinbard.codegen.copyDeprecationOf
 import io.github.enjoydambience.kotlinbard.codegen.delegatesTo
-import io.github.enjoydambience.kotlinbard.createFunction
 import kotlin.reflect.full.declaredMemberFunctions
 
 /**
@@ -34,7 +34,7 @@ object SpecGet : SpecFunctionFileGenerator("_SpecGetters") {
                 it.returnType.classifier == spec.specClass
             }
             .map { function ->
-                createFunction(function.name + spec.name) {
+                buildFunction(function.name + spec.name) {
                     copyDeprecationOf(function)
                     delegatesTo(function)
                 }

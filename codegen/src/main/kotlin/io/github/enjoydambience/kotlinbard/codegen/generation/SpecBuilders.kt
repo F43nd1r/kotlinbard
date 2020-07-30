@@ -21,20 +21,20 @@ import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.UNIT
 import io.github.enjoydambience.kotlinbard.addParameter
+import io.github.enjoydambience.kotlinbard.buildFunction
 import io.github.enjoydambience.kotlinbard.codegen.copyDeprecationOf
 import io.github.enjoydambience.kotlinbard.codegen.reflectCodeCall
-import io.github.enjoydambience.kotlinbard.createFunction
 import net.pearx.kasechange.toPascalCase
 import kotlin.reflect.KFunction
 import kotlin.reflect.full.declaredMemberFunctions
 
 /**
- * Generates spec creator functions (`createXXX` functions).
+ * Generates spec creator functions (`buildXXX` functions).
  * These are called "creators" instead of "builders" to disambiguate from kotlin-poet's spec builders.
  *
  * These are derived from spec companion functions that return a builder type.
  *
- * These functions have the form `XXXSpec.createXxx(<parameters>).apply(config).build()`.
+ * These functions have the form `XXXSpec.xxx(<parameters>).apply(config).build()`.
  */
 object SpecBuilders : SpecFunctionFileGenerator("_SpecBuilders") {
     const val funPrefix = "build"
@@ -48,7 +48,7 @@ object SpecBuilders : SpecFunctionFileGenerator("_SpecBuilders") {
             }
 
     private fun generateFunction(spec: SpecInfo, function: KFunction<*>): FunSpec {
-        // "xxxBuilder" -> "createXxx"
+        // "xxxBuilder" -> "buildXxx"
         // "builder" -> "create<spec name>"
         val funNameMinusBuilder = function.name.replace("[bB]uilder".toRegex(), "")
         val generatedName = if (spec.name == "Type" && funNameMinusBuilder == "annotation") {
@@ -60,7 +60,7 @@ object SpecBuilders : SpecFunctionFileGenerator("_SpecBuilders") {
             funPrefix + it.toPascalCase()
         }
 
-        return createFunction(generatedName) {
+        return buildFunction(generatedName) {
             copyDeprecationOf(function)
 
             addModifiers(KModifier.INLINE)
