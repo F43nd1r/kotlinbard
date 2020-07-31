@@ -19,51 +19,19 @@ package io.github.enjoydambience.kotlinbard
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeName
-import java.lang.reflect.Type
-import kotlin.reflect.KClass
 
 /**
  * Creates a setter for this property.
  *
- * This will also add the setter parameter with the given [paramName] and [type].
+ * This will also add the setter parameter with the given [paramName].
  */
 public inline fun PropertySpec.Builder.set(
     paramName: String = "value",
-    type: TypeName,
     config: FunSpec.Builder.() -> Unit
 ): PropertySpec.Builder = setter(buildSetter {
-    addParameter(paramName, type)
+    addParameter(paramName, propertyType)
     config()
 })
-
-/**
- * Creates a setter for this property.
- *
- * This will also add the setter parameter with the given [paramName] and [type].
- */
-public inline fun PropertySpec.Builder.set(
-    paramName: String = "value",
-    type: Type,
-    config: FunSpec.Builder.() -> Unit
-): PropertySpec.Builder = setter(buildSetter {
-    addParameter(paramName, type)
-    config()
-})
-
-/**
- * Creates a setter for this property.
- *
- * This will also add a setter parameter with the given [paramName] and [type].
- */
-public inline fun PropertySpec.Builder.set(
-    paramName: String = "value",
-    type: KClass<*>,
-    config: FunSpec.Builder.() -> Unit
-): PropertySpec.Builder = setter(buildSetter {
-    addParameter(paramName, type)
-    config()
-})
-
 
 /**
  * Creates a setter for this property with no parameter (and should have no body).
@@ -72,3 +40,7 @@ public inline fun PropertySpec.Builder.set(
     config: FunSpec.Builder.() -> Unit
 ): PropertySpec.Builder =
     setter(buildSetter(config = config))
+
+@PublishedApi
+internal val PropertySpec.Builder.propertyType: TypeName
+    get() = Access.getTypeOf(this)

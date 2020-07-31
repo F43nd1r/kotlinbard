@@ -117,7 +117,7 @@ val prop = buildProperty("prop", String::class) {
     get {
         addStatement("return field")
     }
-    set("value", String::class) {
+    set("value") {
         addStatement("field = value")
     }
     //or, for parameterless set
