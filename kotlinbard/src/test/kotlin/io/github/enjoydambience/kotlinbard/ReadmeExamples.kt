@@ -16,33 +16,11 @@
 
 package io.github.enjoydambience.kotlinbard
 
-import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.KModifier.VARARG
 import io.kotest.core.spec.style.StringSpec
 
 class ReadmeExamples : StringSpec({
-    "greeter" {
-        val file = buildFile("", "HelloWorld") {
-            val greeterClass = ClassName("", "Greeter")
-            addClass(greeterClass) {
-                primaryConstructor {
-                    addParameter("name", String::class)
-                }
-                addProperty("name", String::class) {
-                    initializer("name")
-                }
-                addFunction("greet") {
-                    addStatement("println(%P)", "Hello, \$name")
-                }
-            }
-            addFunction("main") {
-                addParameter("args", String::class, VARARG)
-                addStatement("%T(args[0]).greet()", greeterClass)
-            }
-        }
-        println(file)
-    }
     "control flow"{
         val function = buildFunction("analyzeTaco") {
             addCode { //functions are defined in the CodeBlockBuilder scope
@@ -89,5 +67,20 @@ class ReadmeExamples : StringSpec({
             }
         }
         println(prop)
+    }
+    "Code block shortcuts"{
+        val myCode = "doStuff()".code
+        val print = "println(%S)".code("Hello, World")
+        val literal = "string literal".strLiteral
+    }
+    "function params" {
+        val function = buildFunction("foo") {
+            params {
+                "string" of String::class
+                "number" of Int::class init 5.literal
+                ("args" of Any::class) { addModifiers(VARARG) }
+            }
+        }
+        println(function)
     }
 })
