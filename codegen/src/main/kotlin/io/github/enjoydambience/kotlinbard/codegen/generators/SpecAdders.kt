@@ -56,7 +56,7 @@ object SpecAdders : SpecFunctionFileGenerator("_SpecAdders") {
          * Adds a [AddFunctionGroup].
          *
          * @receiver name of creator function (in [SpecBuilders]), without the "create" prefix.
-         * @param generatedName name of buildd function. Defaults to `add<Reciever>`
+         * @param generatedName name of the generated function. Defaults to `add<Receiver>`
          * @param delegatesTo the name of the builder function this delegates to. Defaults to [generatedName]
          */
         operator fun String.invoke(

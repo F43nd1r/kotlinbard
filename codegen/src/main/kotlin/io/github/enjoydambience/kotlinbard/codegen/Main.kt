@@ -67,5 +67,3 @@ fun FileGenerator.createFileSpec(): FileSpec = buildFile(destinationPackage, fil
 
     generate()
 }
-
-
