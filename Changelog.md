@@ -1,3 +1,6 @@
+# Version 0.2.0-SNAPSHOT
+- Added extension shortcut CodeBlock creators
+
 # Version 0.1.0
 - Disambiguate `annotation` and `annotationClass`
 - DslMarker for builder scopes
