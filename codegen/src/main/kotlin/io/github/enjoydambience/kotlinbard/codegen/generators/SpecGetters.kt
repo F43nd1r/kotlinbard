@@ -28,7 +28,7 @@ import kotlin.reflect.full.declaredMemberFunctions
  *
  * Derived from spec companion functions that return (their own) spec type.
  */
-object SpecGet : SpecFunctionFileGenerator("_SpecGetters") {
+object SpecGetters : SpecFunctionFileGenerator() {
     override fun generateFunctionsForSpec(spec: SpecInfo): List<FunSpec> =
         spec.companionClass.declaredMemberFunctions
             .filter {

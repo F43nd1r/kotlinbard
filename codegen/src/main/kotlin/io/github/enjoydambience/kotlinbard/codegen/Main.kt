@@ -41,7 +41,7 @@ fun main(args: Array<String>) {
 private val allFileGenerators = listOf<FileGenerator>(
     BuilderTypeAliases,
     SpecBuilders,
-    SpecGet,
+    SpecGetters,
     SpecAdders
 )
 

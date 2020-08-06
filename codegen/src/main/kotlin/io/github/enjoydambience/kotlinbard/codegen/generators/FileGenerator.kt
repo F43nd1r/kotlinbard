@@ -24,7 +24,7 @@ import com.squareup.kotlinpoet.FileSpec
  * This interface allows for some common configuration between generated files.
  */
 interface FileGenerator {
-    val fileName: String
+    val fileName: String get() = "_" + javaClass.simpleName
     fun FileSpec.Builder.generate()
 
     /**
@@ -33,7 +33,7 @@ interface FileGenerator {
      * This is used in the "this file is auto generated" comment.
      */
     val generatorSourceFileName: String
-        get() = this::class.simpleName!! + ".kt"
+        get() = javaClass.simpleName + ".kt"
 }
 
 

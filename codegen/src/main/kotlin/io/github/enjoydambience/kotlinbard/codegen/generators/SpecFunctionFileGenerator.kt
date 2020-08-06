@@ -27,9 +27,7 @@ import io.github.enjoydambience.kotlinbard.codegen.SpecInfo
  *
  * @see SpecInfo
  */
-abstract class SpecFunctionFileGenerator(
-    override val fileName: String
-) : FileGenerator {
+abstract class SpecFunctionFileGenerator : FileGenerator {
 
     protected abstract fun generateFunctionsForSpec(spec: SpecInfo): List<FunSpec>
 

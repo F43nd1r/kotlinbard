@@ -35,7 +35,7 @@ import kotlin.reflect.full.declaredMemberFunctions
  *
  * These functions have the form `addXXX(creatorFunction(<params>,config))`
  */
-object SpecAdders : SpecFunctionFileGenerator("_SpecAdders") {
+object SpecAdders : SpecFunctionFileGenerator() {
     /**
      * Represents a _group_ of "add" functions.
      * All functions that match all the name.
