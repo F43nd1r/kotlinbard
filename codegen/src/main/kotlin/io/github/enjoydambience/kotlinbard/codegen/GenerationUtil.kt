@@ -74,7 +74,7 @@ private fun callWithReceiver(function: KFunction<*>, receiver: String): Pair<Cod
 
 private fun callWithoutReceiver(function: KFunction<*>): Pair<CodeBlock, List<ParameterSpec>> {
     val (params, paramsCall) = getParameters(function)
-    return CodeBlock.of("%N($paramsCall)") to params
+    return CodeBlock.of("%N($paramsCall)", function.name) to params
 }
 
 private fun getParameters(function: KFunction<*>): Pair<List<ParameterSpec>, String> {

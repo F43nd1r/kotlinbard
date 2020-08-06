@@ -42,7 +42,8 @@ private val allFileGenerators = listOf<FileGenerator>(
     BuilderTypeAliases,
     SpecBuilders,
     SpecGetters,
-    SpecAdders
+    SpecAdders,
+    SpecModifiers
 )
 
 const val destinationPackage = "io.github.enjoydambience.kotlinbard"

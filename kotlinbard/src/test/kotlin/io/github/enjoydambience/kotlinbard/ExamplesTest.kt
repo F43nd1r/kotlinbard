@@ -160,4 +160,18 @@ interface Collection<out E> : Iterable<E> {
         """.trimMargin()
         println(file)
     }
+    "modify" {
+        val func = buildFunction("foo") {
+            addParameter("s", String::class)
+        }
+        val modified = func.modify(name = "bar") {
+            addModifiers(PRIVATE)
+            addParameter("i", Int::class)
+        }
+        modified.toString() shouldBe """
+            private fun bar(s: kotlin.String, i: kotlin.Int) {
+            }
+            
+        """.trimIndent()
+    }
 })
