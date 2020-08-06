@@ -49,6 +49,10 @@ compileKotlin.kotlinOptions {
     freeCompilerArgs += listOf("-Xinline-classes")
 }
 
+tasks.named<Test>("test") {
+    useJUnitPlatform()
+}
+
 // codegen
 val generatedSrc = "$buildDir/generated-src"
 val codegenProject = project(":codegen")

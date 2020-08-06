@@ -271,7 +271,7 @@ class ControlFlowTest : FreeSpec({
               }
               when (o) {
                 in p -> q
-                !is kotlin.String -> r
+                !is kotlin.Int -> r
                 else -> s
               }
             }

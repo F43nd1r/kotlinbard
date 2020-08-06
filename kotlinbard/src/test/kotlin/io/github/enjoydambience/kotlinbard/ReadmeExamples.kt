@@ -16,7 +16,6 @@
 
 package io.github.enjoydambience.kotlinbard
 
-import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.KModifier.VARARG
 import io.kotest.core.spec.style.StringSpec
 
@@ -62,9 +61,9 @@ class ReadmeExamples : StringSpec({
                 addStatement("field = value")
             }
             //or, for parameterless set
-            set {
-                addModifiers(KModifier.PRIVATE)
-            }
+//            set {
+//                addModifiers(KModifier.PRIVATE)
+//            }
         }
         println(prop)
     }
