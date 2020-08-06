@@ -29,9 +29,9 @@ dependencies {
     implementation("io.github.enjoydambience:kotlinbard:0.1.0")
 
     testImplementation(Deps.Test.jUnit)
-    testImplementation(Deps.Test.Kotest.runner)
-    testImplementation(Deps.Test.Kotest.assertions)
-    testImplementation(Deps.Test.Kotest.console)
+    testImplementation(Deps.Test.kotestRunner)
+    testImplementation(Deps.Test.kotestAssertions)
+    testImplementation(Deps.Test.kotestConsole)
 }
 
 val mainClass by ext("io.github.enjoydambience.kotlinbard.codegen.MainKt")

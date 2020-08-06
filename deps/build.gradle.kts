@@ -16,7 +16,16 @@
 
 plugins {
     `kotlin-dsl`
+    `java-gradle-plugin`
 }
 repositories {
     jcenter()
+}
+gradlePlugin {
+    plugins {
+        create("deps") {
+            id = "deps"
+            implementationClass = "Plugin"
+        }
+    }
 }

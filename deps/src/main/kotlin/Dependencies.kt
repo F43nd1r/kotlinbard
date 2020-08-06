@@ -16,6 +16,9 @@
 
 @file:Suppress("SpellCheckingInspection")
 
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+
 object Versions {
     object Kotlin {
         const val plugin = "1.4.0-rc"
@@ -32,6 +35,11 @@ object Versions {
     const val kotest = "4.1.2"
 }
 
+class Plugin : Plugin<Project> {
+    override fun apply(target: Project) {
+    }
+}
+
 object Deps {
 //    const val kotlinCoroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.Kotlin.coroutines}"
 
@@ -42,13 +50,9 @@ object Deps {
     object Test {
         const val jUnit = "org.junit.jupiter:junit-jupiter:${Versions.jUnit}"
 
-        object Kotest {
-            const val runner = "io.kotest:kotest-runner-junit5-jvm:${Versions.kotest}"
-            const val assertions = "io.kotest:kotest-assertions-core-jvm:${Versions.kotest}"
-            const val properties = "io.kotest:kotest-property-jvm:${Versions.kotest}"
-
-            const val console = "io.kotest:kotest-runner-console-jvm:${Versions.kotest}"
-        }
-
+        const val kotestRunner = "io.kotest:kotest-runner-junit5-jvm:${Versions.kotest}"
+        const val kotestAssertions = "io.kotest:kotest-assertions-core-jvm:${Versions.kotest}"
+        const val kotestProperties = "io.kotest:kotest-property-jvm:${Versions.kotest}"
+        const val kotestConsole = "io.kotest:kotest-runner-console-jvm:${Versions.kotest}"
     }
 }

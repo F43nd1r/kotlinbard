@@ -17,7 +17,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version Versions.Kotlin.plugin
+    id("deps") apply false
+    kotlin("jvm") version "1.4.0-rc"
 }
 
 repositories {
