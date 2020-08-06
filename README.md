@@ -26,29 +26,26 @@ file.writeTo(System.out)
 Fun fact: to cover every function, KotlinBard uses code generation to generate many extensions -- it uses a previous version of itself to generate itself!
 
 ## Current Features
-`buildXXX` and `addXXX` functions for every builder:
+`buildXXX`, `addXXX`, and `modify` functions for every builder:
 ```kotlin
 val file = buildFile{
     addClass(...){...}
     addInterface(...){...}
     addTypeAlias(...){...}
 }
-val func = buildFunction(...){
-    addParameter {...}
-}
 //builds an AnnotationSpec
 val annotation = buildAnnotation(...){...}
-//builds a TypeSpec that represents an annotation
+//builds a TypeSpec that is an annotation
 val annotationType = buildAnnotationClass(...){...}
 
 //Each type of Spec has its own function
-val obj = buildObject(...){}
-val enum = buildEnum(...){
-    addEnumConstant("name"){...}
-}
+val klass = buildClass(...){...}
+val enum = buildEnum(...){...}
 val intf = buildInterface(...){...}
 val constructor = buildContructor{}
 val getter = buildGetter{}
+//all specs have modify function
+val newClass = klass.modify{...}
 ```
 Dsls for control flow:
 ```kotlin
@@ -114,6 +111,7 @@ fun analyzeTaco() {
 `get {}` and `set {}` for properties:
 ```kotlin
 val prop = buildProperty("prop", String::class) {
+    mutable()
     get {
         addStatement("return field")
     }
@@ -126,20 +124,13 @@ val prop = buildProperty("prop", String::class) {
     }
 }
 ```
-Constructors and `init` blocks:
-```
-val type = buildClass("Foo"){
-    primaryConstructor {...}
-    constructor {...}
-    init {...}
-}
-```
 CodeBlock shortcuts:
 ```kotlin
 val myCode = "doStuff()".code
 val print = "println(%S)".code("Hello, World")
 val literal = "I have 3 apples".strLiteral
-val numberLiteral = 5.literal
+val intLiteral = 5.literal
+val doubleLiteral = 5.0.literal
 ```
 DSL for function parameters:
 ```kotlin
@@ -151,7 +142,7 @@ val function = buildFunction("foo") {
     }
 }
 ```
-Builders are marked with `@CodegenDsl`:
+Builders are marked with DslMarker:
 ```kotlin
 val file = buildFile("","File"){
     addImport(String::class)
@@ -164,7 +155,7 @@ val file = buildFile("","File"){
 
 ### Usage
 
-Add this to your gradle config:
+Add to your gradle config:
 ```groovy
 repositories {
     maven {
@@ -173,15 +164,14 @@ repositories {
 }
 
 dependencies {
-    implementation "io.github.enjoydambience:kotlinbard:0.1.0"
+    implementation "io.github.enjoydambience:kotlinbard:0.2.0"
 }
 ```
 
 ### Roadmap
-- Semantically checked modifiers and types
-- Shorter name extensions (?)
+- Shorter name functions (?)
 - Primary constructor properties
-- DSLs and extensions for `XxxName`
+- DSLs and extensions for `TypeName`
 - Other DSLs to make codegen code in similar order to output code
 - Additional features to be decided
 
