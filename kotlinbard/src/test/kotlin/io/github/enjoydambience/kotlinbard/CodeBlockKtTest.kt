@@ -14,31 +14,29 @@
  *    limitations under the License.
  */
 
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+package io.github.enjoydambience.kotlinbard
 
-plugins {
-    id("deps") apply false
-    kotlin("jvm") version "1.4.0-rc"
-}
+import com.squareup.kotlinpoet.CodeBlock
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.shouldBe
 
-repositories {
-    mavenCentral()
-    maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
-}
+class CodeBlockKtTest : StringSpec({
 
+    "code" {
+        "this is code".code shouldBe CodeBlock.of("this is code")
 
-subprojects {
-    repositories {
-        mavenCentral()
-        jcenter()
-        maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
+        "Hello %S".code("foo") shouldBe CodeBlock.of("Hello \"foo\"")
     }
 
-    tasks.withType<KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = "1.8"
-            languageVersion = "1.3"
-            freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
-        }
+    "strLiteral" {
+        "\$literally".strLiteral shouldBe CodeBlock.of(""""${"$"}{'$'}literally"""")
     }
-}
+
+    "template" {
+        "\$template".template shouldBe CodeBlock.of("\"\"\"\$template\"\"\"")
+    }
+
+    "literal" {
+        5.literal shouldBe CodeBlock.of("5")
+    }
+})

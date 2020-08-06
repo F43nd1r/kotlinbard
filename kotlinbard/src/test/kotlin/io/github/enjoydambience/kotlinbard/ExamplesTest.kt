@@ -29,7 +29,7 @@ class ExamplesTest : StringSpec({
             val greeterClass = ClassName("", "Greeter")
             addClass(greeterClass) {
                 primaryConstructor {
-                    addParameter("name", String::class)
+                    params { "name" of String::class }
                 }
                 addProperty("name", String::class) {
                     initializer("name")
@@ -102,7 +102,7 @@ class ExamplesTest : StringSpec({
                     addKdoc("Checks if the specified element is contained in this collection.")
                     addModifiers(OVERRIDE)
                     addModifiers(ABSTRACT)
-                    addParameter("element", unsafeE)
+                    params { "element" of unsafeE }
                     returns(Boolean::class)
                 }
                 addFunction("iterator") {
@@ -114,7 +114,7 @@ class ExamplesTest : StringSpec({
                     addKdoc("Checks if all elements in the specified collection are contained in this collection.")
                     addModifiers(OVERRIDE)
                     addModifiers(ABSTRACT)
-                    addParameter("elements", COLLECTION.parameterizedBy(unsafeE))
+                    params { "elements" of COLLECTION.parameterizedBy(unsafeE) }
                     returns(Boolean::class)
                 }
             }
@@ -158,6 +158,19 @@ interface Collection<out E> : Iterable<E> {
 }
 
         """.trimMargin()
-        println(file)
+    }
+    "modify" {
+        val func = buildFunction("foo") {
+            addParameter("s", String::class)
+        }
+        val modified = func.modify(name = "bar") {
+            addModifiers(PRIVATE)
+            addParameter("i", Int::class)
+        }
+        modified.toString() shouldBe """
+            private fun bar(s: kotlin.String, i: kotlin.Int) {
+            }
+            
+        """.trimIndent()
     }
 })

@@ -18,4 +18,5 @@ package io.github.enjoydambience.kotlinbard
 
 @DslMarker
 @Target(AnnotationTarget.CLASS, AnnotationTarget.TYPEALIAS)
+@Retention(AnnotationRetention.SOURCE)
 public annotation class CodegenDsl

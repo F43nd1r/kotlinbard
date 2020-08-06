@@ -16,33 +16,10 @@
 
 package io.github.enjoydambience.kotlinbard
 
-import com.squareup.kotlinpoet.ClassName
-import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.KModifier.VARARG
 import io.kotest.core.spec.style.StringSpec
 
 class ReadmeExamples : StringSpec({
-    "greeter" {
-        val file = buildFile("", "HelloWorld") {
-            val greeterClass = ClassName("", "Greeter")
-            addClass(greeterClass) {
-                primaryConstructor {
-                    addParameter("name", String::class)
-                }
-                addProperty("name", String::class) {
-                    initializer("name")
-                }
-                addFunction("greet") {
-                    addStatement("println(%P)", "Hello, \$name")
-                }
-            }
-            addFunction("main") {
-                addParameter("args", String::class, VARARG)
-                addStatement("%T(args[0]).greet()", greeterClass)
-            }
-        }
-        println(file)
-    }
     "control flow"{
         val function = buildFunction("analyzeTaco") {
             addCode { //functions are defined in the CodeBlockBuilder scope
@@ -73,21 +50,36 @@ class ReadmeExamples : StringSpec({
                 }
             }
         }
-        println(function)
+//        println(function)
     }
     "prop" {
         val prop = buildProperty("prop", String::class) {
             get {
                 addStatement("return field")
             }
-            set("value", String::class) {
+            set("value") {
                 addStatement("field = value")
             }
             //or, for parameterless set
-            set {
-                addModifiers(KModifier.PRIVATE)
+//            set {
+//                addModifiers(KModifier.PRIVATE)
+//            }
+        }
+//        println(prop)
+    }
+    "Code block shortcuts"{
+        val myCode = "doStuff()".code
+        val print = "println(%S)".code("Hello, World")
+        val literal = "string literal".strLiteral
+    }
+    "function params" {
+        val function = buildFunction("foo") {
+            params {
+                "string" of String::class
+                "number" of Int::class init 5.literal
+                ("args" of Any::class) { addModifiers(VARARG) }
             }
         }
-        println(prop)
+//        println(function)
     }
 })

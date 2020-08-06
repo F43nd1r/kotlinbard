@@ -33,9 +33,9 @@ dependencies {
     api(Deps.kotlinPoet)
 
     testImplementation(Deps.Test.jUnit)
-    testImplementation(Deps.Test.Kotest.runner)
-    testImplementation(Deps.Test.Kotest.assertions)
-    testImplementation(Deps.Test.Kotest.console)
+    testImplementation(Deps.Test.kotestRunner)
+    testImplementation(Deps.Test.kotestAssertions)
+    testImplementation(Deps.Test.kotestConsole)
 }
 
 pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
@@ -47,6 +47,10 @@ pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
 val compileKotlin: KotlinCompile by tasks
 compileKotlin.kotlinOptions {
     freeCompilerArgs += listOf("-Xinline-classes")
+}
+
+tasks.named<Test>("test") {
+    useJUnitPlatform()
 }
 
 // codegen

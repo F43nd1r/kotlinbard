@@ -25,5 +25,6 @@ pluginManagement {
 }
 rootProject.name = "KotlinBard"
 
+includeBuild("deps")
 include("codegen")
 include("kotlinbard")

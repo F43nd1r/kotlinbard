@@ -14,10 +14,9 @@
  *    limitations under the License.
  */
 
-package io.github.enjoydambience.kotlinbard.codegen.generation
+package io.github.enjoydambience.kotlinbard.codegen
 
 import com.squareup.kotlinpoet.*
-import io.github.enjoydambience.kotlinbard.codegen.destinationPackage
 import kotlin.reflect.KClass
 import kotlin.reflect.full.companionObject
 

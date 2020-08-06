@@ -35,7 +35,7 @@ class PropertyTest : StringSpec({
     "setter" {
         val prop = buildProperty("prop", Int::class) {
             mutable()
-            set("myValue", Int::class) {
+            set("myValue") {
                 addStatement("println(myValue)")
             }
         }
@@ -52,7 +52,7 @@ class PropertyTest : StringSpec({
             get {
                 addStatement("return %S", "foo")
             }
-            set("value", String::class) {
+            set("value") {
                 addStatement("println(value)")
             }
         }

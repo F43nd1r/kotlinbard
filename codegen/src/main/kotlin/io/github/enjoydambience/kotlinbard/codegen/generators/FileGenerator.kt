@@ -14,9 +14,26 @@
  *    limitations under the License.
  */
 
-plugins {
-    `kotlin-dsl`
+package io.github.enjoydambience.kotlinbard.codegen.generators
+
+import com.squareup.kotlinpoet.FileSpec
+
+/**
+ * Generates a file.
+ *
+ * This interface allows for some common configuration between generated files.
+ */
+interface FileGenerator {
+    val fileName: String get() = "_" + javaClass.simpleName
+    fun FileSpec.Builder.generate()
+
+    /**
+     * Gets the name of the source file that contains this generator.
+     *
+     * This is used in the "this file is auto generated" comment.
+     */
+    val generatorSourceFileName: String
+        get() = javaClass.simpleName + ".kt"
 }
-repositories {
-    jcenter()
-}
+
+

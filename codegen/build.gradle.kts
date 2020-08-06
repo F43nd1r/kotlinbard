@@ -26,12 +26,12 @@ dependencies {
     implementation(kotlin("reflect", version = Versions.Kotlin.stdlib))
     implementation(Deps.kotlinPoet)
     implementation(Deps.kaseChange)
-    implementation("io.github.enjoydambience:kotlinbard:0.0.2")
+    implementation("io.github.enjoydambience:kotlinbard:0.1.0")
 
     testImplementation(Deps.Test.jUnit)
-    testImplementation(Deps.Test.Kotest.runner)
-    testImplementation(Deps.Test.Kotest.assertions)
-    testImplementation(Deps.Test.Kotest.console)
+    testImplementation(Deps.Test.kotestRunner)
+    testImplementation(Deps.Test.kotestAssertions)
+    testImplementation(Deps.Test.kotestConsole)
 }
 
 val mainClass by ext("io.github.enjoydambience.kotlinbard.codegen.MainKt")

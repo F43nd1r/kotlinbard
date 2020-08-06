@@ -18,7 +18,7 @@ package io.github.enjoydambience.kotlinbard.codegen
 
 
 import com.squareup.kotlinpoet.*
-import io.github.enjoydambience.kotlinbard.createParameter
+import io.github.enjoydambience.kotlinbard.buildParameter
 import kotlin.reflect.KAnnotatedElement
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
@@ -74,7 +74,7 @@ private fun callWithReceiver(function: KFunction<*>, receiver: String): Pair<Cod
 
 private fun callWithoutReceiver(function: KFunction<*>): Pair<CodeBlock, List<ParameterSpec>> {
     val (params, paramsCall) = getParameters(function)
-    return CodeBlock.of("%N($paramsCall)") to params
+    return CodeBlock.of("%N($paramsCall)", function.name) to params
 }
 
 private fun getParameters(function: KFunction<*>): Pair<List<ParameterSpec>, String> {
@@ -84,7 +84,7 @@ private fun getParameters(function: KFunction<*>): Pair<List<ParameterSpec>, Str
             if (it.isVararg) {
                 adaptVarargParameter(it)
             } else {
-                createParameter(it.name!!, it.type.asTypeName())
+                buildParameter(it.name!!, it.type.asTypeName())
             }
         }
     val paramsCall = getParamsCall(params)
@@ -96,7 +96,7 @@ private fun getParamsCall(params: List<ParameterSpec>): String = params.joinToSt
 }
 
 private fun adaptVarargParameter(it: KParameter): ParameterSpec =
-    createParameter(
+    buildParameter(
         it.name!!,
         it.type.arguments.first().type!!.asTypeName(),
         KModifier.VARARG

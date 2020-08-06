@@ -14,12 +14,13 @@
  *    limitations under the License.
  */
 
-package io.github.enjoydambience.kotlinbard.codegen.generation
+package io.github.enjoydambience.kotlinbard.codegen.generators
 
 import com.squareup.kotlinpoet.FunSpec
+import io.github.enjoydambience.kotlinbard.buildFunction
+import io.github.enjoydambience.kotlinbard.codegen.SpecInfo
 import io.github.enjoydambience.kotlinbard.codegen.copyDeprecationOf
 import io.github.enjoydambience.kotlinbard.codegen.delegatesTo
-import io.github.enjoydambience.kotlinbard.createFunction
 import kotlin.reflect.full.declaredMemberFunctions
 
 /**
@@ -27,14 +28,14 @@ import kotlin.reflect.full.declaredMemberFunctions
  *
  * Derived from spec companion functions that return (their own) spec type.
  */
-object SpecGet : SpecFunctionFileGenerator("_SpecGetters") {
+object SpecGetters : SpecFunctionFileGenerator() {
     override fun generateFunctionsForSpec(spec: SpecInfo): List<FunSpec> =
         spec.companionClass.declaredMemberFunctions
             .filter {
                 it.returnType.classifier == spec.specClass
             }
             .map { function ->
-                createFunction(function.name + spec.name) {
+                buildFunction(function.name + spec.name) {
                     copyDeprecationOf(function)
                     delegatesTo(function)
                 }
