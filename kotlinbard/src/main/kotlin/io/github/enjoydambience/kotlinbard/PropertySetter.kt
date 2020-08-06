@@ -16,10 +16,12 @@
 
 package io.github.enjoydambience.kotlinbard
 
+import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.PropertySpec
-import com.squareup.kotlinpoet.TypeName
 
+@PublishedApi
+internal val anySetterParam = ClassName("", "SetterParam")
 /**
  * Creates a setter for this property.
  *
@@ -29,7 +31,7 @@ public inline fun PropertySpec.Builder.set(
     paramName: String = "value",
     config: FunSpec.Builder.() -> Unit
 ): PropertySpec.Builder = setter(buildSetter {
-    addParameter(paramName, propertyType)
+    addParameter(paramName, anySetterParam)
     config()
 })
 
@@ -40,7 +42,3 @@ public inline fun PropertySpec.Builder.set(
     config: FunSpec.Builder.() -> Unit
 ): PropertySpec.Builder =
     setter(buildSetter(config = config))
-
-@PublishedApi
-internal val PropertySpec.Builder.propertyType: TypeName
-    get() = Access.getTypeOf(this)
