@@ -50,7 +50,7 @@ class ReadmeExamples : StringSpec({
                 }
             }
         }
-        println(function)
+//        println(function)
     }
     "prop" {
         val prop = buildProperty("prop", String::class) {
@@ -65,7 +65,7 @@ class ReadmeExamples : StringSpec({
 //                addModifiers(KModifier.PRIVATE)
 //            }
         }
-        println(prop)
+//        println(prop)
     }
     "Code block shortcuts"{
         val myCode = "doStuff()".code
@@ -80,6 +80,6 @@ class ReadmeExamples : StringSpec({
                 ("args" of Any::class) { addModifiers(VARARG) }
             }
         }
-        println(function)
+//        println(function)
     }
 })

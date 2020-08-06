@@ -158,7 +158,6 @@ interface Collection<out E> : Iterable<E> {
 }
 
         """.trimMargin()
-        println(file)
     }
     "modify" {
         val func = buildFunction("foo") {
