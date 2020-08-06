@@ -1,7 +1,9 @@
-# Version 0.2.0-SNAPSHOT
+# Version 0.2.0
 - Added extension shortcut CodeBlock creators
 - Added parameters dsl
-- Feature: remove need to re-specify type in property setter
+- Added SpecModifiers
+- Added more add extensions
+- Remove need to re-specify type in property setter
 
 # Version 0.1.0
 - Disambiguate `annotation` and `annotationClass`
