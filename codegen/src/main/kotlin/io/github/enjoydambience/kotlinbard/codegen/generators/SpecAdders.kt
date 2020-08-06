@@ -106,20 +106,27 @@ object SpecAdders : SpecFunctionFileGenerator("_SpecAdders") {
             "constructor"(generatedName = "primaryConstructor")
             "constructor"(generatedName = "addConstructor", delegatesTo = "addFunction")
             "codeBlock"(generatedName = "init", delegatesTo = "addInitializerBlock")
+            "codeBlock"(
+                generatedName = "superclassConstructorParameter",
+                delegatesTo = "addSuperclassConstructorParameter"
+            )
             //no overriding method; that is deprecated
         }
         PropertySpec::class {
             "annotation"()
             "getter"(generatedName = "get", delegatesTo = "getter")
             //setter is handled separately
+            "codeBlock"(generatedName = "delegate")
+            "codeBlock"(generatedName = "init", delegatesTo = "initializer")
         }
         FunSpec::class {
             "annotation"()
             "parameter"()
-            "codeBlock"(generatedName = "addCode", delegatesTo = "addCode")
+            "codeBlock"(generatedName = "addCode")
         }
         ParameterSpec::class {
             "annotation"()
+            "codeBlock"(generatedName = "defaultValue")
         }
         TypeAliasSpec::class {
             "annotation"()
@@ -131,11 +138,21 @@ object SpecAdders : SpecFunctionFileGenerator("_SpecAdders") {
     override fun generateFunctionsForSpec(spec: SpecInfo): List<FunSpec> {
         val builderFunctions = spec.builderClass.declaredMemberFunctions
 
+//        builderFunctions.forEach { function ->
+//            val group = allAddGroups[spec] ?: return@forEach
+//            if (function.parameters.size != 2) return@forEach
+//            val paramClass = (function.parameters[1].type.classifier as? KClass<*>)
+//                ?: return@forEach
+//            if (SpecInfo.of(paramClass) == null) return@forEach
+//            if (group.none { it.builderFunName == function.name })
+//                println("No function for $function")
+//        }
+
         return (allAddGroups[spec] ?: return emptyList())
             .associateWith { group ->
                 // find builder function, with same name, 1 parameter, that 1 parameter is spec type
                 // The first parameter is the `this` parameter
-                val builddSpec = builderFunctions.asSequence()
+                val buildSpec = builderFunctions.asSequence()
                     .mapNotNull { function ->
                         if (!(function.name == group.builderFunName
                                     && function.parameters.size == 2)
@@ -146,7 +163,7 @@ object SpecAdders : SpecFunctionFileGenerator("_SpecAdders") {
                     }.singleOrNull()
                     ?: error("Cannot find function ${group.builderFunName} in ${spec.builderClass.qualifiedName}")
                 // get all creator functions that create that type, and have the requested name.
-                val creatorFuns = SpecBuilders.functionsBySpec.getValue(builddSpec)
+                val creatorFuns = SpecBuilders.functionsBySpec.getValue(buildSpec)
                     .filter { creatorFun ->
                         creatorFun.name == group.creatorFunName
                     }
@@ -174,7 +191,6 @@ object SpecAdders : SpecFunctionFileGenerator("_SpecAdders") {
     ): FunSpec = buildFunction(generatedName) {
         addModifiers(KModifier.INLINE)
         receiver(builderSpec.builderName)
-        // Exclude the last config parameter; add our own so still keeps de
         addParameters(creatorFun.parameters)
         val builderCall = codeCallNoReceiver(creatorFun)
 
