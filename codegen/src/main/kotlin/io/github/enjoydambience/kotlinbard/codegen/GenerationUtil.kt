@@ -64,20 +64,20 @@ fun codeCallNoReceiver(function: FunSpec): CodeBlock {
 
 private fun callCompanion(function: KFunction<*>, companionClass: KClass<*>): Pair<CodeBlock, List<ParameterSpec>> {
     val (params, paramsCall) = getParameters(function)
-    return CodeBlock.of("%T.%N($paramsCall)", companionClass.declaringClass!!.asClassName(), function.name) to params
+    return CodeBlock.of("%T.%N(%L)", companionClass.declaringClass!!.asClassName(), function.name, paramsCall) to params
 }
 
 private fun callWithReceiver(function: KFunction<*>, receiver: String): Pair<CodeBlock, List<ParameterSpec>> {
     val (params, paramsCall) = getParameters(function)
-    return CodeBlock.of("%N.%N($paramsCall)", receiver, function.name) to params
+    return CodeBlock.of("%N.%N(%L)", receiver, function.name, paramsCall) to params
 }
 
 private fun callWithoutReceiver(function: KFunction<*>): Pair<CodeBlock, List<ParameterSpec>> {
     val (params, paramsCall) = getParameters(function)
-    return CodeBlock.of("%N($paramsCall)", function.name) to params
+    return CodeBlock.of("%N(%L)", function.name, paramsCall) to params
 }
 
-private fun getParameters(function: KFunction<*>): Pair<List<ParameterSpec>, String> {
+private fun getParameters(function: KFunction<*>): Pair<List<ParameterSpec>, CodeBlock> {
     val params = function.parameters
         .filter { it.kind == KParameter.Kind.VALUE }
         .map {
@@ -91,9 +91,11 @@ private fun getParameters(function: KFunction<*>): Pair<List<ParameterSpec>, Str
     return Pair(params, paramsCall)
 }
 
-private fun getParamsCall(params: List<ParameterSpec>): String = params.joinToString {
-    it.name + "=" + (if (KModifier.VARARG in it.modifiers) "*" else "") + it.name
-}
+private fun getParamsCall(params: List<ParameterSpec>): CodeBlock = params.map {
+    val name = it.name
+    val maybeStar = (if (KModifier.VARARG in it.modifiers) "*" else "")
+    CodeBlock.of("%N=%L%N", name, maybeStar, name)
+}.joinToCode()
 
 private fun adaptVarargParameter(it: KParameter): ParameterSpec =
     buildParameter(
