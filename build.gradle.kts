@@ -41,4 +41,7 @@ subprojects {
             freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
         }
     }
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
 }
