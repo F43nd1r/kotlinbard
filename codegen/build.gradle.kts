@@ -26,7 +26,7 @@ dependencies {
     implementation(kotlin("reflect", version = Versions.Kotlin.stdlib))
     implementation(Deps.kotlinPoet)
     implementation(Deps.kaseChange)
-    implementation("io.github.enjoydambience:kotlinbard:0.1.0")
+    implementation("io.github.enjoydambience:kotlinbard:0.2.0")
 
     testImplementation(Deps.Test.jUnit)
     testImplementation(Deps.Test.kotestRunner)
