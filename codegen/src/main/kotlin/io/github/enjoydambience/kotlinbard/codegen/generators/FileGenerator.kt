@@ -17,6 +17,7 @@
 package io.github.enjoydambience.kotlinbard.codegen.generators
 
 import com.squareup.kotlinpoet.FileSpec
+import io.github.enjoydambience.kotlinbard.addAnnotation
 
 /**
  * Generates a file.
@@ -25,6 +26,26 @@ import com.squareup.kotlinpoet.FileSpec
  */
 interface FileGenerator {
     val fileName: String get() = "_" + javaClass.simpleName
+    fun FileSpec.Builder.header() {
+        addComment(
+            """
+            NOTE: This file is auto generated from $generatorSourceFileName
+            and should not be modified by hand.
+            """.trimIndent()
+        )
+        addAnnotation(Suppress::class) {
+            listOf(
+                "NO_EXPLICIT_VISIBILITY_IN_API_MODE_WARNING",
+                "unused",
+                "DEPRECATION",
+                "DeprecatedCallableAddReplaceWith"
+            ).forEach {
+                addMember("%S", it)
+            }
+        }
+
+    }
+
     fun FileSpec.Builder.generate()
 
     /**

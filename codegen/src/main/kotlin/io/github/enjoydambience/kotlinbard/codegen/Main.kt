@@ -17,9 +17,9 @@
 package io.github.enjoydambience.kotlinbard.codegen
 
 import com.squareup.kotlinpoet.FileSpec
-import io.github.enjoydambience.kotlinbard.addAnnotation
 import io.github.enjoydambience.kotlinbard.buildFile
 import io.github.enjoydambience.kotlinbard.codegen.generators.*
+import java.nio.file.Path
 import java.nio.file.Paths
 
 
@@ -34,7 +34,7 @@ fun main(args: Array<String>) {
     val path = Paths.get(pathArg)
     println("generating to $path")
     allFileGenerators.forEach {
-        it.createFileSpec().writeTo(path)
+        it.generateTo(path)
     }
 }
 
@@ -48,23 +48,9 @@ private val allFileGenerators = listOf<FileGenerator>(
 
 const val destinationPackage = "io.github.enjoydambience.kotlinbard"
 
-fun FileGenerator.createFileSpec(): FileSpec = buildFile(destinationPackage, fileName) {
-    addComment(
-        """
-        NOTE: This file is auto generated from $generatorSourceFileName
-        and should not be modified by hand.
-    """.trimIndent()
-    )
-    addAnnotation(Suppress::class) {
-        listOf(
-            "NO_EXPLICIT_VISIBILITY_IN_API_MODE_WARNING",
-            "unused",
-            "DEPRECATION",
-            "DeprecatedCallableAddReplaceWith"
-        ).forEach {
-            addMember("%S", it)
-        }
-    }
+fun FileGenerator.generateTo(path: Path) = createFileSpec().writeTo(path)
 
+fun FileGenerator.createFileSpec(): FileSpec = buildFile(destinationPackage, fileName) {
+    header()
     generate()
 }
