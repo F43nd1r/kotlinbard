@@ -19,7 +19,26 @@ plugins {
 }
 repositories {
     jcenter()
+    maven("https://oss.sonatype.org/content/repositories/snapshots")
 }
+
+sourceSets {
+    create("manual") {
+        java {
+            compileClasspath += main.get().output
+            runtimeClasspath += main.get().output
+        }
+    }
+}
+configurations {
+    this["manualImplementation"].extendsFrom(testImplementation.get())
+    this["manualRuntime"].extendsFrom(testRuntime.get())
+}
+//
+//val manualCodegen by tasks.creating(Test::class) {
+//    testClassesDirs = project.sourceSets["manual"].output.classesDirs
+//    classpath = project.sourceSets["manual"].runtimeClasspath
+//}
 
 dependencies {
     implementation(kotlin("stdlib-jdk8", version = Versions.Kotlin.stdlib))
@@ -32,6 +51,8 @@ dependencies {
     testImplementation(Deps.Test.kotestRunner)
     testImplementation(Deps.Test.kotestAssertions)
     testImplementation(Deps.Test.kotestConsole)
+
+    "manualImplementation"(Deps.kotlinPoetSnapshot)
 }
 
 val mainClass by ext("io.github.enjoydambience.kotlinbard.codegen.MainKt")

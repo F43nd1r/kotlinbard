@@ -27,6 +27,7 @@ object Versions {
     }
 
     const val kotlinPoet = "1.6.0"
+    const val kotlinPoetSnapshot = "1.7.0-SNAPSHOT"
 
     const val kaseChange = "1.3.0"
 
@@ -35,15 +36,11 @@ object Versions {
     const val kotest = "4.1.2"
 }
 
-class Plugin : Plugin<Project> {
-    override fun apply(target: Project) {
-    }
-}
-
 object Deps {
 //    const val kotlinCoroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.Kotlin.coroutines}"
 
     const val kotlinPoet = "com.squareup:kotlinpoet:${Versions.kotlinPoet}"
+    const val kotlinPoetSnapshot = "com.squareup:kotlinpoet:${Versions.kotlinPoetSnapshot}"
 
     const val kaseChange = "net.pearx.kasechange:kasechange-jvm:${Versions.kaseChange}"
 
@@ -54,5 +51,10 @@ object Deps {
         const val kotestAssertions = "io.kotest:kotest-assertions-core-jvm:${Versions.kotest}"
         const val kotestProperties = "io.kotest:kotest-property-jvm:${Versions.kotest}"
         const val kotestConsole = "io.kotest:kotest-runner-console-jvm:${Versions.kotest}"
+    }
+}
+
+class Plugin : Plugin<Project> {
+    override fun apply(target: Project) {
     }
 }
