@@ -39,8 +39,10 @@ class SpecDelegates : ManualFileGenerator() {
     }
 
     private fun FileSpecBuilder.addDelegateClass(klass: KClass<*>, name: String) = addClass(name) {
+        addModifiers(KModifier.ABSTRACT)
         primaryConstructor {
-            addParameter(delegateName, klass, KModifier.INTERNAL)
+            addParameter(delegateName, klass, KModifier.PUBLIC)
+            addModifiers(KModifier.INTERNAL)
         }
         addProperty(delegateName, klass) { init { add(delegateName) } }
 
@@ -58,7 +60,7 @@ class SpecDelegates : ManualFileGenerator() {
             if (it.visibility != KVisibility.PUBLIC) return@forEach
             when (it) {
                 is KProperty<*> -> delProperty(it, superMembers)
-                is KFunction<*> -> delFunction(it, superMembers)
+                is KFunction<*> -> delFunction(it, superMembers, klass)
                 else -> error("member not a function or property")
             }
         }
@@ -79,16 +81,19 @@ class SpecDelegates : ManualFileGenerator() {
         }
     }
 
-    private fun TypeSpecBuilder.delFunction(func: KFunction<*>, superMembers: List<KCallable<*>>) {
+    private fun TypeSpecBuilder.delFunction(func: KFunction<*>, superMembers: List<KCallable<*>>, klass: KClass<*>) {
         if (superMembers.any { it is KFunction && it.signature == func.signature }) return
         addFunction(func.name) {
             addModifiers(KModifier.PUBLIC)
-            returns(func.returnType.asTypeName())
             addTypeVariables(func.typeParameters.map { it.asTypeVariableName() })
+            if (func.returnType.classifier != klass) {
+                returns(func.returnType.asTypeName())
+                addCode("return ")
+            }
 
             val (call, params) = reflectCodeCall(func, delegateName)
             addParameters(params)
-            addStatement("return $call")
+            addCode(call)
         }
     }
 }

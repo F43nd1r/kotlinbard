@@ -48,9 +48,9 @@ private val allFileGenerators = listOf<FileGenerator>(
 
 const val destinationPackage = "io.github.enjoydambience.kotlinbard"
 
-fun FileGenerator.generateTo(path: Path) = createFileSpec().writeTo(path)
+fun FileGenerator.generateTo(path: Path) = generateFileSpec().writeTo(path)
 
-fun FileGenerator.createFileSpec(): FileSpec = buildFile(destinationPackage, fileName) {
+fun FileGenerator.generateFileSpec(): FileSpec = buildFile(destinationPackage, fileName) {
     header()
     generate()
 }
