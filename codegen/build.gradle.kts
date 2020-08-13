@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     kotlin("jvm")
 }
@@ -35,3 +37,8 @@ dependencies {
 }
 
 val mainClass by ext("io.github.enjoydambience.kotlinbard.codegen.MainKt")
+
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.kotlinOptions {
+    languageVersion = "1.4"
+}
