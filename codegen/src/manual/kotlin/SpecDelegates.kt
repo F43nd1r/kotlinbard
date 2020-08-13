@@ -21,12 +21,6 @@ import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.asTypeName
 import com.squareup.kotlinpoet.asTypeVariableName
 import io.github.enjoydambience.kotlinbard.*
-import io.github.enjoydambience.kotlinbard.codegen.generators.FileGenerator
-import io.kotest.core.spec.style.StringSpec
-import java.io.OutputStreamWriter
-import java.nio.charset.StandardCharsets
-import java.nio.file.Files
-import java.nio.file.Path
 import kotlin.reflect.*
 import kotlin.reflect.full.declaredMembers
 
@@ -35,8 +29,8 @@ import kotlin.reflect.full.declaredMembers
  *
  * The output file currently is not entirely semantically correct, and needs manual editing.
  */
-object SpecDelegates : FileGenerator {
-    private const val delegateName = "poetType"
+class SpecDelegates : ManualFileGenerator() {
+    private val delegateName = "poetType"
     override fun FileSpec.Builder.generate() {
         SpecInfo.allSpecs.forEach {
             addDelegateClass(it.specClass, it.name + "Delegate")
@@ -107,24 +101,3 @@ private val kPropertySigField = Class.forName("kotlin.reflect.jvm.internal.KProp
     .getDeclaredField("signature").apply { isAccessible = true }
 private val KProperty<*>.signature: String?
     get() = kPropertySigField[this] as String?
-
-class GenerateDelegates : StringSpec({
-    val destination = "./build/generated-src"
-    val path = Path.of(destination).toAbsolutePath()
-    "generateDelegates" {
-        println("generating to $path")
-        buildString {
-            SpecDelegates.createFileSpec().writeTo(this)
-        }.replace("public get\\(\\)".toRegex(), "get()")
-            .replace("\n *get".toRegex(), " get")
-            .replace("((get\\(\\)|fun).*\n)\n".toRegex(), "$1")
-            .replace("\n\n".toRegex(), "\n")
-            .let {
-                val outputPath = path.resolve("${SpecDelegates.fileName}.kt")
-                OutputStreamWriter(
-                    Files.newOutputStream(outputPath),
-                    StandardCharsets.UTF_8
-                ).use { writer -> writer.append(it) }
-            }
-    }
-})
