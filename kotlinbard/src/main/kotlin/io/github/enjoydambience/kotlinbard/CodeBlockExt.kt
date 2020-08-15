@@ -27,7 +27,7 @@ public inline fun cb(config: CodeBlockBuilder.() -> Unit): CodeBlock = buildCode
 /**
  * Short for [CodeBlock.of]
  */
-public fun cb(format: String, vararg args: Any): CodeBlock = CodeBlock.of(format, *args)
+public fun cb(format: String, vararg args: Any?): CodeBlock = CodeBlock.of(format, *args)
 
 /**
  * Returns a code block with this content as **code**.
@@ -40,7 +40,7 @@ public val String.code: CodeBlock get() = CodeBlock.of(this)
 /**
  * Returns a code block with `this` as format, and given [args] as arguments.
  */
-public fun String.code(vararg args: Any): CodeBlock = CodeBlock.of(this, *args)
+public fun String.code(vararg args: Any?): CodeBlock = CodeBlock.of(this, *args)
 
 /**
  * Returns a code block that represents a _string literal_ with `this`'s contents
