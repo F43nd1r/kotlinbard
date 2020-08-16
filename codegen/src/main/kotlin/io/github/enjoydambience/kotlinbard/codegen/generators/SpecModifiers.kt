@@ -49,6 +49,6 @@ object SpecModifiers : SpecFunctionFileGenerator() {
         )
         addParameter("config", configParam)
 
-        addStatement("return %L.apply(config).build()", call)
+        addStatement("return %L.wrapBuilder().apply(config).build()", call)
     }
 }
