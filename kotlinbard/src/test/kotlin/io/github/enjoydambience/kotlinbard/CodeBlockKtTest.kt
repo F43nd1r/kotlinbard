@@ -16,7 +16,6 @@
 
 package io.github.enjoydambience.kotlinbard
 
-import com.squareup.kotlinpoet.CodeBlock
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 

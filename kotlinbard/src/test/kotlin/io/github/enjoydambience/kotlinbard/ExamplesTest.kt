@@ -17,8 +17,11 @@
 package io.github.enjoydambience.kotlinbard
 
 import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
+import com.squareup.kotlinpoet.PropertySpec
+import com.squareup.kotlinpoet.TypeSpec
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 
