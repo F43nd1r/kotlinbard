@@ -16,70 +16,108 @@
 
 package io.github.enjoydambience.kotlinbard.codegen.generators
 
-import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.KModifier
-import com.squareup.kotlinpoet.LambdaTypeName
-import com.squareup.kotlinpoet.UNIT
+import com.squareup.kotlinpoet.*
 import io.github.enjoydambience.kotlinbard.addParameter
 import io.github.enjoydambience.kotlinbard.buildFunction
 import io.github.enjoydambience.kotlinbard.codegen.SpecInfo
 import io.github.enjoydambience.kotlinbard.codegen.copyDeprecationOf
 import io.github.enjoydambience.kotlinbard.codegen.reflectCodeCall
 import net.pearx.kasechange.toPascalCase
+import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 import kotlin.reflect.full.declaredMemberFunctions
 
 /**
- * Generates spec creator functions (`buildXXX` functions).
- * These are called "creators" instead of "builders" to disambiguate from kotlin-poet's spec builders.
+ * Generates spec builder functions (`buildXXX` functions).
  *
  * These are derived from spec companion functions that return a builder type.
  *
  * These functions have the form `XXXSpec.xxx(<parameters>).apply(config).build()`.
  */
 object SpecBuilders : SpecFunctionFileGenerator() {
-    const val funPrefix = "build"
-    override fun generateFunctionsForSpec(spec: SpecInfo): List<FunSpec> =
-        spec.companionClass.declaredMemberFunctions
-            .filter {
-                it.returnType.classifier == spec.builderClass
-            }
-            .map { function ->
-                generateFunction(spec, function)
-            }
+    private val nameMappings = mutableMapOf<SpecInfo, Map<String, String>>()
 
-    private fun generateFunction(spec: SpecInfo, function: KFunction<*>): FunSpec {
-        // "xxxBuilder" -> "buildXxx"
-        // "builder" -> "create<spec name>"
-        val funNameMinusBuilder = function.name.replace("[bB]uilder".toRegex(), "")
-        val generatedName = if (spec.name == "Type" && funNameMinusBuilder == "annotation") {
-            "annotationClass"
-        } else {
-            funNameMinusBuilder
-                .ifEmpty { spec.name.takeUnless { it == "Fun" } ?: "function" }
-        }.let {
-            funPrefix + it.toPascalCase()
-        }
-
-        return buildFunction(generatedName) {
-            copyDeprecationOf(function)
-
-            addModifiers(KModifier.INLINE)
-            returns(spec.specClass)
-
-            val (call, params) = reflectCodeCall(function)
-            addParameters(params)
-
-            val configParam = LambdaTypeName.get(
-                receiver = spec.builderName,
-                returnType = UNIT
-            )
-            addParameter("config", configParam) {
-                defaultValue("{}")
-            }
-
-            addStatement("return %L.apply(config).build()", call)
-        }
+    init {
+        FileSpec::class(
+            "builder" to "file",
+        )
+        TypeSpec::class(
+            "annotationBuilder" to "annotationClass",
+            "anonymousClassBuilder" to "anonymousClass",
+            "classBuilder" to "class",
+            "companionObjectBuilder" to "companionObject",
+            "enumBuilder" to "enum",
+            "expectClassBuilder" to "expectClass",
+            "funInterfaceBuilder" to "funInterface",
+            "interfaceBuilder" to "interface",
+            "objectBuilder" to "object",
+        )
+        PropertySpec::class(
+            "builder" to "property",
+        )
+        FunSpec::class(
+            "builder" to "function",
+            "constructorBuilder" to "constructor",
+            "getterBuilder" to "getter",
+            "overriding" to "overriding",
+            "setterBuilder" to "setter",
+        )
+        ParameterSpec::class(
+            "builder" to "parameter",
+        )
+        TypeAliasSpec::class(
+            "builder" to "typeAlias",
+        )
+        AnnotationSpec::class(
+            "builder" to "annotation",
+        )
+        CodeBlock::class(
+            "builder" to "codeBlock",
+        )
     }
 
+    private operator fun KClass<*>.invoke(vararg pairs: Pair<String, String>) {
+        nameMappings[SpecInfo.of(this)!!] = mapOf(*pairs)
+    }
+
+    const val funPrefix = "build"
+    override fun generateFunctionsForSpec(spec: SpecInfo): List<FunSpec> {
+        val specNameMappings = nameMappings[spec]!!
+        return spec.companionClass.declaredMemberFunctions
+            .mapNotNull { function ->
+                if (function.returnType.classifier != spec.builderClass) return@mapNotNull null
+                specNameMappings[function.name]
+                    .also {
+                        if (it == null) println("no mapping for $function")
+                    }
+                    ?.let { name ->
+                        generateFunction(spec, function, name)
+                    }
+            }
+    }
+
+    private fun generateFunction(
+        spec: SpecInfo,
+        function: KFunction<*>,
+        nameWithoutPrefix: String
+    ): FunSpec = buildFunction(funPrefix + nameWithoutPrefix.toPascalCase()) {
+        tag(function)
+        copyDeprecationOf(function)
+
+        addModifiers(KModifier.INLINE)
+        returns(spec.specClass)
+
+        val (call, params) = reflectCodeCall(function)
+        addParameters(params)
+
+        val configParam = LambdaTypeName.get(
+            receiver = spec.builderName,
+            returnType = UNIT
+        )
+        addParameter("config", configParam) {
+            defaultValue("{}")
+        }
+
+        addStatement("return %L.apply(config).build()", call)
+    }
 }
