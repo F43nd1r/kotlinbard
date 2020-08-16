@@ -54,6 +54,3 @@ public typealias TypeAliasSpecBuilder = TypeAliasSpec.Builder
 
 @CodegenDsl
 public typealias AnnotationSpecBuilder = AnnotationSpec.Builder
-
-@CodegenDsl
-public typealias CodeBlockBuilder = CodeBlock.Builder

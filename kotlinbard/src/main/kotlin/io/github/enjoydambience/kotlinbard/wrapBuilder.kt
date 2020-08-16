@@ -47,4 +47,4 @@ internal fun TypeAliasSpec.Builder.wrapBuilder() = this
 internal fun AnnotationSpec.Builder.wrapBuilder() = this
 
 @PublishedApi
-internal fun CodeBlock.Builder.wrapBuilder() = this
+internal fun CodeBlock.Builder.wrapBuilder() = CodeBlockBuilder(this)
