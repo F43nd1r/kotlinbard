@@ -118,6 +118,6 @@ object SpecBuilders : SpecFunctionFileGenerator() {
             defaultValue("{}")
         }
 
-        addStatement("return %L.apply(config).build()", call)
+        addStatement("return %L.wrapBuilder().apply(config).build()", call)
     }
 }
