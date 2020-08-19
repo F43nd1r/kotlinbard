@@ -115,7 +115,7 @@ object SpecAdders : SpecFunctionFileGenerator() {
         PropertySpec::class {
             "annotation"()
             "getter"(generatedName = "get", delegatesTo = "getter")
-            //setter is handled separately
+            "setter"(generatedName = "set", delegatesTo = "setter")
             "codeBlock"(generatedName = "delegate")
             "codeBlock"(generatedName = "init", delegatesTo = "initializer")
         }
