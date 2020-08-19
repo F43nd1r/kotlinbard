@@ -127,39 +127,34 @@ public inline fun CodeBuildingScope.When(argument: String, vararg args: Any, bod
 }
 
 public inline class WhenScope(@PublishedApi internal val builder: CodeBuildingScope) {
-    /**
-     * Specifies a when argument.
-     *
-     * Example:
-     * ```kotlin
-     * When ("myVar") {
-     *    e("anotherVar") then "4"
-     *    e("%S", "someString") then {
-     *          //block
-     *    }
-     * }
-     * ```
-     */
-    public fun e(codeBlock: CodeBlock): WhenArg = WhenArg(codeBlock)
-    public fun e(format: String, vararg args: Any): WhenArg = WhenArg(CodeBlock.of(format, *args))
 
-
-    public inline infix fun WhenArg.then(body: CodeBuildingScope.() -> Unit) {
-        builder.addCode(block)
-        builder.controlFlow(" ->", body = body)
+    /** Specifies a when branch with block body. */
+    public inline operator fun CodeBlock.minus(body: CodeBuildingScope.() -> Unit) {
+        builder.controlFlow("%L ->", this, body = body)
     }
 
-    public fun WhenArg.then(format: String, vararg args: Any) {
-        builder.addCode("%L -> %L\n", block, CodeBlock.of(format, *args))
+    /** Specifies a when branch with expression body. */
+    public operator fun CodeBlock.minus(codeBlock: CodeBlock) {
+        builder.addStatement("%L -> %L", this, codeBlock)
     }
 
-    public inline fun Else(config: CodeBuildingScope.() -> Unit) {
-        WhenArg(CodeBlock.of("else")) then config
+    /** Specifies a when branch with expression body. */
+    public operator fun CodeBlock.minus(code: String) {
+        builder.addStatement("%L -> %L", this, code)
     }
 
-    public fun Else(format: String, vararg args: Any) {
-        builder.addCode("else -> %L\n", CodeBlock.of(format, *args))
+    /** Specifies a when branch with block body. */
+    public inline operator fun String.minus(body: CodeBuildingScope.() -> Unit) {
+        builder.controlFlow("%L ->", this, body = body)
+    }
+
+    /** Specifies a when branch with expression body. */
+    public operator fun String.minus(codeBlock: CodeBlock) {
+        builder.addStatement("%L -> %L", this, codeBlock)
+    }
+
+    /** Specifies a when branch with expression body. */
+    public operator fun String.minus(code: String) {
+        builder.addStatement("%L -> %L", this, code)
     }
 }
-
-public inline class WhenArg(public val block: CodeBlock)

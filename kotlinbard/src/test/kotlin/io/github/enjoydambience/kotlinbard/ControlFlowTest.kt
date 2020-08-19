@@ -22,8 +22,8 @@ import io.kotest.matchers.shouldBe
 class ControlFlowTest : FreeSpec({
     "control flow" {
         val block = buildCodeBlock {
-            controlFlow("taco.let") {
-                addStatement("eat(it)")
+            "taco.let" {
+                -"eat(it)"
             }
         }
         block.toString() shouldBe """
@@ -37,7 +37,7 @@ class ControlFlowTest : FreeSpec({
         "simple if" {
             val block = buildCodeBlock {
                 If("%L.isEmpty()", "taco") {
-                    addStatement("addToppings()")
+                    -"addToppings()"
                 }
             }
             block.toString() shouldBe """
@@ -50,9 +50,9 @@ class ControlFlowTest : FreeSpec({
             "else {}" {
                 val block = buildCodeBlock {
                     If("%L.isEmpty()", "taco") {
-                        addStatement("addToppings()")
+                        -"addToppings()"
                     } Else {
-                        addStatement("eat(taco)")
+                        -"eat(taco)"
                     }
                 }
                 block.toString() shouldBe """
@@ -67,7 +67,7 @@ class ControlFlowTest : FreeSpec({
             "else (format)" {
                 val block = buildCodeBlock {
                     If("%L.isEmpty()", "taco") {
-                        addStatement("addToppings()")
+                        -"addToppings()"
                     }.Else("eat(%L)", "taco")
                 }
                 block.toString() shouldBe """
@@ -81,9 +81,9 @@ class ControlFlowTest : FreeSpec({
         "else if" {
             val block = buildCodeBlock {
                 If("%L.isEmpty()", "taco") {
-                    addStatement("addToppings()")
+                    -"addToppings()"
                 }.ElseIf("%L()", "isHungry") {
-                    addStatement("eat(taco)")
+                    -"eat(taco)"
                 }
             }
             block.toString() shouldBe """
@@ -98,11 +98,11 @@ class ControlFlowTest : FreeSpec({
         "else if else" {
             val block = buildCodeBlock {
                 If("%L.isEmpty()", "taco") {
-                    addStatement("addToppings()")
+                    -"addToppings()"
                 }.ElseIf("%L()", "isHungry") {
-                    addStatement("eat(taco)")
+                    -"eat(taco)"
                 } Else {
-                    addStatement("saveForLater(taco)")
+                    -"saveForLater(taco)"
                 }
             }
             block.toString() shouldBe """
@@ -122,7 +122,7 @@ class ControlFlowTest : FreeSpec({
         "simple while" {
             val block = buildCodeBlock {
                 While("%L.isHungry()", "me") {
-                    addStatement("eatATaco()")
+                    -"eatATaco()"
                 }
             }
             block.toString() shouldBe """
@@ -134,7 +134,7 @@ class ControlFlowTest : FreeSpec({
         "do while" {
             val block = buildCodeBlock {
                 Do {
-                    addStatement("eatATaco()")
+                    -"eatATaco()"
                 }.While("%L.isHungry()", "me")
             }
             block.toString() shouldBe """
@@ -148,7 +148,7 @@ class ControlFlowTest : FreeSpec({
         "simple for" {
             val block = buildCodeBlock {
                 For("i in 0..2") {
-                    addStatement("println(i)")
+                    -"println(i)"
                 }
             }
             block.toString() shouldBe """
@@ -162,7 +162,7 @@ class ControlFlowTest : FreeSpec({
         "without arg" {
             val block = buildCodeBlock {
                 When {
-                    e("isOk()").then("println(%S)", "OK")
+                    "isOk()" - "println(%S)".fmt("OK")
                 }
             }
             block.toString() shouldBe """
@@ -174,7 +174,7 @@ class ControlFlowTest : FreeSpec({
         "with arg" {
             val block = buildCodeBlock {
                 When("%L", "a") {
-                    e("3").then("println(%S)", "is 3")
+                    3.literal - "println(%S)".fmt("is 3")
                 }
             }
             block.toString() shouldBe """
@@ -186,8 +186,8 @@ class ControlFlowTest : FreeSpec({
         "then {}" {
             val block = buildCodeBlock {
                 When("a") {
-                    e("3") then {
-                        addStatement("println(%S)", "is 3")
+                    3.literal - {
+                        -"println(%S)".fmt("is 3")
                     }
                 }
             }
@@ -202,7 +202,7 @@ class ControlFlowTest : FreeSpec({
         "else"{
             val block = buildCodeBlock {
                 When {
-                    Else("celebrate()")
+                    "else" - "celebrate()"
                 }
 
             }
@@ -217,30 +217,26 @@ class ControlFlowTest : FreeSpec({
         val func = buildFunction("foo") {
             addCode {
                 If("a") {
-                    addStatement("b")
+                    -"b"
                 }.ElseIf("c") {
-                    addStatement("d")
+                    -"d"
                 }.Else("e")
                 While("f") {
                     Do {
-                        addStatement("g")
+                        -"g"
                     }.While("h")
                 }
                 For("i in j") {
-                    addStatement("k")
+                    -"k"
                 }
                 When {
-                    e("l") then {
-                        addStatement("s")
-                    }
-                    Else {
-                        addStatement("n")
-                    }
+                    "l" - "s"
+                    "else" - { -"n" }
                 }
                 When("o") {
-                    e("in p").then("q")
-                    e("!is %T", Int::class).then("r")
-                    Else("s")
+                    "in p" - "q".code
+                    "!is %T".fmt(Int::class) - "r"
+                    "else" - "s".code
                 }
             }
         }
@@ -262,9 +258,7 @@ class ControlFlowTest : FreeSpec({
                 k
               }
               when {
-                l -> {
-                  s
-                }
+                l -> s
                 else -> {
                   n
                 }

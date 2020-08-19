@@ -43,10 +43,10 @@ class ReadmeExamples : StringSpec({
                 }
 
                 When("taco") {
-                    e("is SpicyTaco") then {
-                        addStatement("println(%S)", "Spicy!!")
+                    "is SpicyTaco" - {
+                        -"println(%S)".fmt("Spicy!!")
                     }
-                    Else("eat(%L)", "taco")
+                    "else" - "eat(%L)".fmt("taco")
                 }
             }
         }
