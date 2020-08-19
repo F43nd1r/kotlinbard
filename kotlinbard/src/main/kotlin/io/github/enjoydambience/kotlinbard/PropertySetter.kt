@@ -16,29 +16,20 @@
 
 package io.github.enjoydambience.kotlinbard
 
-import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.PropertySpec
 
-@PublishedApi
-internal val anySetterParam = ClassName("", "SetterParam")
-/**
- * Creates a setter for this property.
- *
- * This will also add the setter parameter with the given [paramName].
- */
-public inline fun PropertySpec.Builder.set(
-    paramName: String = "value",
-    config: FunSpec.Builder.() -> Unit
-): PropertySpec.Builder = setter(setter {
-    addParameter(paramName, anySetterParam)
-    config()
-})
+/** Creates a setter with a value parameter, with the given [parameter name][paramName]. */
+public inline fun setter(paramName: String, config: FunSpec.Builder.() -> Unit): FunSpec =
+    setter {
+        addParameter(paramName, Any::class)
+        config()
+    }
 
 /**
- * Creates a setter for this property with no parameter (and should have no body).
+ * Adds a setter with parameter to this property.
  */
 public inline fun PropertySpec.Builder.set(
+    paramName: String,
     config: FunSpec.Builder.() -> Unit
-): PropertySpec.Builder =
-    setter(setter(config = config))
+): PropertySpec.Builder = setter(setter(paramName, config))
