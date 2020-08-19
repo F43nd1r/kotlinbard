@@ -19,7 +19,7 @@ package io.github.enjoydambience.kotlinbard.codegen.generators
 import com.squareup.kotlinpoet.*
 import io.github.enjoydambience.kotlinbard.buildFunction
 import io.github.enjoydambience.kotlinbard.codegen.SpecInfo
-import io.github.enjoydambience.kotlinbard.codegen.codeCallNoReceiver
+import io.github.enjoydambience.kotlinbard.codegen.codeCall
 import net.pearx.kasechange.toPascalCase
 import kotlin.reflect.KClass
 import kotlin.reflect.full.declaredMemberFunctions
@@ -192,8 +192,7 @@ object SpecAdders : SpecFunctionFileGenerator() {
         addModifiers(KModifier.INLINE)
         receiver(builderSpec.builderName)
         addParameters(creatorFun.parameters)
-        val builderCall = codeCallNoReceiver(creatorFun)
-
+        val builderCall = codeCall(creatorFun)
         addStatement("%N(%L)", delegatesTo, builderCall)
     }
 }

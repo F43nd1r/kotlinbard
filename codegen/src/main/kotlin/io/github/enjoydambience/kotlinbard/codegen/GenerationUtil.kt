@@ -18,7 +18,9 @@ package io.github.enjoydambience.kotlinbard.codegen
 
 
 import com.squareup.kotlinpoet.*
+import io.github.enjoydambience.kotlinbard.addAnnotation
 import io.github.enjoydambience.kotlinbard.buildParameter
+import io.github.enjoydambience.kotlinbard.modify
 import kotlin.reflect.KAnnotatedElement
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
@@ -33,95 +35,95 @@ import kotlin.reflect.full.instanceParameter
  *
  * This works with vararg and default values.
  *
- * Right now, only supports non-suspending kotlin functions.
+ * Right now, only supports simple-ish kotlin functions.
  */
 //todo: add tests
-fun reflectCodeCall(function: KFunction<*>, receiverOrInstance: String? = null): Pair<CodeBlock, List<ParameterSpec>> {
+fun codeCallReflected(
+    function: KFunction<*>,
+    receiverOrInstance: String? = null
+): Pair<CodeBlock, List<ParameterSpec>> {
     val receiverParam = function.instanceParameter ?: function.extensionReceiverParameter
     require(!(receiverParam == null && receiverOrInstance != null)) {
         "Cannot use receiver on function with no receiver/instance:$function"
     }
     val receiverClass = receiverParam?.type?.classifier as? KClass<*>
+    val (params, paramsCall) = getParamsAndCall(function)
     return when {
         receiverClass?.isCompanion == true -> {
             require(receiverOrInstance == null) { "Cannot use receiver on companion object call" }
-            callCompanion(function, receiverClass)
+            CodeBlock.of("%T.%N(%L)", receiverClass.declaringClass!!.asClassName(), function.name, paramsCall) to params
         }
-        receiverParam != null && receiverOrInstance != null -> callWithReceiver(function, receiverOrInstance)
-        else -> callWithoutReceiver(function)
+        receiverParam != null && receiverOrInstance != null -> {
+            CodeBlock.of("%N.%N(%L)", receiverOrInstance, function.name, paramsCall) to params
+        }
+        else -> {
+            CodeBlock.of("%N(%L)", function.name, paramsCall) to params
+        }
     }
 }
 
 /**
  * Given a FunSpec, returns a CodeBlock that represents calling that function.
- *
- * Right now only works for top-level functions (or functions with implicit recievers).
  */
-fun codeCallNoReceiver(function: FunSpec): CodeBlock {
-    val paramsCall = getParamsCall(function.parameters)
-    return CodeBlock.of("%N($paramsCall)", function)
+fun codeCall(function: FunSpec, receiverOrInstance: String? = null, named: Boolean = true): CodeBlock {
+    //no receiver check
+    val callParams = getCallParams(function.parameters, named)
+    return if (receiverOrInstance != null) {
+        CodeBlock.of("%L.%N(%L)", receiverOrInstance, function, callParams)
+    } else {
+        CodeBlock.of("%N(%L)", function, callParams)
+    }
 }
 
-private fun callCompanion(function: KFunction<*>, companionClass: KClass<*>): Pair<CodeBlock, List<ParameterSpec>> {
-    val (params, paramsCall) = getParameters(function)
-    return CodeBlock.of("%T.%N(%L)", companionClass.declaringClass!!.asClassName(), function.name, paramsCall) to params
-}
-
-private fun callWithReceiver(function: KFunction<*>, receiver: String): Pair<CodeBlock, List<ParameterSpec>> {
-    val (params, paramsCall) = getParameters(function)
-    return CodeBlock.of("%N.%N(%L)", receiver, function.name, paramsCall) to params
-}
-
-private fun callWithoutReceiver(function: KFunction<*>): Pair<CodeBlock, List<ParameterSpec>> {
-    val (params, paramsCall) = getParameters(function)
-    return CodeBlock.of("%N(%L)", function.name, paramsCall) to params
-}
-
-private fun getParameters(function: KFunction<*>): Pair<List<ParameterSpec>, CodeBlock> {
+private fun getParamsAndCall(function: KFunction<*>): Pair<List<ParameterSpec>, CodeBlock> {
     val params = function.parameters
         .filter { it.kind == KParameter.Kind.VALUE }
         .map {
             if (it.isVararg) {
-                adaptVarargParameter(it)
+                buildParameter(
+                    it.name!!,
+                    it.type.arguments.first().type!!.asTypeName(),
+                    KModifier.VARARG
+                )
             } else {
                 buildParameter(it.name!!, it.type.asTypeName())
             }
         }
-    val paramsCall = getParamsCall(params)
+    val paramsCall = getCallParams(params)
     return Pair(params, paramsCall)
 }
 
-private fun getParamsCall(params: List<ParameterSpec>): CodeBlock = params.map {
+private fun getCallParams(params: List<ParameterSpec>, named: Boolean = true): CodeBlock = params.map {
     val name = it.name
-    val maybeStar = (if (KModifier.VARARG in it.modifiers) "*" else "")
-    CodeBlock.of("%N=%L%N", name, maybeStar, name)
+    if (named) {
+        CodeBlock.of("%N=%N", name, name)
+    } else {
+        CodeBlock.of("%N", name)
+    }
 }.joinToCode()
-
-private fun adaptVarargParameter(it: KParameter): ParameterSpec =
-    buildParameter(
-        it.name!!,
-        it.type.arguments.first().type!!.asTypeName(),
-        KModifier.VARARG
-    )
-
-/**
- * Configure a function to represents calling another [function].
- *
- * This sets return type, parameters, and code.
- */
-fun FunSpec.Builder.delegatesTo(function: KFunction<*>) {
-    returns(function.returnType.asTypeName())
-    val (call, params) = reflectCodeCall(function)
-    addParameters(params)
-    addStatement("return %L", call)
-}
 
 /**
  * Copies any deprecation to this function if present on the given [element].
  */
 fun FunSpec.Builder.copyDeprecationOf(element: KAnnotatedElement) {
-    val deprecation = element.annotations.filterIsInstance<Deprecated>().singleOrNull()
+    val deprecation = element.annotations.singleOrNull { it is Deprecated } as Deprecated?
     if (deprecation != null) {
         addAnnotation(AnnotationSpec.get(deprecation))
+    }
+}
+
+fun deprecatedDelegate(function: FunSpec, newName: String): FunSpec {
+    return function.modify(newName) {
+        clearBody()
+        addCode("return %L", codeCall(function))
+        val deprecated = Deprecated::class.asTypeName()
+        annotations.removeAll {
+            it.typeName == deprecated
+        }
+        addAnnotation(Deprecated::class) {
+            addMember("%S", "use ${function.name} instead")
+            val receiver = if (function.receiverType != null) "this" else null
+            addMember("ReplaceWith(%S)", codeCall(function, receiver, false))
+        }
     }
 }

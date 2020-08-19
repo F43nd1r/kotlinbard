@@ -22,7 +22,7 @@ import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.UNIT
 import io.github.enjoydambience.kotlinbard.buildFunction
 import io.github.enjoydambience.kotlinbard.codegen.SpecInfo
-import io.github.enjoydambience.kotlinbard.codegen.reflectCodeCall
+import io.github.enjoydambience.kotlinbard.codegen.codeCallReflected
 import kotlin.reflect.KFunction
 import kotlin.reflect.full.declaredMemberFunctions
 
@@ -40,7 +40,7 @@ object SpecModifiers : SpecFunctionFileGenerator() {
         receiver(spec.specClass)
         returns(spec.specClass)
 
-        val (call, params) = reflectCodeCall(function)
+        val (call, params) = codeCallReflected(function)
         addParameters(params)
 
         val configParam = LambdaTypeName.get(
