@@ -23,7 +23,7 @@ import com.squareup.kotlinpoet.CodeBlock.Builder
 public class CodeBlockBuilder internal constructor(
     public val poetType: Builder
 ) : CodeBuildingScope() {
-    public override fun clearCode() {
+    override fun clearCode() {
         poetType.clear()
     }
 

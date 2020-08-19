@@ -23,7 +23,7 @@ class ClassTest : StringSpec({
     "init block"{
         val type = buildClass("Foo") {
             init {
-                addStatement("println(%S)", "init")
+                -"println(%S)".fmt("init")
             }
         }
         type.toString() shouldBe """
@@ -38,13 +38,13 @@ class ClassTest : StringSpec({
     "multiple init block" {
         val type = buildClass("Foo") {
             init {
-                addStatement("println(%S)", "init")
+                -"println(%S)".fmt("init")
             }
             addProperty("foo", String::class) {
                 initializer("%S", "foo")
             }
             init {
-                addStatement("println(%S)", "init2")
+                -"println(%S)".fmt("init2")
             }
         }
         type.toString() shouldBe """

@@ -23,23 +23,23 @@ class ReadmeExamples : StringSpec({
     "control flow"{
         val function = buildFunction("analyzeTaco") {
             addCode { //functions are defined in the CodeBlockBuilder scope
-                controlFlow("taco.let") {
-                    addStatement("println(it)")
+                "taco.let" {
+                    -"println(it)"
                 }
                 If("taco.isSpicy()") {
-                    addStatement("println(%S)", "spicy!!")
+                    -"println(%S)".fmt("spicy!!")
                 }.ElseIf("me.isHungry") {
-                    addStatement("eat(taco)")
+                    -"eat(taco)"
                 } Else {
-                    addStatement("saveForLater(taco)")
+                    -"saveForLater(taco)"
                 }
 
                 Do {
-                    addStatement("makeTaco()")
+                    -"makeTaco()"
                 }.While("tacos < 5")
 
                 For("taco in tacos") {
-                    addStatement("println(%P)", "taco information: \$taco")
+                    -"println(%P)".fmt("taco information: \$taco")
                 }
 
                 When("taco") {
