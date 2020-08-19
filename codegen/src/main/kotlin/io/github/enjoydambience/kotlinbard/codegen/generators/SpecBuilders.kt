@@ -20,8 +20,8 @@ import com.squareup.kotlinpoet.*
 import io.github.enjoydambience.kotlinbard.addParameter
 import io.github.enjoydambience.kotlinbard.buildFunction
 import io.github.enjoydambience.kotlinbard.codegen.SpecInfo
+import io.github.enjoydambience.kotlinbard.codegen.codeCallReflected
 import io.github.enjoydambience.kotlinbard.codegen.copyDeprecationOf
-import io.github.enjoydambience.kotlinbard.codegen.reflectCodeCall
 import net.pearx.kasechange.toPascalCase
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
@@ -107,7 +107,7 @@ object SpecBuilders : SpecFunctionFileGenerator() {
         addModifiers(KModifier.INLINE)
         returns(spec.specClass)
 
-        val (call, params) = reflectCodeCall(function)
+        val (call, params) = codeCallReflected(function)
         addParameters(params)
 
         val configParam = LambdaTypeName.get(

@@ -17,10 +17,11 @@
 package io.github.enjoydambience.kotlinbard.codegen.generators
 
 import com.squareup.kotlinpoet.FunSpec
+import com.squareup.kotlinpoet.asTypeName
 import io.github.enjoydambience.kotlinbard.buildFunction
 import io.github.enjoydambience.kotlinbard.codegen.SpecInfo
+import io.github.enjoydambience.kotlinbard.codegen.codeCallReflected
 import io.github.enjoydambience.kotlinbard.codegen.copyDeprecationOf
-import io.github.enjoydambience.kotlinbard.codegen.delegatesTo
 import kotlin.reflect.full.declaredMemberFunctions
 
 /**
@@ -37,7 +38,10 @@ object SpecGetters : SpecFunctionFileGenerator() {
             .map { function ->
                 buildFunction(function.name + spec.name) {
                     copyDeprecationOf(function)
-                    delegatesTo(function)
+                    returns(function.returnType.asTypeName())
+                    val (call, params) = codeCallReflected(function)
+                    addParameters(params)
+                    addStatement("return %L", call)
                 }
             }
 }

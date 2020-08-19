@@ -91,7 +91,7 @@ class SpecDelegates : ManualFileGenerator() {
                 addCode("return ")
             }
 
-            val (call, params) = reflectCodeCall(func, delegateName)
+            val (call, params) = codeCallReflected(func, delegateName)
             addParameters(params)
             addCode(call)
         }
