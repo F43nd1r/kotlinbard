@@ -22,7 +22,7 @@ import io.kotest.matchers.shouldBe
 
 class ParameterDslTest : StringSpec({
     "fun parameters"{
-        val function = buildFunction("foo") {
+        val function = function("foo") {
             params {
                 "simple" of String::class
                 "withInit" of Int::class init 5.literal

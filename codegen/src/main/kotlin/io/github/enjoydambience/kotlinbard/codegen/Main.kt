@@ -40,6 +40,7 @@ fun main(args: Array<String>) {
 
 private val allFileGenerators = listOf<FileGenerator>(
     SpecBuilders,
+    DeprecatedSpecBuilders,
     SpecGetters,
     SpecAdders,
     SpecModifiers

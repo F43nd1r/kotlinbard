@@ -30,7 +30,7 @@ internal val anySetterParam = ClassName("", "SetterParam")
 public inline fun PropertySpec.Builder.set(
     paramName: String = "value",
     config: FunSpec.Builder.() -> Unit
-): PropertySpec.Builder = setter(buildSetter {
+): PropertySpec.Builder = setter(setter {
     addParameter(paramName, anySetterParam)
     config()
 })
@@ -41,4 +41,4 @@ public inline fun PropertySpec.Builder.set(
 public inline fun PropertySpec.Builder.set(
     config: FunSpec.Builder.() -> Unit
 ): PropertySpec.Builder =
-    setter(buildSetter(config = config))
+    setter(setter(config = config))

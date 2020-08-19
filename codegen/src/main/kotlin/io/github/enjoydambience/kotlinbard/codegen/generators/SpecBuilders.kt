@@ -22,13 +22,12 @@ import io.github.enjoydambience.kotlinbard.buildFunction
 import io.github.enjoydambience.kotlinbard.codegen.SpecInfo
 import io.github.enjoydambience.kotlinbard.codegen.codeCallReflected
 import io.github.enjoydambience.kotlinbard.codegen.copyDeprecationOf
-import net.pearx.kasechange.toPascalCase
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 import kotlin.reflect.full.declaredMemberFunctions
 
 /**
- * Generates spec builder functions (`buildXXX` functions).
+ * Generates spec builder functions.
  *
  * These are derived from spec companion functions that return a builder type.
  *
@@ -46,7 +45,7 @@ object SpecBuilders : SpecFunctionFileGenerator() {
             "anonymousClassBuilder" to "anonymousClass",
             "classBuilder" to "class",
             "companionObjectBuilder" to "companionObject",
-            "enumBuilder" to "enum",
+            "enumBuilder" to "enumClass",
             "expectClassBuilder" to "expectClass",
             "funInterfaceBuilder" to "funInterface",
             "interfaceBuilder" to "interface",
@@ -80,7 +79,6 @@ object SpecBuilders : SpecFunctionFileGenerator() {
         nameMappings[SpecInfo.of(this)!!] = mapOf(*pairs)
     }
 
-    const val funPrefix = "build"
     override fun generateFunctionsForSpec(spec: SpecInfo): List<FunSpec> {
         val specNameMappings = nameMappings[spec]!!
         return spec.companionClass.declaredMemberFunctions
@@ -99,8 +97,8 @@ object SpecBuilders : SpecFunctionFileGenerator() {
     private fun generateFunction(
         spec: SpecInfo,
         function: KFunction<*>,
-        nameWithoutPrefix: String
-    ): FunSpec = buildFunction(funPrefix + nameWithoutPrefix.toPascalCase()) {
+        name: String
+    ): FunSpec = buildFunction(name) {
         tag(function)
         copyDeprecationOf(function)
 

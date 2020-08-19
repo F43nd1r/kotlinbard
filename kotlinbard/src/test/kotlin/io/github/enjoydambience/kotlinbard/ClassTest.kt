@@ -21,7 +21,7 @@ import io.kotest.matchers.shouldBe
 
 class ClassTest : StringSpec({
     "init block"{
-        val type = buildClass("Foo") {
+        val type = `class`("Foo") {
             init {
                 -"println(%S)".fmt("init")
             }
@@ -36,7 +36,7 @@ class ClassTest : StringSpec({
         """.trimIndent()
     }
     "multiple init block" {
-        val type = buildClass("Foo") {
+        val type = `class`("Foo") {
             init {
                 -"println(%S)".fmt("init")
             }
@@ -62,7 +62,7 @@ class ClassTest : StringSpec({
         """.trimIndent()
     }
     "secondary constructor" {
-        val type = buildClass("Foo") {
+        val type = `class`("Foo") {
             addConstructor {
                 addParameter("foo", String::class)
                 addStatement("println(%S)", "foo")

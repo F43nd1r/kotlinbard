@@ -21,7 +21,7 @@ import io.kotest.matchers.shouldBe
 
 class ControlFlowTest : FreeSpec({
     "control flow" {
-        val block = buildCodeBlock {
+        val block = codeBlock {
             "taco.let" {
                 -"eat(it)"
             }
@@ -35,7 +35,7 @@ class ControlFlowTest : FreeSpec({
 
     "if" - {
         "simple if" {
-            val block = buildCodeBlock {
+            val block = codeBlock {
                 If("%L.isEmpty()", "taco") {
                     -"addToppings()"
                 }
@@ -48,7 +48,7 @@ class ControlFlowTest : FreeSpec({
         }
         "else" - {
             "else {}" {
-                val block = buildCodeBlock {
+                val block = codeBlock {
                     If("%L.isEmpty()", "taco") {
                         -"addToppings()"
                     } Else {
@@ -65,7 +65,7 @@ class ControlFlowTest : FreeSpec({
                     |""".trimMargin()
             }
             "else (format)" {
-                val block = buildCodeBlock {
+                val block = codeBlock {
                     If("%L.isEmpty()", "taco") {
                         -"addToppings()"
                     }.Else("eat(%L)", "taco")
@@ -79,7 +79,7 @@ class ControlFlowTest : FreeSpec({
             }
         }
         "else if" {
-            val block = buildCodeBlock {
+            val block = codeBlock {
                 If("%L.isEmpty()", "taco") {
                     -"addToppings()"
                 }.ElseIf("%L()", "isHungry") {
@@ -96,7 +96,7 @@ class ControlFlowTest : FreeSpec({
                 |""".trimMargin()
         }
         "else if else" {
-            val block = buildCodeBlock {
+            val block = codeBlock {
                 If("%L.isEmpty()", "taco") {
                     -"addToppings()"
                 }.ElseIf("%L()", "isHungry") {
@@ -120,7 +120,7 @@ class ControlFlowTest : FreeSpec({
     }
     "while" - {
         "simple while" {
-            val block = buildCodeBlock {
+            val block = codeBlock {
                 While("%L.isHungry()", "me") {
                     -"eatATaco()"
                 }
@@ -132,7 +132,7 @@ class ControlFlowTest : FreeSpec({
                 |""".trimMargin()
         }
         "do while" {
-            val block = buildCodeBlock {
+            val block = codeBlock {
                 Do {
                     -"eatATaco()"
                 }.While("%L.isHungry()", "me")
@@ -146,7 +146,7 @@ class ControlFlowTest : FreeSpec({
     }
     "for" - {
         "simple for" {
-            val block = buildCodeBlock {
+            val block = codeBlock {
                 For("i in 0..2") {
                     -"println(i)"
                 }
@@ -160,7 +160,7 @@ class ControlFlowTest : FreeSpec({
     }
     "when" - {
         "without arg" {
-            val block = buildCodeBlock {
+            val block = codeBlock {
                 When {
                     "isOk()" - "println(%S)".fmt("OK")
                 }
@@ -172,7 +172,7 @@ class ControlFlowTest : FreeSpec({
                 |""".trimMargin()
         }
         "with arg" {
-            val block = buildCodeBlock {
+            val block = codeBlock {
                 When("%L", "a") {
                     3.literal - "println(%S)".fmt("is 3")
                 }
@@ -184,7 +184,7 @@ class ControlFlowTest : FreeSpec({
                 |""".trimMargin()
         }
         "then {}" {
-            val block = buildCodeBlock {
+            val block = codeBlock {
                 When("a") {
                     3.literal - {
                         -"println(%S)".fmt("is 3")
@@ -200,7 +200,7 @@ class ControlFlowTest : FreeSpec({
                 |""".trimMargin()
         }
         "else"{
-            val block = buildCodeBlock {
+            val block = codeBlock {
                 When {
                     "else" - "celebrate()"
                 }
@@ -214,7 +214,7 @@ class ControlFlowTest : FreeSpec({
         }
     }
     "full house" {
-        val func = buildFunction("foo") {
+        val func = function("foo") {
             addCode {
                 If("a") {
                     -"b"

@@ -19,9 +19,9 @@ package io.github.enjoydambience.kotlinbard
 import com.squareup.kotlinpoet.CodeBlock
 
 /**
- * Short for [buildCodeBlock]
+ * Short for [codeBlock]
  */
-public inline fun cb(config: CodeBlockBuilder.() -> Unit): CodeBlock = buildCodeBlock(config)
+public inline fun cb(config: CodeBlockBuilder.() -> Unit): CodeBlock = codeBlock(config)
 
 
 /**

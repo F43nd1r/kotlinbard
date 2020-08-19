@@ -21,7 +21,7 @@ import io.kotest.core.spec.style.StringSpec
 
 class ReadmeExamples : StringSpec({
     "control flow"{
-        val function = buildFunction("analyzeTaco") {
+        val function = function("analyzeTaco") {
             addCode { //functions are defined in the CodeBlockBuilder scope
                 "taco.let" {
                     -"println(it)"
@@ -53,7 +53,7 @@ class ReadmeExamples : StringSpec({
 //        println(function)
     }
     "prop" {
-        val prop = buildProperty("prop", String::class) {
+        val prop = property("prop", String::class) {
             get {
                 addStatement("return field")
             }
@@ -73,7 +73,7 @@ class ReadmeExamples : StringSpec({
         val literal = "string literal".strLiteral
     }
     "function params" {
-        val function = buildFunction("foo") {
+        val function = function("foo") {
             params {
                 "string" of String::class
                 "number" of Int::class init 5.literal

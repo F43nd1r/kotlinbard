@@ -64,7 +64,7 @@ object SpecAdders : SpecFunctionFileGenerator() {
             generatedName: String = "add" + this.toPascalCase(),
             delegatesTo: String = generatedName
         ) {
-            mappings += AddFunctionGroup(SpecBuilders.funPrefix + this.toPascalCase(), generatedName, delegatesTo)
+            mappings += AddFunctionGroup(this, generatedName, delegatesTo)
         }
     }
 
@@ -84,7 +84,7 @@ object SpecAdders : SpecFunctionFileGenerator() {
             "annotationClass"(delegatesTo = "addType")
             "anonymousClass"(delegatesTo = "addType")
             "class"(delegatesTo = "addType")
-            "enum"(delegatesTo = "addType")
+            "enumClass"(delegatesTo = "addType")
             "expectClass"(delegatesTo = "addType")
             "funInterface"(delegatesTo = "addType")
             "interface"(delegatesTo = "addType")
@@ -98,7 +98,7 @@ object SpecAdders : SpecFunctionFileGenerator() {
             "annotationClass"(delegatesTo = "addType")
             "anonymousClass"(delegatesTo = "addType")
             "class"(delegatesTo = "addType")
-            "enum"(delegatesTo = "addType")
+            "enumClass"(delegatesTo = "addType")
             "expectClass"(delegatesTo = "addType")
             "funInterface"(delegatesTo = "addType")
             "interface"(delegatesTo = "addType")
