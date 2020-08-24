@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     kotlin("jvm")
 }
@@ -24,8 +22,7 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8", version = Versions.Kotlin.stdlib))
-    implementation(kotlin("reflect", version = Versions.Kotlin.stdlib))
+    implementation(kotlin("reflect"))
     implementation(Deps.kotlinPoet)
     implementation(Deps.kaseChange)
     implementation("io.github.enjoydambience:kotlinbard:0.2.0")
@@ -33,12 +30,6 @@ dependencies {
     testImplementation(Deps.Test.jUnit)
     testImplementation(Deps.Test.kotestRunner)
     testImplementation(Deps.Test.kotestAssertions)
-    testImplementation(Deps.Test.kotestConsole)
 }
 
 val mainClass by ext("io.github.enjoydambience.kotlinbard.codegen.MainKt")
-
-val compileKotlin: KotlinCompile by tasks
-compileKotlin.kotlinOptions {
-    languageVersion = "1.4"
-}

@@ -25,7 +25,7 @@ gradlePlugin {
     plugins {
         create("deps") {
             id = "deps"
-            implementationClass = "Plugin"
+            implementationClass = "Deps"
         }
     }
 }
