@@ -155,12 +155,10 @@ val file = buildFile("","File"){
 
 ### Usage
 
-Add to your gradle config:
+With gradle:
 ```groovy
 repositories {
-    maven {
-        jcenter()
-    }
+    jcenter()
 }
 
 dependencies {
