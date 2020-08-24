@@ -46,26 +46,31 @@ compileKotlin.kotlinOptions {
 
 // codegen
 val generatedSrc = "$buildDir/generated-src"
-val codegenProject = project(":codegen")
-val codegen: JavaExec by tasks.creating(JavaExec::class) {
-    group = "build"
-    description = "Runs codegen"
+val codegenProject = project("codegen")
 
-    dependsOn(codegenProject.tasks.build)
+fun codegenTask() {
+    val codegen by tasks.creating(JavaExec::class) {
+        group = "build"
+        description = "Runs codegen"
 
-    //redo codegen when codegen compilation changes
-    inputs.dir(codegenProject.buildDir.resolve("libs"))
-    outputs.dir(generatedSrc)
+        dependsOn(codegenProject.tasks.build)
+        inputs.files(codegenProject.tasks.jar.get().outputs.files)
+        outputs.dir(generatedSrc)
 
-    doFirst {
-        delete(generatedSrc)
+        doFirst {
+            codegenProject.delete(generatedSrc)
+        }
+
+        classpath = codegenProject.sourceSets.main.get().runtimeClasspath
+        main = codegenProject.ext["mainClass"] as String
+        args(generatedSrc)
     }
-
-    classpath = codegenProject.sourceSets.main.get().runtimeClasspath
-    main = codegenProject.ext["mainClass"] as String
-    args(generatedSrc)
+    compileKotlin.dependsOn(codegen)
 }
-compileKotlin.dependsOn(codegen)
+
+codegenProject.afterEvaluate {
+    codegenTask()
+}
 
 sourceSets.main {
     java {
@@ -81,8 +86,7 @@ idea {
 // publish
 
 group = "io.github.enjoydambience"
-val VERSION: String by project
-version = VERSION
+version = project.property("VERSION")!!
 
 tasks.dokka {
     outputFormat = "html"
