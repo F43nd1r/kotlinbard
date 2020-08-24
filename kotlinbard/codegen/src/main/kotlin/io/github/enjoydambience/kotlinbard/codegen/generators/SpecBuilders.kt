@@ -97,7 +97,7 @@ object SpecBuilders : SpecFunctionFileGenerator() {
     private fun generateFunction(
         spec: SpecInfo,
         function: KFunction<*>,
-        name: String
+        name: String,
     ): FunSpec = buildFunction(name) {
         tag(function)
         copyDeprecationOf(function)

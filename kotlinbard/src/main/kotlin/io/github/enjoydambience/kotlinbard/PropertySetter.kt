@@ -31,5 +31,5 @@ public inline fun setter(paramName: String, config: FunSpec.Builder.() -> Unit):
  */
 public inline fun PropertySpec.Builder.set(
     paramName: String,
-    config: FunSpec.Builder.() -> Unit
+    config: FunSpec.Builder.() -> Unit,
 ): PropertySpec.Builder = setter(setter(paramName, config))

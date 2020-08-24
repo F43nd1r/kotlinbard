@@ -40,7 +40,7 @@ import kotlin.reflect.full.instanceParameter
 //todo: add tests
 fun codeCallReflected(
     function: KFunction<*>,
-    receiverOrInstance: String? = null
+    receiverOrInstance: String? = null,
 ): Pair<CodeBlock, List<ParameterSpec>> {
     val receiverParam = function.instanceParameter ?: function.extensionReceiverParameter
     require(!(receiverParam == null && receiverOrInstance != null)) {

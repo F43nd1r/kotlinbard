@@ -88,7 +88,7 @@ public inline fun CodeBuildingScope.indent(scope: CodeBuildingScope.() -> Unit) 
 public inline fun CodeBuildingScope.controlFlow(
     controlFlow: String,
     vararg args: Any,
-    body: CodeBuildingScope.() -> Unit
+    body: CodeBuildingScope.() -> Unit,
 ) {
     beginControlFlow(controlFlow, *args)
     this.body()

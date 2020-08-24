@@ -21,7 +21,7 @@ import com.squareup.kotlinpoet.CodeBlock.Builder
 
 @CodegenDsl
 public class CodeBlockBuilder internal constructor(
-    public val poetType: Builder
+    public val poetType: Builder,
 ) : CodeBuildingScope() {
     override fun clearCode() {
         poetType.clear()
