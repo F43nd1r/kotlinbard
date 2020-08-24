@@ -20,12 +20,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 
 object Versions {
-    object Kotlin {
-        const val plugin = "1.4.0-rc"
-        const val stdlib = "1.3.72"
-//        const val coroutines = "1.3.8"
-    }
-
     const val kotlinPoet = "1.6.0"
     const val kotlinPoetSnapshot = "1.7.0-SNAPSHOT"
 
@@ -33,11 +27,10 @@ object Versions {
 
 
     const val jUnit = "5.6.2"
-    const val kotest = "4.1.2"
+    const val kotest = "4.2.0"
 }
 
 object Deps {
-//    const val kotlinCoroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.Kotlin.coroutines}"
 
     const val kotlinPoet = "com.squareup:kotlinpoet:${Versions.kotlinPoet}"
     const val kotlinPoetSnapshot = "com.squareup:kotlinpoet:${Versions.kotlinPoetSnapshot}"
@@ -50,7 +43,6 @@ object Deps {
         const val kotestRunner = "io.kotest:kotest-runner-junit5-jvm:${Versions.kotest}"
         const val kotestAssertions = "io.kotest:kotest-assertions-core-jvm:${Versions.kotest}"
         const val kotestProperties = "io.kotest:kotest-property-jvm:${Versions.kotest}"
-        const val kotestConsole = "io.kotest:kotest-runner-console-jvm:${Versions.kotest}"
     }
 }
 

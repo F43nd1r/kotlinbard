@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -29,19 +28,15 @@ plugins {
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8", version = Versions.Kotlin.stdlib))
     api(Deps.kotlinPoet)
 
     testImplementation(Deps.Test.jUnit)
     testImplementation(Deps.Test.kotestRunner)
     testImplementation(Deps.Test.kotestAssertions)
-    testImplementation(Deps.Test.kotestConsole)
 }
 
-pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
-    configure<KotlinProjectExtension> {
-        explicitApiWarning()
-    }
+kotlin {
+    explicitApiWarning()
 }
 
 val compileKotlin: KotlinCompile by tasks

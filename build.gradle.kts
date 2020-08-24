@@ -18,12 +18,12 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("deps") apply false
-    kotlin("jvm") version "1.4.0-rc"
+    kotlin("jvm") version "1.4.0"
 }
 
 repositories {
     mavenCentral()
-    maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
+//    maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
 }
 
 
@@ -31,13 +31,12 @@ subprojects {
     repositories {
         mavenCentral()
         jcenter()
-        maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
+//        maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
     }
 
     tasks.withType<KotlinCompile> {
         kotlinOptions {
             jvmTarget = "1.8"
-            languageVersion = "1.3"
             freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
         }
     }
