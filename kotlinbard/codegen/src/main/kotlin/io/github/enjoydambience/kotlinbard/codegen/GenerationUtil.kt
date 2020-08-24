@@ -80,7 +80,11 @@ private fun getParamsAndCall(function: KFunction<*>): Pair<List<ParameterSpec>, 
         .filter { it.kind == KParameter.Kind.VALUE }
         .map {
             if (it.isVararg) {
-                adaptVarargParameter(it)
+                buildParameter(
+                    it.name!!,
+                    it.type.arguments.first().type!!.asTypeName(),
+                    KModifier.VARARG
+                )
             } else {
                 buildParameter(it.name!!, it.type.asTypeName())
             }
@@ -91,20 +95,12 @@ private fun getParamsAndCall(function: KFunction<*>): Pair<List<ParameterSpec>, 
 
 private fun getCallParams(params: List<ParameterSpec>, named: Boolean = true): CodeBlock = params.map {
     val name = it.name
-    val maybeStar = (if (KModifier.VARARG in it.modifiers) "*" else "")
     if (named) {
-        CodeBlock.of("%N=%L%N", name, maybeStar, name)
+        CodeBlock.of("%N=%N", name, name)
     } else {
-        CodeBlock.of("%L%N", maybeStar, name)
+        CodeBlock.of("%N", name)
     }
 }.joinToCode()
-
-private fun adaptVarargParameter(it: KParameter): ParameterSpec =
-    buildParameter(
-        it.name!!,
-        it.type.arguments.first().type!!.asTypeName(),
-        KModifier.VARARG
-    )
 
 /**
  * Copies any deprecation to this function if present on the given [element].
