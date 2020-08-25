@@ -17,9 +17,10 @@
 package io.github.enjoydambience.kotlinbard
 
 import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.PropertySpec
 
-/** Creates a setter with a value parameter, with the given [parameter name][paramName]. */
+/**
+ * Creates a setter with parameter, with the given [parameter name][paramName].
+ */
 public inline fun setter(paramName: String, config: FunSpec.Builder.() -> Unit): FunSpec =
     setter {
         addParameter(paramName, Any::class)
@@ -27,9 +28,11 @@ public inline fun setter(paramName: String, config: FunSpec.Builder.() -> Unit):
     }
 
 /**
- * Adds a setter with parameter to this property.
+ * Adds a setter with parameter, with the given [parameter name][paramName].
  */
-public inline fun PropertySpec.Builder.set(
+public inline fun PropertySpecBuilder.set(
     paramName: String,
-    config: FunSpec.Builder.() -> Unit,
-): PropertySpec.Builder = setter(setter(paramName, config))
+    config: FunSpecBuilder.() -> Unit,
+) {
+    setter(setter(paramName, config))
+}
