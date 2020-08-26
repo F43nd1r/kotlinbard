@@ -22,10 +22,10 @@ public abstract class CodeBuildingScope internal constructor() {
 
     public abstract fun addCode(codeBlock: CodeBlock)
     public abstract fun addCode(format: String, vararg args: Any?)
-    public fun addStatement(codeBlock: CodeBlock): Unit = addStatement("%L", codeBlock)
+    public open fun addStatement(codeBlock: CodeBlock): Unit = addStatement("%L", codeBlock)
     public abstract fun addStatement(format: String, vararg args: Any?)
 
-    public abstract fun addNamed(format: String, args: Map<String, *>)
+    public abstract fun addNamed(format: String, arguments: Map<String, *>)
 
     public abstract fun indent()
     public abstract fun unindent()

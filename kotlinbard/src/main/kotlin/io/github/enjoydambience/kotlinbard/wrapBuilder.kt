@@ -26,25 +26,25 @@ import com.squareup.kotlinpoet.TypeAliasSpec
 import com.squareup.kotlinpoet.TypeSpec
 
 @PublishedApi
-internal fun FileSpec.Builder.wrapBuilder() = this
+internal fun FileSpec.Builder.wrapBuilder() = FileSpecBuilder(this)
 
 @PublishedApi
-internal fun TypeSpec.Builder.wrapBuilder() = this
+internal fun TypeSpec.Builder.wrapBuilder() = TypeSpecBuilder(this)
 
 @PublishedApi
-internal fun PropertySpec.Builder.wrapBuilder() = this
+internal fun PropertySpec.Builder.wrapBuilder() = PropertySpecBuilder(this)
 
 @PublishedApi
-internal fun FunSpec.Builder.wrapBuilder() = this
+internal fun FunSpec.Builder.wrapBuilder() = FunSpecBuilder(this)
 
 @PublishedApi
-internal fun ParameterSpec.Builder.wrapBuilder() = this
+internal fun ParameterSpec.Builder.wrapBuilder() = ParameterSpecBuilder(this)
 
 @PublishedApi
-internal fun TypeAliasSpec.Builder.wrapBuilder() = this
+internal fun TypeAliasSpec.Builder.wrapBuilder() = TypeAliasSpecBuilder(this)
 
 @PublishedApi
-internal fun AnnotationSpec.Builder.wrapBuilder() = this
+internal fun AnnotationSpec.Builder.wrapBuilder() = AnnotationSpecBuilder(this)
 
 @PublishedApi
 internal fun CodeBlock.Builder.wrapBuilder() = CodeBlockBuilder(this)

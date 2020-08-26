@@ -34,6 +34,8 @@ object Deps {
 
     const val kotlinPoet = "com.squareup:kotlinpoet:${Versions.kotlinPoet}"
     const val kotlinPoetSnapshot = "com.squareup:kotlinpoet:${Versions.kotlinPoetSnapshot}"
+    const val kotlinPoetMetadata = "com.squareup:kotlinpoet-metadata:${Versions.kotlinPoet}"
+    const val kotlinPoetMetadataSpecs = "com.squareup:kotlinpoet-metadata-specs:${Versions.kotlinPoet}"
 
     const val kaseChange = "net.pearx.kasechange:kasechange-jvm:${Versions.kaseChange}"
 

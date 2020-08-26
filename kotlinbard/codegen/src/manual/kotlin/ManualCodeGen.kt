@@ -29,10 +29,10 @@ import java.nio.file.Path
 
 const val generatedSrc = "build/generated-src"
 
-private suspend fun FileGenerator.manualGenerate(): Unit = coroutineScope {
+suspend fun FileGenerator.manualGenerate(): Unit = coroutineScope {
     val path = Path.of(generatedSrc).toAbsolutePath()
     println("generating to $path")
-    val content = async {
+    val content = async(Dispatchers.Default) {
         StringBuilder()
             .apply { generateFileSpec().writeTo(this) }
             .replace("public get\\(\\)".toRegex(), "get()")

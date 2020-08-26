@@ -16,93 +16,108 @@
 
 package io.github.enjoydambience.kotlinbard.codegen
 
-import com.squareup.kotlinpoet.FileSpec
-import com.squareup.kotlinpoet.KModifier
-import com.squareup.kotlinpoet.asTypeName
-import com.squareup.kotlinpoet.asTypeVariableName
+import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview
+import com.squareup.kotlinpoet.metadata.specs.toTypeSpec
 import io.github.enjoydambience.kotlinbard.*
-import kotlin.reflect.*
-import kotlin.reflect.full.declaredMembers
+import io.github.enjoydambience.kotlinbard.codegen.generators.FileGenerator
+import io.kotest.core.spec.style.StringSpec
+import kotlinx.coroutines.launch
 
 /**
  * Generates classes which delegate everything to a Spec.
  *
  * The output file currently is not entirely semantically correct, and needs manual editing.
  */
-class SpecDelegates : ManualFileGenerator() {
-    private val delegateName = "poetType"
-    override fun FileSpec.Builder.generate() {
+class SpecDelegates : StringSpec({
+    "allSpecs"{
         SpecInfo.allSpecs.forEach {
-            addDelegateClass(it.specClass, it.name + "Delegate")
-            addDelegateClass(it.builderClass, it.name + "BuilderDelegate")
-        }
-    }
-
-    private fun FileSpecBuilder.addDelegateClass(klass: KClass<*>, name: String) = addClass(name) {
-        addModifiers(KModifier.ABSTRACT)
-        primaryConstructor {
-            addParameter(delegateName, klass, KModifier.PUBLIC)
-            addModifiers(KModifier.INTERNAL)
-        }
-        addProperty(delegateName, klass) { init { add(delegateName) } }
-
-        klass.supertypes.forEach { t ->
-            if ((t.classifier as? KClass<*>)?.java?.isInterface == true) {
-                addSuperinterface(t.asTypeName(), delegateName)
-            }
-        }
-
-        val superMembers = klass.supertypes.flatMap {
-            (it.classifier as KClass<*>).declaredMembers
-        }
-
-        klass.declaredMembers.forEach {
-            if (it.visibility != KVisibility.PUBLIC) return@forEach
-            when (it) {
-                is KProperty<*> -> delProperty(it, superMembers)
-                is KFunction<*> -> delFunction(it, superMembers, klass)
-                else -> error("member not a function or property")
+            launch {
+                genForSpec(it).manualGenerate()
             }
         }
     }
+})
 
-    private fun TypeSpecBuilder.delProperty(prop: KProperty<*>, superMembers: List<KCallable<*>>) {
-        if (superMembers.any { it is KProperty && it.signature == prop.signature }) return
-        addProperty(prop.name, prop.returnType.asTypeName()) {
-            get {
-                addStatement("return $delegateName.%N", prop.name)
-            }
-            if (prop is KMutableProperty<*>) {
-                mutable()
-                set("value") {
-                    addStatement("$delegateName.%N = value", prop.name)
-                }
-            }
-        }
-    }
+private const val delegateName = "poetBuilder"
 
-    private fun TypeSpecBuilder.delFunction(func: KFunction<*>, superMembers: List<KCallable<*>>, klass: KClass<*>) {
-        if (superMembers.any { it is KFunction && it.signature == func.signature }) return
-        addFunction(func.name) {
-            addModifiers(KModifier.PUBLIC)
-            addTypeVariables(func.typeParameters.map { it.asTypeVariableName() })
-            if (func.returnType.classifier != klass) {
-                returns(func.returnType.asTypeName())
-                addCode("return ")
-            }
+private fun genForSpec(spec: SpecInfo): FileGenerator {
+    return object : FileGenerator {
+        private val name = spec.specClass.simpleName + "Builder"
+        override val fileName: String get() = name
 
-            val (call, params) = codeCallReflected(func, delegateName)
-            addParameters(params)
-            addCode(call)
+        override fun FileSpec.Builder.generate() {
+            generateBuilderDelegate(spec, name)
         }
     }
 }
 
-private val kFunctionSigField = Class.forName("kotlin.reflect.jvm.internal.KFunctionImpl")
-    .getDeclaredField("signature").apply { isAccessible = true }
-private val KFunction<*>.signature: String?
-    get() = kFunctionSigField[this] as String?
-private val kPropertySigField = Class.forName("kotlin.reflect.jvm.internal.KPropertyImpl")
-    .getDeclaredField("signature").apply { isAccessible = true }
-private val KProperty<*>.signature: String?
-    get() = kPropertySigField[this] as String?
+@OptIn(KotlinPoetMetadataPreview::class)
+private fun FileSpecBuilder.generateBuilderDelegate(spec: SpecInfo, name: String) {
+    val klass = spec.poetBuilderClass
+    val typeName: TypeName = ClassName(destinationPackage, name)
+
+    addFunction(name) {
+        addParameter(delegateName, spec.poetBuilderClass)
+        returns(typeName)
+        addStatement("return %T(%N, false)", typeName, delegateName)
+    }
+
+    val origSpec = klass.toTypeSpec()
+    addClass(name) {
+        addAnnotation(CodegenDsl::class)
+        primaryConstructor {
+            addParameter(delegateName, klass, KModifier.PUBLIC)
+            addParameter("dummy", Boolean::class)
+            addModifiers(KModifier.INTERNAL)
+        }
+        addProperty(delegateName, klass) { init { add(delegateName) } }
+
+        origSpec.superinterfaces.forEach { (k, v) ->
+            addSuperinterface(k, delegateName)
+        }
+        origSpec.propertySpecs.forEach { prop ->
+            delProperty(prop)
+        }
+        origSpec.funSpecs.forEach { func ->
+            delFunction(func, klass.asTypeName())
+        }
+    }
+}
+
+private fun TypeSpecBuilder.delProperty(prop: PropertySpec) {
+    if (KModifier.INTERNAL in prop.modifiers
+        || KModifier.PRIVATE in prop.modifiers
+        || KModifier.PROTECTED in prop.modifiers
+    ) return
+    addProperty(prop.name, prop.type) {
+        get {
+            addStatement("return $delegateName.%N", prop.name)
+        }
+        if (prop.mutable) {
+            mutable()
+            set("value") {
+                addStatement("$delegateName.%N = value", prop.name)
+            }
+        }
+    }
+}
+
+@OptIn(KotlinPoetMetadataPreview::class)
+private fun TypeSpecBuilder.delFunction(func: FunSpec, klass: TypeName) {
+    if (KModifier.INTERNAL in func.modifiers
+        || KModifier.PRIVATE in func.modifiers
+        || KModifier.PROTECTED in func.modifiers
+    ) return
+    addFunction(func.name) {
+        addModifiers(KModifier.PUBLIC)
+        addTypeVariables(func.typeVariables)
+        val returnType = func.returnType
+        if (returnType != klass) {
+            returnType?.let { returns(it) }
+            addCode("return ")
+        }
+        addParameters(func.parameters)
+        addCode(codeCall(func, delegateName))
+    }
+}

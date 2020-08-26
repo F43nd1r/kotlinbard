@@ -33,24 +33,3 @@ public typealias ParameterSpec = ParameterSpec
 public typealias TypeAliasSpec = TypeAliasSpec
 public typealias AnnotationSpec = AnnotationSpec
 public typealias CodeBlock = CodeBlock
-
-@CodegenDsl
-public typealias FileSpecBuilder = FileSpec.Builder
-
-@CodegenDsl
-public typealias TypeSpecBuilder = TypeSpec.Builder
-
-@CodegenDsl
-public typealias PropertySpecBuilder = PropertySpec.Builder
-
-@CodegenDsl
-public typealias FunSpecBuilder = FunSpec.Builder
-
-@CodegenDsl
-public typealias ParameterSpecBuilder = ParameterSpec.Builder
-
-@CodegenDsl
-public typealias TypeAliasSpecBuilder = TypeAliasSpec.Builder
-
-@CodegenDsl
-public typealias AnnotationSpecBuilder = AnnotationSpec.Builder

@@ -34,7 +34,7 @@ class SpecInfo private constructor(
     val companionClass = specClass.companionObject!!
 
     /** Class of the builder of spec (e.g. `FileSpec.Builder::class`) */
-    val builderClass = specClass.nestedClasses.first { it.simpleName == "Builder" }
+    val poetBuilderClass = specClass.nestedClasses.first { it.simpleName == "Builder" }
 
     /**
      * Name for the builder, which is actually a type alias.

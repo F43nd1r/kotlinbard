@@ -83,7 +83,7 @@ object SpecBuilders : SpecFunctionFileGenerator() {
         val specNameMappings = nameMappings[spec]!!
         return spec.companionClass.declaredMemberFunctions
             .mapNotNull { function ->
-                if (function.returnType.classifier != spec.builderClass) return@mapNotNull null
+                if (function.returnType.classifier != spec.poetBuilderClass) return@mapNotNull null
                 specNameMappings[function.name]
                     .also {
                         if (it == null) println("no mapping for $function")

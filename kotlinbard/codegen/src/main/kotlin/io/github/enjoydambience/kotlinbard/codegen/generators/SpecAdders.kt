@@ -136,7 +136,7 @@ object SpecAdders : SpecFunctionFileGenerator() {
     }
 
     override fun generateFunctionsForSpec(spec: SpecInfo): List<FunSpec> {
-        val builderFunctions = spec.builderClass.declaredMemberFunctions
+        val builderFunctions = spec.poetBuilderClass.declaredMemberFunctions
 
 //        builderFunctions.forEach { function ->
 //            val group = allAddGroups[spec] ?: return@forEach
@@ -161,7 +161,7 @@ object SpecAdders : SpecFunctionFileGenerator() {
                             ?: return@mapNotNull null
                         return@mapNotNull SpecInfo.of(paramClass) //null if not exist
                     }.singleOrNull()
-                    ?: error("Cannot find function ${group.builderFunName} in ${spec.builderClass.qualifiedName}")
+                    ?: error("Cannot find function ${group.builderFunName} in ${spec.poetBuilderClass.qualifiedName}")
                 // get all creator functions that create that type, and have the requested name.
                 val creatorFuns = SpecBuilders.functionsBySpec.getValue(buildSpec)
                     .filter { creatorFun ->

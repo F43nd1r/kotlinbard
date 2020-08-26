@@ -63,3 +63,7 @@ public val String.template: CodeBlock get() = CodeBlock.of("%P", this)
  */
 public val Number.literal: CodeBlock get() = CodeBlock.of("%L", this)
 
+/**
+ * An empty code block.
+ */
+public val emptyCodeBlock: CodeBlock = CodeBlock.builder().build()

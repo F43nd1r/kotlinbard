@@ -29,7 +29,7 @@ import kotlin.reflect.full.declaredMemberFunctions
 object SpecModifiers : SpecFunctionFileGenerator() {
     override fun generateFunctionsForSpec(spec: SpecInfo): List<FunSpec> {
         return spec.specClass.declaredMemberFunctions.filter {
-            it.returnType.classifier == spec.builderClass
+            it.returnType.classifier == spec.poetBuilderClass
         }.map {
             generateFunction(spec, it)
         }

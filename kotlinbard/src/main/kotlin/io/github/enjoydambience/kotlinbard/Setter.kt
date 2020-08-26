@@ -21,7 +21,7 @@ import com.squareup.kotlinpoet.FunSpec
 /**
  * Creates a setter with parameter, with the given [parameter name][paramName].
  */
-public inline fun setter(paramName: String, config: FunSpec.Builder.() -> Unit): FunSpec =
+public inline fun setter(paramName: String, config: FunSpecBuilder.() -> Unit): FunSpec =
     setter {
         addParameter(paramName, Any::class)
         config()

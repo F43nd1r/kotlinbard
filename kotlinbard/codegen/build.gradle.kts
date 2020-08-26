@@ -43,6 +43,8 @@ configurations {
 dependencies {
     implementation(kotlin("reflect"))
     implementation(Deps.kotlinPoet)
+//    implementation(Deps.kotlinPoetMetadata)
+    implementation(Deps.kotlinPoetMetadataSpecs)
     implementation(Deps.kaseChange)
     implementation("io.github.enjoydambience:kotlinbard:0.2.0")
 

@@ -70,12 +70,12 @@ public abstract class BaseParametersBuilder internal constructor() {
         poetBuilder.defaultValue(format, args)
     }
 
-    public inline operator fun Parameter.invoke(config: ParameterSpecBuilder.() -> Unit) {
+    public inline operator fun Parameter.invoke(config: ParameterSpec.Builder.() -> Unit) {
         poetBuilder.apply(config)
     }
 
     public open class Parameter internal constructor(
-        @PublishedApi internal val poetBuilder: ParameterSpecBuilder,
+        @PublishedApi internal val poetBuilder: ParameterSpec.Builder,
     ) {
         internal constructor(name: String, type: TypeName) : this(ParameterSpec.builder(name, type))
     }
