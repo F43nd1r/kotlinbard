@@ -23,6 +23,7 @@ import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 import java.lang.reflect.Type
+import javax.lang.model.element.Element
 import kotlin.reflect.KClass
 
 @Suppress("FunctionName")
@@ -33,7 +34,8 @@ public fun TypeSpecBuilder(poetBuilder: TypeSpec.Builder): TypeSpecBuilder =
 public class TypeSpecBuilder internal constructor(
     public val poetBuilder: TypeSpec.Builder,
     @Suppress("UNUSED_PARAMETER") dummy: Boolean,
-) : OriginatingElementsHolder.Builder<TypeSpec.Builder> by poetBuilder {
+) : Taggable.Builder<TypeSpecBuilder>,
+    OriginatingElementsHolder.Builder<TypeSpecBuilder> {
     public val annotationSpecs: MutableList<AnnotationSpec> get() = poetBuilder.annotationSpecs
     public val enumConstants: MutableMap<String, TypeSpec> get() = poetBuilder.enumConstants
     public val funSpecs: MutableList<FunSpec> get() = poetBuilder.funSpecs
@@ -43,12 +45,14 @@ public class TypeSpecBuilder internal constructor(
             poetBuilder.initializerIndex = value
         }
     public val modifiers: MutableSet<KModifier> get() = poetBuilder.modifiers
+    override val originatingElements: MutableList<Element> get() = poetBuilder.originatingElements
     public val propertySpecs: MutableList<PropertySpec> get() = poetBuilder.propertySpecs
     public val superclassConstructorParameters: MutableList<CodeBlock> get() = poetBuilder.superclassConstructorParameters
     public val superinterfaces: MutableMap<TypeName, CodeBlock?> get() = poetBuilder.superinterfaces
-    public val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
+    public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
     public val typeSpecs: MutableList<TypeSpec> get() = poetBuilder.typeSpecs
     public val typeVariables: MutableList<TypeVariableName> get() = poetBuilder.typeVariables
+
     public fun addAnnotation(annotationSpec: AnnotationSpec) {
         poetBuilder.addAnnotation(annotationSpec = annotationSpec)
     }

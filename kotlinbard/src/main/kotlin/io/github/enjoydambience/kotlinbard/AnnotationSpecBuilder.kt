@@ -17,6 +17,7 @@
 
 package io.github.enjoydambience.kotlinbard
 
+import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.CodeBlock
 import kotlin.reflect.KClass
@@ -29,9 +30,9 @@ public fun AnnotationSpecBuilder(poetBuilder: AnnotationSpec.Builder): Annotatio
 public class AnnotationSpecBuilder internal constructor(
     public val poetBuilder: AnnotationSpec.Builder,
     @Suppress("UNUSED_PARAMETER") dummy: Boolean,
-) {
+) : Taggable.Builder<AnnotationSpecBuilder> {
     public val members: MutableList<CodeBlock> get() = poetBuilder.members
-    public val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
+    public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
     public fun addMember(codeBlock: CodeBlock) {
         poetBuilder.addMember(codeBlock = codeBlock)
     }

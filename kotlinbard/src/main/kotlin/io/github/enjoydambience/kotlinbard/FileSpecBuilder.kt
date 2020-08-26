@@ -33,13 +33,13 @@ public fun FileSpecBuilder(poetBuilder: FileSpec.Builder): FileSpecBuilder =
 public class FileSpecBuilder internal constructor(
     public val poetBuilder: FileSpec.Builder,
     @Suppress("UNUSED_PARAMETER") dummy: Boolean,
-) {
+) : Taggable.Builder<FileSpecBuilder> {
     public val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
     public val imports: List<Import> get() = poetBuilder.imports
     public val members: MutableList<Any> get() = poetBuilder.members
     public val name: String get() = poetBuilder.name
     public val packageName: String get() = poetBuilder.packageName
-    public val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
+    public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
     public fun addAliasedImport(className: ClassName, `as`: String) {
         poetBuilder.addAliasedImport(className = className, `as` = `as`)
     }

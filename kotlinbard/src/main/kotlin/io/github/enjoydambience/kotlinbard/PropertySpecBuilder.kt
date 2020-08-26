@@ -22,6 +22,7 @@ import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.PropertySpec
 import java.lang.reflect.Type
+import javax.lang.model.element.Element
 import kotlin.reflect.KClass
 
 @Suppress("FunctionName")
@@ -32,10 +33,12 @@ public fun PropertySpecBuilder(poetBuilder: PropertySpec.Builder): PropertySpecB
 public class PropertySpecBuilder internal constructor(
     public val poetBuilder: PropertySpec.Builder,
     @Suppress("UNUSED_PARAMETER") dummy: Boolean,
-) : OriginatingElementsHolder.Builder<PropertySpec.Builder> by poetBuilder {
+) : Taggable.Builder<PropertySpecBuilder>,
+    OriginatingElementsHolder.Builder<PropertySpecBuilder> {
     public val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
     public val modifiers: MutableList<KModifier> get() = poetBuilder.modifiers
-    public val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
+    override val originatingElements: MutableList<Element> get() = poetBuilder.originatingElements
+    public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
     public val typeVariables: MutableList<TypeVariableName> get() = poetBuilder.typeVariables
     public fun addAnnotation(annotationSpec: AnnotationSpec) {
         poetBuilder.addAnnotation(annotationSpec = annotationSpec)

@@ -31,11 +31,11 @@ public fun ParameterSpecBuilder(poetBuilder: ParameterSpec.Builder): ParameterSp
 public class ParameterSpecBuilder internal constructor(
     public val poetBuilder: ParameterSpec.Builder,
     @Suppress("UNUSED_PARAMETER") dummy: Boolean,
-) {
+) : Taggable.Builder<ParameterSpecBuilder> {
     public val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
     public val kdoc: CodeBlock.Builder get() = poetBuilder.kdoc
     public val modifiers: MutableList<KModifier> get() = poetBuilder.modifiers
-    public val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
+    public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
     public fun addAnnotation(annotationSpec: AnnotationSpec) {
         poetBuilder.addAnnotation(annotationSpec = annotationSpec)
     }

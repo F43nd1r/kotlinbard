@@ -30,10 +30,10 @@ public fun TypeAliasSpecBuilder(poetBuilder: TypeAliasSpec.Builder): TypeAliasSp
 public class TypeAliasSpecBuilder internal constructor(
     public val poetBuilder: TypeAliasSpec.Builder,
     @Suppress("UNUSED_PARAMETER") dummy: Boolean,
-) {
+) : Taggable.Builder<TypeAliasSpecBuilder> {
     public val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
     public val modifiers: MutableSet<KModifier> get() = poetBuilder.modifiers
-    public val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
+    public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
     public val typeVariables: MutableSet<TypeVariableName> get() = poetBuilder.typeVariables
     public fun addAnnotation(annotationSpec: AnnotationSpec) {
         poetBuilder.addAnnotation(annotationSpec = annotationSpec)
