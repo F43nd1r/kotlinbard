@@ -35,7 +35,8 @@ public fun FunSpecBuilder(poetBuilder: FunSpec.Builder): FunSpecBuilder =
 public class FunSpecBuilder internal constructor(
     public val poetBuilder: FunSpec.Builder,
     @Suppress("UNUSED_PARAMETER") dummy: Boolean,
-) : WithAnnotationsBuilder,
+) : CodeBuilding(),
+    WithAnnotationsBuilder,
     WithModifiersBuilder,
     WithJvmModifiersBuilder,
     Taggable.Builder<FunSpecBuilder>,
@@ -55,12 +56,33 @@ public class FunSpecBuilder internal constructor(
         poetBuilder.addAnnotations(annotationSpecs = annotationSpecs)
     }
 
-    public fun addCode(codeBlock: CodeBlock) {
+    public override fun addCode(codeBlock: CodeBlock) {
         poetBuilder.addCode(codeBlock = codeBlock)
     }
 
-    public fun addCode(format: String, vararg args: Any?) {
+    public override fun addCode(format: String, vararg args: Any?) {
         poetBuilder.addCode(format = format, args = args)
+    }
+
+    public override fun addStatement(format: String, vararg args: Any?) {
+        @Suppress("UNCHECKED_CAST")
+        poetBuilder.addStatement(format, *(args as Array<Any>))
+    }
+
+    override fun addNamed(format: String, args: Map<String, *>) {
+        poetBuilder.addNamedCode(format, args)
+    }
+
+    public override fun beginControlFlow(controlFlow: String, vararg args: Any) {
+        poetBuilder.beginControlFlow(controlFlow = controlFlow, args = args)
+    }
+
+    public override fun endControlFlow() {
+        poetBuilder.endControlFlow()
+    }
+
+    public override fun clearCode() {
+        poetBuilder.clearBody()
     }
 
     public fun addComment(format: String, vararg args: Any) {
@@ -81,10 +103,6 @@ public class FunSpecBuilder internal constructor(
 
     public override fun addModifiers(modifiers: Iterable<KModifier>) {
         poetBuilder.addModifiers(modifiers = modifiers)
-    }
-
-    public fun addNamedCode(format: String, args: Map<String, *>) {
-        poetBuilder.addNamedCode(format = format, args = args)
     }
 
     public fun addParameter(parameterSpec: ParameterSpec) {
@@ -143,9 +161,6 @@ public class FunSpecBuilder internal constructor(
         poetBuilder.addParameters(parameterSpecs = parameterSpecs)
     }
 
-    public fun addStatement(format: String, vararg args: Any) {
-        poetBuilder.addStatement(format = format, args = args)
-    }
 
     public fun addTypeVariable(typeVariable: TypeVariableName) {
         poetBuilder.addTypeVariable(typeVariable = typeVariable)
@@ -153,10 +168,6 @@ public class FunSpecBuilder internal constructor(
 
     public fun addTypeVariables(typeVariables: Iterable<TypeVariableName>) {
         poetBuilder.addTypeVariables(typeVariables = typeVariables)
-    }
-
-    public fun beginControlFlow(controlFlow: String, vararg args: Any) {
-        poetBuilder.beginControlFlow(controlFlow = controlFlow, args = args)
     }
 
     public fun build(): FunSpec = poetBuilder.build()
@@ -192,13 +203,6 @@ public class FunSpecBuilder internal constructor(
         poetBuilder.callThisConstructor(args = args)
     }
 
-    public fun clearBody() {
-        poetBuilder.clearBody()
-    }
-
-    public fun endControlFlow() {
-        poetBuilder.endControlFlow()
-    }
 
     public override fun jvmModifiers(modifiers: Iterable<Modifier>): Unit =
         poetBuilder.jvmModifiers(modifiers = modifiers)

@@ -19,14 +19,27 @@ package io.github.enjoydambience.kotlinbard
 import com.squareup.kotlinpoet.CodeBlock
 
 /**
+ * Creates a control flow, around the current scope.
+ */
+public inline fun CodeBuilding.controlFlow(
+    controlFlow: String,
+    vararg args: Any,
+    body: CodeBuilding.() -> Unit,
+) {
+    beginControlFlow(controlFlow, *args)
+    this.body()
+    endControlFlow()
+}
+
+/**
  * Adds an if-statement control flow.
  *
  * This can be continued with [else][IfEnd.else] or [else if][IfEnd.`else if`].
  */
-public inline fun CodeBuildingScope.`if`(
+public inline fun CodeBuilding.`if`(
     argument: String,
     vararg args: Any,
-    body: CodeBuildingScope.() -> Unit,
+    body: CodeBuilding.() -> Unit,
 ): IfEnd {
     controlFlow("if ($argument)", *args, body = body)
     return IfEnd(this)
@@ -37,9 +50,9 @@ public inline fun CodeBuildingScope.`if`(
  *
  * After the body, the if statement can be continued with [Else][IfEnd] or [ElseIf][IfEnd].
  */
-public inline fun CodeBuildingScope.`if`(
+public inline fun CodeBuilding.`if`(
     argument: CodeBlock,
-    body: CodeBuildingScope.() -> Unit,
+    body: CodeBuilding.() -> Unit,
 ): IfEnd {
     controlFlow("if (%L)", argument, body = body)
     return IfEnd(this)
@@ -48,14 +61,14 @@ public inline fun CodeBuildingScope.`if`(
 /**
  * Represents the end of an if-statement.
  */
-public class IfEnd(@PublishedApi internal val builder: CodeBuildingScope) {
+public class IfEnd(@PublishedApi internal val builder: CodeBuilding) {
     /**
      * Adds an `else if` block.
      *
      * An else/if chain can still be continued after this.
      */
     @Suppress("FunctionName")
-    public inline fun `else if`(argument: String, vararg args: Any, body: CodeBuildingScope.() -> Unit): IfEnd = apply {
+    public inline fun `else if`(argument: String, vararg args: Any, body: CodeBuilding.() -> Unit): IfEnd = apply {
         builder.controlFlow("else if ($argument)", *args, body = body)
     }
 
@@ -65,12 +78,12 @@ public class IfEnd(@PublishedApi internal val builder: CodeBuildingScope) {
      * An else/if chain can still be continued after this.
      */
     @Suppress("FunctionName")
-    public inline fun `else if`(argument: CodeBlock, body: CodeBuildingScope.() -> Unit): IfEnd = apply {
+    public inline fun `else if`(argument: CodeBlock, body: CodeBuilding.() -> Unit): IfEnd = apply {
         builder.controlFlow("else if (%L)", argument, body = body)
     }
 
     /** Adds an else block. */
-    public inline infix fun `else`(body: CodeBuildingScope.() -> Unit) {
+    public inline infix fun `else`(body: CodeBuilding.() -> Unit) {
         builder.controlFlow("else", body = body)
     }
 
@@ -94,14 +107,14 @@ public class IfEnd(@PublishedApi internal val builder: CodeBuildingScope) {
 /**
  * Adds a while control flow.
  */
-public inline fun CodeBuildingScope.`while`(argument: String, vararg args: Any, body: CodeBuildingScope.() -> Unit) {
+public inline fun CodeBuilding.`while`(argument: String, vararg args: Any, body: CodeBuilding.() -> Unit) {
     controlFlow("while ($argument)", *args, body = body)
 }
 
 /**
  * Adds a while control flow.
  */
-public inline fun CodeBuildingScope.`while`(argument: CodeBlock, body: CodeBuildingScope.() -> Unit) {
+public inline fun CodeBuilding.`while`(argument: CodeBlock, body: CodeBuilding.() -> Unit) {
     controlFlow("while (%L)", argument, body = body)
 }
 
@@ -111,29 +124,42 @@ public inline fun CodeBuildingScope.`while`(argument: CodeBlock, body: CodeBuild
  *
  * **The generated code will be incorrect unless completed with [while][DoEnd.while].**
  */
-public inline fun CodeBuildingScope.`do`(body: CodeBuildingScope.() -> Unit): DoEnd {
-    beginControlFlow("do")
-    body()
-    return DoEnd(this)
+public inline fun CodeBuilding.`do`(body: CodeBuilding.() -> Unit): DoEnd {
+    val builder = CodeBlockBuilder().apply {
+        beginControlFlow("do")
+        body()
+    }
+    return DoEnd(this, builder)
 }
 
 /**
  * Represents the end of an do-while; [while] must be used to generate correct code.
  */
-public class DoEnd(private val builder: CodeBuildingScope) {
+public class DoEnd @PublishedApi internal constructor(
+    private var parent: CodeBuilding?,
+    private val builder: CodeBlockBuilder,
+) {
     public fun `while`(argument: String, vararg args: Any) {
-        builder.unindent()
-        builder.addCode("} while ($argument)\n", *args)
+        finish("} while ($argument)\n", *args)
     }
 
     public infix fun `while`(argument: String) {
-        builder.unindent()
-        builder.addCode("} while (%L)\n", argument)
+        finish("} while (%L)\n", argument)
     }
 
     public infix fun `while`(codeBlock: CodeBlock) {
+        finish("} while (%L)\n", codeBlock)
+    }
+
+    private fun finish(
+        format: String,
+        vararg args: Any,
+    ) {
+        val parent = parent ?: error("Do-while statement already completed")
+        this.parent = null
         builder.unindent()
-        builder.addCode("} while (%L)\n", codeBlock)
+        builder.addCode(format, *args)
+        parent.addCode(builder.build())
     }
 }
 
@@ -141,21 +167,21 @@ public class DoEnd(private val builder: CodeBuildingScope) {
 /**
  * Adds a `for` control flow.
  */
-public inline fun CodeBuildingScope.`for`(format: String, vararg args: Any, body: CodeBuildingScope.() -> Unit) {
+public inline fun CodeBuilding.`for`(format: String, vararg args: Any, body: CodeBuilding.() -> Unit) {
     controlFlow("for ($format)", *args, body = body)
 }
 
 /**
  * Adds a `for` control flow.
  */
-public inline fun CodeBuildingScope.`for`(codeBlock: CodeBlock, body: CodeBuildingScope.() -> Unit) {
+public inline fun CodeBuilding.`for`(codeBlock: CodeBlock, body: CodeBuilding.() -> Unit) {
     controlFlow("for (%L)", codeBlock, body = body)
 }
 
 /**
  * Adds a `when` control flow, without an argument.
  */
-public inline fun CodeBuildingScope.`when`(body: WhenBody.() -> Unit) {
+public inline fun CodeBuilding.`when`(body: WhenBody.() -> Unit) {
     controlFlow("when") {
         WhenBody(this).body()
     }
@@ -164,7 +190,7 @@ public inline fun CodeBuildingScope.`when`(body: WhenBody.() -> Unit) {
 /**
  * Adds a `when` control flow, with an argument.
  */
-public inline fun CodeBuildingScope.`when`(argument: String, vararg args: Any, body: WhenBody.() -> Unit) {
+public inline fun CodeBuilding.`when`(argument: String, vararg args: Any, body: WhenBody.() -> Unit) {
     controlFlow("when ($argument)", *args) {
         WhenBody(this).body()
     }
@@ -173,16 +199,16 @@ public inline fun CodeBuildingScope.`when`(argument: String, vararg args: Any, b
 /**
  * Adds a `when` control flow, with an argument.
  */
-public inline fun CodeBuildingScope.`when`(argument: CodeBlock, body: WhenBody.() -> Unit) {
+public inline fun CodeBuilding.`when`(argument: CodeBlock, body: WhenBody.() -> Unit) {
     controlFlow("when (%L)", argument) {
         WhenBody(this).body()
     }
 }
 
-public class WhenBody(@PublishedApi internal val builder: CodeBuildingScope) {
+public class WhenBody(@PublishedApi internal val builder: CodeBuilding) {
 
     /** Specifies a when branch with block body. */
-    public inline operator fun CodeBlock.minus(body: CodeBuildingScope.() -> Unit) {
+    public inline operator fun CodeBlock.minus(body: CodeBuilding.() -> Unit) {
         builder.controlFlow("%L ->", this, body = body)
     }
 
@@ -197,7 +223,7 @@ public class WhenBody(@PublishedApi internal val builder: CodeBuildingScope) {
     }
 
     /** Specifies a when branch with block body. */
-    public inline operator fun String.minus(body: CodeBuildingScope.() -> Unit) {
+    public inline operator fun String.minus(body: CodeBuilding.() -> Unit) {
         builder.controlFlow("%L ->", this, body = body)
     }
 
@@ -212,12 +238,12 @@ public class WhenBody(@PublishedApi internal val builder: CodeBuildingScope) {
     }
 
     /** Specifies a when branch with block body. */
-    public inline fun case(code: CodeBlock, body: CodeBuildingScope.() -> Unit) {
+    public inline fun case(code: CodeBlock, body: CodeBuilding.() -> Unit) {
         builder.controlFlow("%L ->", code, body = body)
     }
 
     /** Specifies a when branch with block body. */
-    public inline fun case(format: String, vararg args: Any, body: CodeBuildingScope.() -> Unit) {
+    public inline fun case(format: String, vararg args: Any, body: CodeBuilding.() -> Unit) {
         builder.controlFlow("$format ->", *args, body = body)
     }
 

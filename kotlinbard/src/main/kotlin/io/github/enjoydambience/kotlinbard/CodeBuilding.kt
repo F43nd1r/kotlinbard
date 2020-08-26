@@ -18,8 +18,11 @@ package io.github.enjoydambience.kotlinbard
 
 import com.squareup.kotlinpoet.CodeBlock
 
+/**
+ * Represents a builder in which code can be added; i.e. [FunSpecBuilder] or [CodeBlockBuilder]
+ */
 @CodegenDsl
-public abstract class CodeBuildingScope internal constructor() {
+public abstract class CodeBuilding internal constructor() {
     public abstract fun clearCode()
 
     public abstract fun addCode(codeBlock: CodeBlock)
@@ -27,12 +30,9 @@ public abstract class CodeBuildingScope internal constructor() {
     public open fun addStatement(codeBlock: CodeBlock): Unit = addStatement("%L", codeBlock)
     public abstract fun addStatement(format: String, vararg args: Any?)
 
-    public abstract fun addNamed(format: String, arguments: Map<String, *>)
+    public abstract fun addNamed(format: String, args: Map<String, *>)
 
-    public abstract fun indent()
-    public abstract fun unindent()
-
-    public abstract fun beginControlFlow(controlFlow: String, vararg args: Any?)
+    public abstract fun beginControlFlow(controlFlow: String, vararg args: Any)
 
     //    public abstract fun nextControlFlow(controlFlow: String, vararg args: Any?)
     public abstract fun endControlFlow()
@@ -65,35 +65,12 @@ public abstract class CodeBuildingScope internal constructor() {
     /**
      * Short for [controlFlow], using an unformatted string.
      */
-    public inline operator fun String.invoke(body: CodeBuildingScope.() -> Unit): Unit =
+    public inline operator fun String.invoke(body: CodeBuilding.() -> Unit): Unit =
         controlFlow(this, body = body)
 
     /**
      * Short for control flow using formatted string: [fmt] and [controlFlow] combined.
      */
-    public inline fun String.fmt(vararg args: Any, body: CodeBuildingScope.() -> Unit): Unit =
+    public inline fun String.fmt(vararg args: Any, body: CodeBuilding.() -> Unit): Unit =
         controlFlow(this, *args, body = body)
 }
-
-/**
- * Increases indent while in the given scope.
- */
-public inline fun CodeBuildingScope.indent(scope: CodeBuildingScope.() -> Unit) {
-    indent()
-    this.scope()
-    unindent()
-}
-
-/**
- * Creates a control flow, wrapped around the current scope.
- */
-public inline fun CodeBuildingScope.controlFlow(
-    controlFlow: String,
-    vararg args: Any,
-    body: CodeBuildingScope.() -> Unit,
-) {
-    beginControlFlow(controlFlow, *args)
-    this.body()
-    endControlFlow()
-}
-

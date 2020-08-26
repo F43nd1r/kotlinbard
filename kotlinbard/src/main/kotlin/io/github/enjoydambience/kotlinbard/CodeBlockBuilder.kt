@@ -19,14 +19,14 @@ package io.github.enjoydambience.kotlinbard
 import com.squareup.kotlinpoet.CodeBlock
 
 @Suppress("FunctionName")
-public fun CodeBlockBuilder(poetBuilder: CodeBlock.Builder): CodeBlockBuilder =
+public fun CodeBlockBuilder(poetBuilder: CodeBlock.Builder = CodeBlock.builder()): CodeBlockBuilder =
     CodeBlockBuilder(poetBuilder, false)
 
 @CodegenDsl
 public class CodeBlockBuilder internal constructor(
     public val poetBuilder: CodeBlock.Builder,
     @Suppress("UNUSED_PARAMETER") dummy: Boolean = false,
-) : CodeBuildingScope() {
+) : CodeBuilding() {
     override fun clearCode() {
         poetBuilder.clear()
     }
@@ -39,15 +39,15 @@ public class CodeBlockBuilder internal constructor(
         poetBuilder.add(codeBlock)
     }
 
-    public override fun addNamed(format: String, arguments: Map<String, *>) {
-        poetBuilder.addNamed(format = format, arguments = arguments)
+    public override fun addNamed(format: String, args: Map<String, *>) {
+        poetBuilder.addNamed(format = format, arguments = args)
     }
 
     public override fun addStatement(format: String, vararg args: Any?) {
         poetBuilder.addStatement(format = format, args = args)
     }
 
-    public override fun beginControlFlow(controlFlow: String, vararg args: Any?) {
+    public override fun beginControlFlow(controlFlow: String, vararg args: Any) {
         poetBuilder.beginControlFlow(controlFlow = controlFlow, args = args)
     }
 
@@ -60,7 +60,7 @@ public class CodeBlockBuilder internal constructor(
         poetBuilder.endControlFlow()
     }
 
-    public override fun indent() {
+    public fun indent() {
         poetBuilder.indent()
     }
 
@@ -70,13 +70,26 @@ public class CodeBlockBuilder internal constructor(
         poetBuilder.nextControlFlow(controlFlow = controlFlow, args = args)
     }
 
-    public override fun unindent() {
+    public fun unindent() {
         poetBuilder.unindent()
     }
 }
 
+/**
+ * Increases indent while in the given scope.
+ */
+public inline fun CodeBlockBuilder.indent(scope: CodeBlockBuilder.() -> Unit) {
+    indent()
+    this.scope()
+    unindent()
+}
+
+
 public inline fun codeBlock(config: CodeBlockBuilder.() -> Unit = {}): CodeBlock =
     CodeBlock.builder().wrapBuilder().apply(config).build()
+
+public fun codeBlock(format: String, vararg args: Any?): CodeBlock =
+    CodeBlock.of(format, *args)
 
 public inline fun CodeBlock.modify(config: CodeBlockBuilder.() -> Unit): CodeBlock =
     toBuilder().wrapBuilder().apply(config).build()
