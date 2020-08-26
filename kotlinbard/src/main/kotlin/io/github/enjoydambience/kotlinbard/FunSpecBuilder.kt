@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("DeprecatedCallableAddReplaceWith", "DEPRECATION")
+
 package io.github.enjoydambience.kotlinbard
 
 import com.squareup.kotlinpoet.*
@@ -25,6 +27,8 @@ import java.lang.reflect.Type
 import javax.lang.model.element.Element
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.Modifier
+import javax.lang.model.type.DeclaredType
+import javax.lang.model.util.Types
 import kotlin.reflect.KClass
 
 @Suppress("FunctionName")
@@ -274,3 +278,37 @@ public class FunSpecBuilder internal constructor(
         poetBuilder.returns(returnType = returnType, kdoc = kdoc, args = args)
     }
 }
+
+// -- build --
+
+public inline fun function(name: String, config: FunSpecBuilder.() -> Unit = {}): FunSpec =
+    FunSpec.builder(name = name).wrapBuilder().apply(config).build()
+
+public inline fun constructor(config: FunSpecBuilder.() -> Unit = {}): FunSpec =
+    FunSpec.constructorBuilder().wrapBuilder().apply(config).build()
+
+public inline fun getter(config: FunSpecBuilder.() -> Unit = {}): FunSpec =
+    FunSpec.getterBuilder().wrapBuilder().apply(config).build()
+
+@Deprecated(message =
+"Element APIs don't give complete information on Kotlin types. Consider using the kotlinpoet-metadata APIs instead.")
+public inline fun overriding(method: ExecutableElement, config: FunSpecBuilder.() -> Unit = {}): FunSpec =
+    FunSpec.overriding(method = method).wrapBuilder().apply(config).build()
+
+@Deprecated(message =
+"Element APIs don't give complete information on Kotlin types. Consider using the kotlinpoet-metadata APIs instead.")
+public inline fun overriding(
+    method: ExecutableElement,
+    enclosing: DeclaredType,
+    types: Types,
+    config: FunSpecBuilder.() -> Unit = {},
+): FunSpec = FunSpec.overriding(method = method, enclosing = enclosing,
+    types = types).wrapBuilder().apply(config).build()
+
+public inline fun setter(config: FunSpecBuilder.() -> Unit = {}): FunSpec =
+    FunSpec.setterBuilder().wrapBuilder().apply(config).build()
+
+// -- other --
+
+public inline fun FunSpec.modify(name: String, config: FunSpecBuilder.() -> Unit): FunSpec =
+    toBuilder(name = name).wrapBuilder().apply(config).build()

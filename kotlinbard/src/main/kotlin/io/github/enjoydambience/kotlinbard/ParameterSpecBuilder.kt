@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
+@file:Suppress("DeprecatedCallableAddReplaceWith", "DEPRECATION")
+
 package io.github.enjoydambience.kotlinbard
 
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.ParameterSpec
+import java.lang.reflect.Type
 import javax.lang.model.element.Modifier
+import javax.lang.model.element.VariableElement
 import kotlin.reflect.KClass
 
 @Suppress("FunctionName")
@@ -85,3 +89,73 @@ public class ParameterSpecBuilder internal constructor(
         poetBuilder.jvmModifiers(modifiers = modifiers)
     }
 }
+
+// -- build --
+
+public inline fun parameter(
+    name: String,
+    type: TypeName,
+    vararg modifiers: KModifier,
+    config: ParameterSpecBuilder.() -> Unit = {},
+): ParameterSpec = ParameterSpec.builder(name = name, type = type,
+    modifiers = modifiers).wrapBuilder().apply(config).build()
+
+public inline fun parameter(
+    name: String,
+    type: TypeName,
+    modifiers: Iterable<KModifier>,
+    config: ParameterSpecBuilder.() -> Unit = {},
+): ParameterSpec = ParameterSpec.builder(name = name, type = type,
+    modifiers = modifiers).wrapBuilder().apply(config).build()
+
+public inline fun parameter(
+    name: String,
+    type: Type,
+    vararg modifiers: KModifier,
+    config: ParameterSpecBuilder.() -> Unit = {},
+): ParameterSpec = ParameterSpec.builder(name = name, type = type,
+    modifiers = modifiers).wrapBuilder().apply(config).build()
+
+public inline fun parameter(
+    name: String,
+    type: Type,
+    modifiers: Iterable<KModifier>,
+    config: ParameterSpecBuilder.() -> Unit = {},
+): ParameterSpec = ParameterSpec.builder(name = name, type = type,
+    modifiers = modifiers).wrapBuilder().apply(config).build()
+
+public inline fun parameter(
+    name: String,
+    type: KClass<*>,
+    vararg modifiers: KModifier,
+    config: ParameterSpecBuilder.() -> Unit = {},
+): ParameterSpec = ParameterSpec.builder(name = name, type = type,
+    modifiers = modifiers).wrapBuilder().apply(config).build()
+
+public inline fun parameter(
+    name: String,
+    type: KClass<*>,
+    modifiers: Iterable<KModifier>,
+    config: ParameterSpecBuilder.() -> Unit = {},
+): ParameterSpec = ParameterSpec.builder(name = name, type = type,
+    modifiers = modifiers).wrapBuilder().apply(config).build()
+
+// -- get --
+
+@Deprecated(message =
+"Element APIs don't give complete information on Kotlin types. Consider using the kotlinpoet-metadata APIs instead.")
+public fun getParameter(element: VariableElement): ParameterSpec = ParameterSpec.get(element = element)
+
+public fun unnamedParameter(type: TypeName): ParameterSpec = ParameterSpec.unnamed(type = type)
+
+public fun unnamedParameter(type: Type): ParameterSpec = ParameterSpec.unnamed(type = type)
+
+public fun unnamedParameter(type: KClass<*>): ParameterSpec = ParameterSpec.unnamed(type = type)
+
+// -- other --
+
+public inline fun ParameterSpec.modify(
+    name: String = this.name,
+    type: TypeName = this.type,
+    config: ParameterSpecBuilder.() -> Unit,
+): ParameterSpec = toBuilder(name = name, type = type).wrapBuilder().apply(config).build()

@@ -20,6 +20,7 @@ import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.TypeAliasSpec
+import java.lang.reflect.Type
 import kotlin.reflect.KClass
 
 @Suppress("FunctionName")
@@ -81,3 +82,31 @@ public class TypeAliasSpecBuilder internal constructor(
 
     public fun build(): TypeAliasSpec = poetBuilder.build()
 }
+
+// -- build --
+
+public inline fun typeAlias(
+    name: String,
+    type: TypeName,
+    config: TypeAliasSpecBuilder.() -> Unit = {},
+): TypeAliasSpec = TypeAliasSpec.builder(name = name, type = type).wrapBuilder().apply(config).build()
+
+public inline fun typeAlias(
+    name: String,
+    type: Type,
+    config: TypeAliasSpecBuilder.() -> Unit = {},
+): TypeAliasSpec = TypeAliasSpec.builder(name = name, type = type).wrapBuilder().apply(config).build()
+
+public inline fun typeAlias(
+    name: String,
+    type: KClass<*>,
+    config: TypeAliasSpecBuilder.() -> Unit = {},
+): TypeAliasSpec = TypeAliasSpec.builder(name = name, type = type).wrapBuilder().apply(config).build()
+
+// -- other --
+
+public inline fun TypeAliasSpec.modify(
+    name: String = this.name,
+    type: TypeName = this.type,
+    config: TypeAliasSpecBuilder.() -> Unit,
+): TypeAliasSpec = toBuilder(name = name, type = type).wrapBuilder().apply(config).build()

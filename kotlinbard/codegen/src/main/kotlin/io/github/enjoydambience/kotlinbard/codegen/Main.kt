@@ -18,7 +18,8 @@ package io.github.enjoydambience.kotlinbard.codegen
 
 import com.squareup.kotlinpoet.FileSpec
 import io.github.enjoydambience.kotlinbard.buildFile
-import io.github.enjoydambience.kotlinbard.codegen.generators.*
+import io.github.enjoydambience.kotlinbard.codegen.generators.FileGenerator
+import io.github.enjoydambience.kotlinbard.codegen.generators.SpecAdders
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -39,11 +40,7 @@ fun main(args: Array<String>) {
 }
 
 private val allFileGenerators = listOf<FileGenerator>(
-    SpecBuilders,
-    DeprecatedSpecBuilders,
-    SpecGetters,
     SpecAdders,
-    SpecModifiers
 )
 
 const val destinationPackage = "io.github.enjoydambience.kotlinbard"

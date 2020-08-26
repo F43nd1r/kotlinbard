@@ -123,7 +123,7 @@ fun deprecatedDelegate(function: FunSpec, newName: String): FunSpec {
         addAnnotation(Deprecated::class) {
             addMember("%S", "use ${function.name} instead")
             val receiver = if (function.receiverType != null) "this" else null
-            addMember("ReplaceWith(%S)", codeCall(function, receiver, false))
+            addMember("ReplaceWith(%S)", codeCall(function, receiver, named = true))
         }
     }
 }

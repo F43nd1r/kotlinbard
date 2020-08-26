@@ -15,11 +15,16 @@
  */
 
 
+@file:Suppress("DEPRECATION", "DeprecatedCallableAddReplaceWith")
+
 package io.github.enjoydambience.kotlinbard
 
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.AnnotationSpec
+import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
+import com.squareup.kotlinpoet.ParameterizedTypeName
+import javax.lang.model.element.AnnotationMirror
 import kotlin.reflect.KClass
 
 @Suppress("FunctionName")
@@ -46,3 +51,32 @@ public class AnnotationSpecBuilder internal constructor(
         poetBuilder.useSiteTarget(useSiteTarget = useSiteTarget)
     }
 }
+
+// -- build --
+
+public inline fun annotation(type: ClassName, config: AnnotationSpecBuilder.() -> Unit = {}):
+        AnnotationSpec = AnnotationSpec.builder(type = type).wrapBuilder().apply(config).build()
+
+public inline fun annotation(type: ParameterizedTypeName, config: AnnotationSpecBuilder.() -> Unit = {}):
+        AnnotationSpec = AnnotationSpec.builder(type = type).wrapBuilder().apply(config).build()
+
+public inline fun annotation(type: Class<out Annotation>, config: AnnotationSpecBuilder.() -> Unit = {}):
+        AnnotationSpec = AnnotationSpec.builder(type = type).wrapBuilder().apply(config).build()
+
+public inline fun annotation(type: KClass<out Annotation>, config: AnnotationSpecBuilder.() -> Unit = {}):
+        AnnotationSpec = AnnotationSpec.builder(type = type).wrapBuilder().apply(config).build()
+
+// -- get --
+
+@Deprecated(message =
+"Mirror APIs don't give complete information on Kotlin types. Consider using the kotlinpoet-metadata APIs instead.")
+public fun getAnnotation(annotation: AnnotationMirror): AnnotationSpec =
+    AnnotationSpec.get(annotation = annotation)
+
+public fun getAnnotation(annotation: Annotation, includeDefaultValues: Boolean): AnnotationSpec =
+    AnnotationSpec.get(annotation = annotation, includeDefaultValues = includeDefaultValues)
+
+// -- other --
+
+public inline fun AnnotationSpec.modify(config: AnnotationSpecBuilder.() -> Unit): AnnotationSpec =
+    toBuilder().wrapBuilder().apply(config).build()

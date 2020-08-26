@@ -125,3 +125,61 @@ public class PropertySpecBuilder internal constructor(
         poetBuilder.setter(setter = setter)
     }
 }
+
+// -- build --
+
+public inline fun property(
+    name: String,
+    type: TypeName,
+    vararg modifiers: KModifier,
+    config: PropertySpecBuilder.() -> Unit = {},
+): PropertySpec = PropertySpec.builder(name = name, type = type,
+    modifiers = modifiers).wrapBuilder().apply(config).build()
+
+public inline fun property(
+    name: String,
+    type: TypeName,
+    modifiers: Iterable<KModifier>,
+    config: PropertySpecBuilder.() -> Unit = {},
+): PropertySpec = PropertySpec.builder(name = name, type = type,
+    modifiers = modifiers).wrapBuilder().apply(config).build()
+
+public inline fun property(
+    name: String,
+    type: Type,
+    vararg modifiers: KModifier,
+    config: PropertySpecBuilder.() -> Unit = {},
+): PropertySpec = PropertySpec.builder(name = name, type = type,
+    modifiers = modifiers).wrapBuilder().apply(config).build()
+
+public inline fun property(
+    name: String,
+    type: Type,
+    modifiers: Iterable<KModifier>,
+    config: PropertySpecBuilder.() -> Unit = {},
+): PropertySpec = PropertySpec.builder(name = name, type = type,
+    modifiers = modifiers).wrapBuilder().apply(config).build()
+
+public inline fun property(
+    name: String,
+    type: KClass<*>,
+    vararg modifiers: KModifier,
+    config: PropertySpecBuilder.() -> Unit = {},
+): PropertySpec = PropertySpec.builder(name = name, type = type,
+    modifiers = modifiers).wrapBuilder().apply(config).build()
+
+public inline fun property(
+    name: String,
+    type: KClass<*>,
+    modifiers: Iterable<KModifier>,
+    config: PropertySpecBuilder.() -> Unit = {},
+): PropertySpec = PropertySpec.builder(name = name, type = type,
+    modifiers = modifiers).wrapBuilder().apply(config).build()
+
+// -- other --
+
+public inline fun PropertySpec.modify(
+    name: String = this.name,
+    type: TypeName = this.type,
+    config: PropertySpecBuilder.() -> Unit,
+): PropertySpec = toBuilder(name = name, type = type).wrapBuilder().apply(config).build()

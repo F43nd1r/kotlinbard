@@ -74,3 +74,9 @@ public class CodeBlockBuilder internal constructor(
         poetBuilder.unindent()
     }
 }
+
+public inline fun codeBlock(config: CodeBlockBuilder.() -> Unit = {}): CodeBlock =
+    CodeBlock.builder().wrapBuilder().apply(config).build()
+
+public inline fun CodeBlock.modify(config: CodeBlockBuilder.() -> Unit): CodeBlock =
+    toBuilder().wrapBuilder().apply(config).build()

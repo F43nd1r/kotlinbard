@@ -153,3 +153,25 @@ public class FileSpecBuilder internal constructor(
         poetBuilder.indent(indent = indent)
     }
 }
+
+// -- build --
+
+public inline fun file(
+    packageName: String,
+    fileName: String,
+    config: FileSpecBuilder.() -> Unit = {},
+): FileSpec = FileSpec.builder(packageName = packageName,
+    fileName = fileName).wrapBuilder().apply(config).build()
+
+// -- get --
+
+public fun getFile(packageName: String, typeSpec: TypeSpec): FileSpec =
+    FileSpec.get(packageName = packageName, typeSpec = typeSpec)
+
+// -- other --
+
+public inline fun FileSpec.modify(
+    packageName: String = this.packageName,
+    name: String = this.name,
+    config: FileSpecBuilder.() -> Unit,
+): FileSpec = toBuilder(packageName = packageName, name = name).wrapBuilder().apply(config).build()
