@@ -26,23 +26,23 @@ class ReadmeExamples : StringSpec({
                 controlFlow("taco.let") {
                     addStatement("println(it)")
                 }
-                If("taco.isSpicy()") {
+                `if`("taco.isSpicy()") {
                     addStatement("println(%S)", "spicy!!")
-                }.ElseIf("me.isHungry") {
+                }.`else if`("me.isHungry") {
                     addStatement("eat(taco)")
-                } Else {
+                } `else` {
                     addStatement("saveForLater(taco)")
                 }
 
-                Do {
+                `do` {
                     addStatement("makeTaco()")
-                }.While("tacos < 5")
+                }.`while`("tacos < 5")
 
-                For("taco in tacos") {
+                `for`("taco in tacos") {
                     addStatement("println(%P)", "taco information: \$taco")
                 }
 
-                When("taco") {
+                `when`("taco") {
                     "is SpicyTaco" - {
                         addStatement("println(%S)", "Spicy!!")
                     }

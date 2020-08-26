@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("FunctionName", "PropertyName")
-
 package io.github.enjoydambience.kotlinbard
 
 import com.squareup.kotlinpoet.CodeBlock
@@ -36,112 +34,165 @@ public inline fun CodeBlockBuilder.controlFlow(
 /**
  * Adds an if-statement control flow.
  *
- * After the body, the if statement can be continued with [Else][IfEnd.Else] or [ElseIf][IfEnd.ElseIf].
+ * This can be continued with [else][IfEnd.else] or [else if][IfEnd.`else if`].
  */
-public inline fun CodeBlockBuilder.If(argument: String, vararg args: Any, body: CodeBlockBuilder.() -> Unit): IfEnd {
+public inline fun CodeBlockBuilder.`if`(
+    argument: String,
+    vararg args: Any,
+    body: CodeBlockBuilder.() -> Unit,
+): IfEnd {
     controlFlow("if ($argument)", *args, body = body)
     return IfEnd(this)
 }
 
 /**
- * Represents the end of an if-statement.
+ * Adds an if-statement control flow.
  *
- * This can be continued with [ElseIf] and [Else].
+ * After the body, the if statement can be continued with [Else][IfEnd] or [ElseIf][IfEnd].
  */
-public inline class IfEnd(@PublishedApi internal val builder: CodeBlockBuilder) {
+public inline fun CodeBlockBuilder.`if`(
+    argument: CodeBlock,
+    body: CodeBlockBuilder.() -> Unit,
+): IfEnd {
+    controlFlow("if (%L)", argument, body = body)
+    return IfEnd(this)
+}
+
+/**
+ * Represents the end of an if-statement.
+ */
+public class IfEnd(@PublishedApi internal val builder: CodeBlockBuilder) {
     /**
-     * Adds an `else if` control flow after the previous `if` body.
+     * Adds an `else if` block.
      *
-     * @return an [IfEnd] so the body can be continued.
+     * An else/if chain can still be continued after this.
      */
-    public inline fun ElseIf(argument: String, vararg args: Any, body: CodeBlockBuilder.() -> Unit): IfEnd = apply {
+    @Suppress("FunctionName")
+    public inline fun `else if`(argument: String, vararg args: Any, body: CodeBlockBuilder.() -> Unit): IfEnd = apply {
         builder.controlFlow("else if ($argument)", *args, body = body)
     }
 
     /**
-     * Adds an `else` control flow after the previous `if` body.
+     * Adds an `else if` block.
      *
-     * This ends the if statement.
+     * An else/if chain can still be continued after this.
      */
-    public inline infix fun Else(body: CodeBlockBuilder.() -> Unit) {
+    @Suppress("FunctionName")
+    public inline fun `else if`(argument: CodeBlock, body: CodeBlockBuilder.() -> Unit): IfEnd = apply {
+        builder.controlFlow("else if (%L)", argument, body = body)
+    }
+
+    /** Adds an else block. */
+    public inline infix fun `else`(body: CodeBlockBuilder.() -> Unit) {
         builder.controlFlow("else", body = body)
     }
 
-    /**
-     * Adds a `else xxx` statement after the previous `if` body.
-     *
-     * This ends the if statement.
-     */
-    public infix fun Else(codeBlock: CodeBlock) {
-        builder.add(codeBlock)
+    /** Adds a else statement. */
+    public fun `else`(format: String, vararg args: Any) {
+        builder.addStatement("else $format", *args)
     }
 
-    public fun Else(format: String, vararg args: Any) {
-        builder.addStatement("else $format", *args)
+    /** Adds an else statement. */
+    public infix fun `else`(code: String) {
+        builder.addStatement("else %L", code)
+    }
+
+    /** Adds an else statement. */
+    public infix fun `else`(codeBlock: CodeBlock) {
+        builder.addStatement("else %L", codeBlock)
     }
 
 }
 
 /**
- * Adds a while-statement control flow.
+ * Adds a while control flow.
  */
-public inline fun CodeBlockBuilder.While(argument: String, vararg args: Any, body: CodeBlockBuilder.() -> Unit) {
+public inline fun CodeBlockBuilder.`while`(argument: String, vararg args: Any, body: CodeBlockBuilder.() -> Unit) {
     controlFlow("while ($argument)", *args, body = body)
 }
 
 /**
- * Adds a do-while-statement control flow.
- *
- * **The generated code will be incorrect unless the do statement is closed by a [While][DoEnd.While].**
+ * Adds a while control flow.
  */
-public inline fun CodeBlockBuilder.Do(body: CodeBlockBuilder.() -> Unit): DoEnd {
+public inline fun CodeBlockBuilder.`while`(argument: CodeBlock, body: CodeBlockBuilder.() -> Unit) {
+    controlFlow("while (%L)", argument, body = body)
+}
+
+
+/**
+ * Adds a do-while control flow.
+ *
+ * **The generated code will be incorrect unless completed with [while][DoEnd.while].**
+ */
+public inline fun CodeBlockBuilder.`do`(body: CodeBlockBuilder.() -> Unit): DoEnd {
     beginControlFlow("do")
     body()
     return DoEnd(this)
 }
 
 /**
- * Represents the end of an do control flow.
- *
- * The if statement must be continued with [While]
+ * Represents the end of an do-while; [while] must be used to generate correct code.
  */
-public inline class DoEnd(private val builder: CodeBlockBuilder) {
-    /**
-     * Adds a `while`, completing the do-while statement.
-     */
-    public fun While(format: String, vararg args: Any) {
+public class DoEnd(private val builder: CodeBlockBuilder) {
+    public fun `while`(argument: String, vararg args: Any) {
         builder.unindent()
-        builder.add("} while ($format)\n", *args)
+        builder.add("} while ($argument)\n", *args)
+    }
+
+    public infix fun `while`(argument: String) {
+        builder.unindent()
+        builder.add("} while (%L)\n", argument)
+    }
+
+    public infix fun `while`(codeBlock: CodeBlock) {
+        builder.unindent()
+        builder.add("} while (%L)\n", codeBlock)
     }
 }
 
 
 /**
- * Adds a for-statement control flow.
+ * Adds a `for` control flow.
  */
-public inline fun CodeBlockBuilder.For(format: String, vararg args: Any, body: CodeBlockBuilder.() -> Unit) {
+public inline fun CodeBlockBuilder.`for`(format: String, vararg args: Any, body: CodeBlockBuilder.() -> Unit) {
     controlFlow("for ($format)", *args, body = body)
 }
 
 /**
- * Adds a when-statement control flow, without an argument.
+ * Adds a `for` control flow.
  */
-public inline fun CodeBlockBuilder.When(body: WhenScope.() -> Unit) {
+public inline fun CodeBlockBuilder.`for`(codeBlock: CodeBlock, body: CodeBlockBuilder.() -> Unit) {
+    controlFlow("for (%L)", codeBlock, body = body)
+}
+
+/**
+ * Adds a `when` control flow, without an argument.
+ */
+public inline fun CodeBlockBuilder.`when`(body: WhenBody.() -> Unit) {
     controlFlow("when") {
-        WhenScope(this).body()
+        WhenBody(this).body()
     }
 }
 
 /**
- * Adds a when-statement control flow with an argument.
+ * Adds a `when` control flow, with an argument.
  */
-public inline fun CodeBlockBuilder.When(argument: String, vararg args: Any, body: WhenScope.() -> Unit) {
+public inline fun CodeBlockBuilder.`when`(argument: String, vararg args: Any, body: WhenBody.() -> Unit) {
     controlFlow("when ($argument)", *args) {
-        WhenScope(this).body()
+        WhenBody(this).body()
     }
 }
 
-public inline class WhenScope(@PublishedApi internal val builder: CodeBlockBuilder) {
+/**
+ * Adds a `when` control flow, with an argument.
+ */
+public inline fun CodeBlockBuilder.`when`(argument: CodeBlock, body: WhenBody.() -> Unit) {
+    controlFlow("when (%L)", argument) {
+        WhenBody(this).body()
+    }
+}
+
+public class WhenBody(@PublishedApi internal val builder: CodeBlockBuilder) {
 
     /** Specifies a when branch with block body. */
     public inline operator fun CodeBlock.minus(body: CodeBlockBuilder.() -> Unit) {
@@ -172,4 +223,15 @@ public inline class WhenScope(@PublishedApi internal val builder: CodeBlockBuild
     public operator fun String.minus(code: String) {
         builder.addStatement("%L -> %L", this, code)
     }
+
+    /** Specifies a when branch with block body. */
+    public inline fun case(code: CodeBlock, body: CodeBlockBuilder.() -> Unit) {
+        builder.controlFlow("%L ->", code, body = body)
+    }
+
+    /** Specifies a when branch with block body. */
+    public inline fun case(format: String, vararg args: Any, body: CodeBlockBuilder.() -> Unit) {
+        builder.controlFlow("$format ->", *args, body = body)
+    }
+
 }
