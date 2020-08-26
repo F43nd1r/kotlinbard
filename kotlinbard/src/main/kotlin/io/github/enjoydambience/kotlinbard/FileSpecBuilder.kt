@@ -28,6 +28,7 @@ public class FileSpecBuilder internal constructor(
     public val poetBuilder: FileSpec.Builder,
     @Suppress("UNUSED_PARAMETER") dummy: Boolean,
 ) : WithAnnotationsBuilder,
+    WithMembersBuilder,
     Taggable.Builder<FileSpecBuilder> {
     public override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
     public val imports: List<Import> get() = poetBuilder.imports
@@ -65,10 +66,6 @@ public class FileSpecBuilder internal constructor(
 
     public fun addComment(format: String, vararg args: Any) {
         poetBuilder.addComment(format = format, args = args)
-    }
-
-    public fun addFunction(funSpec: FunSpec) {
-        poetBuilder.addFunction(funSpec = funSpec)
     }
 
     public fun addImport(className: ClassName, vararg names: String) {
@@ -111,11 +108,15 @@ public class FileSpecBuilder internal constructor(
         poetBuilder.addImport(`class` = `class`, names = names)
     }
 
-    public fun addProperty(propertySpec: PropertySpec) {
+    public override fun addFunction(funSpec: FunSpec) {
+        poetBuilder.addFunction(funSpec = funSpec)
+    }
+
+    public override fun addProperty(propertySpec: PropertySpec) {
         poetBuilder.addProperty(propertySpec = propertySpec)
     }
 
-    public fun addType(typeSpec: TypeSpec) {
+    public override fun addType(typeSpec: TypeSpec) {
         poetBuilder.addType(typeSpec = typeSpec)
     }
 

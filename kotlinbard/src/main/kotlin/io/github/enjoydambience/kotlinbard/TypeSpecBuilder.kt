@@ -31,6 +31,7 @@ public class TypeSpecBuilder internal constructor(
     @Suppress("UNUSED_PARAMETER") dummy: Boolean,
 ) : WithAnnotationsBuilder,
     WithModifiersBuilder,
+    WithMembersBuilder,
     Taggable.Builder<TypeSpecBuilder>,
     OriginatingElementsHolder.Builder<TypeSpecBuilder> {
     public override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotationSpecs
@@ -62,14 +63,6 @@ public class TypeSpecBuilder internal constructor(
         poetBuilder.addEnumConstant(name = name, typeSpec = typeSpec)
     }
 
-    public fun addFunction(funSpec: FunSpec) {
-        poetBuilder.addFunction(funSpec = funSpec)
-    }
-
-    public fun addFunctions(funSpecs: Iterable<FunSpec>) {
-        poetBuilder.addFunctions(funSpecs = funSpecs)
-    }
-
     public fun addInitializerBlock(block: CodeBlock) {
         poetBuilder.addInitializerBlock(block = block)
     }
@@ -90,60 +83,29 @@ public class TypeSpecBuilder internal constructor(
         poetBuilder.addModifiers(modifiers = modifiers)
     }
 
-    public fun addProperties(propertySpecs: Iterable<PropertySpec>) {
-        poetBuilder.addProperties(propertySpecs = propertySpecs)
+
+    public override fun addFunction(funSpec: FunSpec) {
+        poetBuilder.addFunction(funSpec = funSpec)
     }
 
-    public fun addProperty(propertySpec: PropertySpec) {
+    public override fun addFunctions(funSpecs: Iterable<FunSpec>) {
+        poetBuilder.addFunctions(funSpecs = funSpecs)
+    }
+
+    public override fun addProperty(propertySpec: PropertySpec) {
         poetBuilder.addProperty(propertySpec = propertySpec)
     }
 
-    public fun addProperty(
-        name: String,
-        type: TypeName,
-        vararg modifiers: KModifier,
-    ) {
-        poetBuilder.addProperty(name = name, type = type, modifiers = modifiers)
+    public override fun addProperties(propertySpecs: Iterable<PropertySpec>) {
+        poetBuilder.addProperties(propertySpecs = propertySpecs)
     }
 
-    public fun addProperty(
-        name: String,
-        type: TypeName,
-        modifiers: Iterable<KModifier>,
-    ) {
-        poetBuilder.addProperty(name = name, type = type, modifiers = modifiers)
+    public override fun addType(typeSpec: TypeSpec) {
+        poetBuilder.addType(typeSpec = typeSpec)
     }
 
-    public fun addProperty(
-        name: String,
-        type: Type,
-        vararg modifiers: KModifier,
-    ) {
-        poetBuilder.addProperty(name = name, type = type, modifiers = modifiers)
-    }
-
-    public fun addProperty(
-        name: String,
-        type: Type,
-        modifiers: Iterable<KModifier>,
-    ) {
-        poetBuilder.addProperty(name = name, type = type, modifiers = modifiers)
-    }
-
-    public fun addProperty(
-        name: String,
-        type: KClass<*>,
-        vararg modifiers: KModifier,
-    ) {
-        poetBuilder.addProperty(name = name, type = type, modifiers = modifiers)
-    }
-
-    public fun addProperty(
-        name: String,
-        type: KClass<*>,
-        modifiers: Iterable<KModifier>,
-    ) {
-        poetBuilder.addProperty(name = name, type = type, modifiers = modifiers)
+    public override fun addTypes(typeSpecs: Iterable<TypeSpec>) {
+        poetBuilder.addTypes(typeSpecs = typeSpecs)
     }
 
     public fun addSuperclassConstructorParameter(codeBlock: CodeBlock) {
@@ -189,20 +151,12 @@ public class TypeSpecBuilder internal constructor(
         poetBuilder.addSuperinterfaces(superinterfaces = superinterfaces)
     }
 
-    public fun addType(typeSpec: TypeSpec) {
-        poetBuilder.addType(typeSpec = typeSpec)
-    }
-
     public fun addTypeVariable(typeVariable: TypeVariableName) {
         poetBuilder.addTypeVariable(typeVariable = typeVariable)
     }
 
     public fun addTypeVariables(typeVariables: Iterable<TypeVariableName>) {
         poetBuilder.addTypeVariables(typeVariables = typeVariables)
-    }
-
-    public fun addTypes(typeSpecs: Iterable<TypeSpec>) {
-        poetBuilder.addTypes(typeSpecs = typeSpecs)
     }
 
     public fun build(): TypeSpec = poetBuilder.build()
