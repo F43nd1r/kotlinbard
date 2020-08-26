@@ -35,31 +35,21 @@ public fun FunSpecBuilder(poetBuilder: FunSpec.Builder): FunSpecBuilder =
 public class FunSpecBuilder internal constructor(
     public val poetBuilder: FunSpec.Builder,
     @Suppress("UNUSED_PARAMETER") dummy: Boolean,
-) : Taggable.Builder<FunSpecBuilder>,
+) : WithAnnotationsBuilder,
+    Taggable.Builder<FunSpecBuilder>,
     OriginatingElementsHolder.Builder<FunSpecBuilder> {
-    public val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
+    public override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
     public val modifiers: MutableList<KModifier> get() = poetBuilder.modifiers
     override val originatingElements: MutableList<Element> get() = poetBuilder.originatingElements
     public val parameters: MutableList<ParameterSpec> get() = poetBuilder.parameters
     public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
     public val typeVariables: MutableList<TypeVariableName> get() = poetBuilder.typeVariables
-    public fun addAnnotation(annotationSpec: AnnotationSpec) {
+
+    public override fun addAnnotation(annotationSpec: AnnotationSpec) {
         poetBuilder.addAnnotation(annotationSpec = annotationSpec)
     }
 
-    public fun addAnnotation(annotation: ClassName) {
-        poetBuilder.addAnnotation(annotation = annotation)
-    }
-
-    public fun addAnnotation(annotation: Class<*>) {
-        poetBuilder.addAnnotation(annotation = annotation)
-    }
-
-    public fun addAnnotation(annotation: KClass<*>) {
-        poetBuilder.addAnnotation(annotation = annotation)
-    }
-
-    public fun addAnnotations(annotationSpecs: Iterable<AnnotationSpec>) {
+    public override fun addAnnotations(annotationSpecs: Iterable<AnnotationSpec>) {
         poetBuilder.addAnnotations(annotationSpecs = annotationSpecs)
     }
 

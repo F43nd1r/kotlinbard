@@ -27,8 +27,9 @@ public fun FileSpecBuilder(poetBuilder: FileSpec.Builder): FileSpecBuilder =
 public class FileSpecBuilder internal constructor(
     public val poetBuilder: FileSpec.Builder,
     @Suppress("UNUSED_PARAMETER") dummy: Boolean,
-) : Taggable.Builder<FileSpecBuilder> {
-    public val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
+) : WithAnnotationsBuilder,
+    Taggable.Builder<FileSpecBuilder> {
+    public override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
     public val imports: List<Import> get() = poetBuilder.imports
     public val members: MutableList<Any> get() = poetBuilder.members
     public val name: String get() = poetBuilder.name
@@ -58,20 +59,8 @@ public class FileSpecBuilder internal constructor(
         poetBuilder.addAliasedImport(`class` = `class`, `as` = `as`)
     }
 
-    public fun addAnnotation(annotationSpec: AnnotationSpec) {
+    public override fun addAnnotation(annotationSpec: AnnotationSpec) {
         poetBuilder.addAnnotation(annotationSpec = annotationSpec)
-    }
-
-    public fun addAnnotation(annotation: ClassName) {
-        poetBuilder.addAnnotation(annotation = annotation)
-    }
-
-    public fun addAnnotation(annotation: Class<*>) {
-        poetBuilder.addAnnotation(annotation = annotation)
-    }
-
-    public fun addAnnotation(annotation: KClass<*>) {
-        poetBuilder.addAnnotation(annotation = annotation)
     }
 
     public fun addComment(format: String, vararg args: Any) {
