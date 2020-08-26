@@ -26,23 +26,23 @@ class ReadmeExamples : StringSpec({
                 "taco.let" {
                     -"println(it)"
                 }
-                If("taco.isSpicy()") {
+                `if`("taco.isSpicy()") {
                     -"println(%S)".fmt("spicy!!")
-                }.ElseIf("me.isHungry") {
+                }.`else if`("me.isHungry") {
                     -"eat(taco)"
-                } Else {
+                } `else` {
                     -"saveForLater(taco)"
                 }
 
-                Do {
+                `do` {
                     -"makeTaco()"
-                }.While("tacos < 5")
+                }.`while`("tacos < 5")
 
-                For("taco in tacos") {
+                `for`("taco in tacos") {
                     -"println(%P)".fmt("taco information: \$taco")
                 }
 
-                When("taco") {
+                `when`("taco") {
                     "is SpicyTaco" - {
                         -"println(%S)".fmt("Spicy!!")
                     }
