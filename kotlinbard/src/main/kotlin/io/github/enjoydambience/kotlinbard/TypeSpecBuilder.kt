@@ -30,6 +30,7 @@ public class TypeSpecBuilder internal constructor(
     public val poetBuilder: TypeSpec.Builder,
     @Suppress("UNUSED_PARAMETER") dummy: Boolean,
 ) : WithAnnotationsBuilder,
+    WithModifiersBuilder,
     Taggable.Builder<TypeSpecBuilder>,
     OriginatingElementsHolder.Builder<TypeSpecBuilder> {
     public override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotationSpecs
@@ -40,7 +41,7 @@ public class TypeSpecBuilder internal constructor(
         public set(value) {
             poetBuilder.initializerIndex = value
         }
-    public val modifiers: MutableSet<KModifier> get() = poetBuilder.modifiers
+    public override val modifiers: MutableSet<KModifier> get() = poetBuilder.modifiers
     override val originatingElements: MutableList<Element> get() = poetBuilder.originatingElements
     public val propertySpecs: MutableList<PropertySpec> get() = poetBuilder.propertySpecs
     public val superclassConstructorParameters: MutableList<CodeBlock> get() = poetBuilder.superclassConstructorParameters
@@ -81,11 +82,11 @@ public class TypeSpecBuilder internal constructor(
         poetBuilder.addKdoc(format = format, args = args)
     }
 
-    public fun addModifiers(vararg modifiers: KModifier) {
+    public override fun addModifiers(vararg modifiers: KModifier) {
         poetBuilder.addModifiers(modifiers = modifiers)
     }
 
-    public fun addModifiers(modifiers: Iterable<KModifier>) {
+    public override fun addModifiers(modifiers: Iterable<KModifier>) {
         poetBuilder.addModifiers(modifiers = modifiers)
     }
 

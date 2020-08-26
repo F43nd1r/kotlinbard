@@ -30,10 +30,11 @@ public class PropertySpecBuilder internal constructor(
     public val poetBuilder: PropertySpec.Builder,
     @Suppress("UNUSED_PARAMETER") dummy: Boolean,
 ) : WithAnnotationsBuilder,
+    WithModifiersBuilder,
     Taggable.Builder<PropertySpecBuilder>,
     OriginatingElementsHolder.Builder<PropertySpecBuilder> {
     public override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
-    public val modifiers: MutableList<KModifier> get() = poetBuilder.modifiers
+    public override val modifiers: MutableList<KModifier> get() = poetBuilder.modifiers
     override val originatingElements: MutableList<Element> get() = poetBuilder.originatingElements
     public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
     public val typeVariables: MutableList<TypeVariableName> get() = poetBuilder.typeVariables
@@ -54,11 +55,11 @@ public class PropertySpecBuilder internal constructor(
         poetBuilder.addKdoc(format = format, args = args)
     }
 
-    public fun addModifiers(vararg modifiers: KModifier) {
+    public override fun addModifiers(vararg modifiers: KModifier) {
         poetBuilder.addModifiers(modifiers = modifiers)
     }
 
-    public fun addModifiers(modifiers: Iterable<KModifier>) {
+    public override fun addModifiers(modifiers: Iterable<KModifier>) {
         poetBuilder.addModifiers(modifiers = modifiers)
     }
 

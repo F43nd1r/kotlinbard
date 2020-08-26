@@ -36,10 +36,12 @@ public class FunSpecBuilder internal constructor(
     public val poetBuilder: FunSpec.Builder,
     @Suppress("UNUSED_PARAMETER") dummy: Boolean,
 ) : WithAnnotationsBuilder,
+    WithModifiersBuilder,
+    WithJvmModifiersBuilder,
     Taggable.Builder<FunSpecBuilder>,
     OriginatingElementsHolder.Builder<FunSpecBuilder> {
     public override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
-    public val modifiers: MutableList<KModifier> get() = poetBuilder.modifiers
+    public override val modifiers: MutableList<KModifier> get() = poetBuilder.modifiers
     override val originatingElements: MutableList<Element> get() = poetBuilder.originatingElements
     public val parameters: MutableList<ParameterSpec> get() = poetBuilder.parameters
     public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
@@ -73,11 +75,11 @@ public class FunSpecBuilder internal constructor(
         poetBuilder.addKdoc(format = format, args = args)
     }
 
-    public fun addModifiers(vararg modifiers: KModifier) {
+    public override fun addModifiers(vararg modifiers: KModifier) {
         poetBuilder.addModifiers(modifiers = modifiers)
     }
 
-    public fun addModifiers(modifiers: Iterable<KModifier>) {
+    public override fun addModifiers(modifiers: Iterable<KModifier>) {
         poetBuilder.addModifiers(modifiers = modifiers)
     }
 
@@ -198,7 +200,7 @@ public class FunSpecBuilder internal constructor(
         poetBuilder.endControlFlow()
     }
 
-    public fun jvmModifiers(modifiers: Iterable<Modifier>): Unit =
+    public override fun jvmModifiers(modifiers: Iterable<Modifier>): Unit =
         poetBuilder.jvmModifiers(modifiers = modifiers)
 
     public fun nextControlFlow(controlFlow: String, vararg args: Any) {

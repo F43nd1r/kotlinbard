@@ -33,10 +33,12 @@ public class ParameterSpecBuilder internal constructor(
     public val poetBuilder: ParameterSpec.Builder,
     @Suppress("UNUSED_PARAMETER") dummy: Boolean,
 ) : WithAnnotationsBuilder,
+    WithModifiersBuilder,
+    WithJvmModifiersBuilder,
     Taggable.Builder<ParameterSpecBuilder> {
     public override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
     public val kdoc: CodeBlock.Builder get() = poetBuilder.kdoc
-    public val modifiers: MutableList<KModifier> get() = poetBuilder.modifiers
+    public override val modifiers: MutableList<KModifier> get() = poetBuilder.modifiers
     public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
 
     public override fun addAnnotation(annotationSpec: AnnotationSpec) {
@@ -55,11 +57,11 @@ public class ParameterSpecBuilder internal constructor(
         poetBuilder.addKdoc(format = format, args = args)
     }
 
-    public fun addModifiers(vararg modifiers: KModifier) {
+    public override fun addModifiers(vararg modifiers: KModifier) {
         poetBuilder.addModifiers(modifiers = modifiers)
     }
 
-    public fun addModifiers(modifiers: Iterable<KModifier>) {
+    public override fun addModifiers(modifiers: Iterable<KModifier>) {
         poetBuilder.addModifiers(modifiers = modifiers)
     }
 
@@ -72,7 +74,7 @@ public class ParameterSpecBuilder internal constructor(
         poetBuilder.defaultValue(format = format, args = args)
     }
 
-    public fun jvmModifiers(modifiers: Iterable<Modifier>) {
+    public override fun jvmModifiers(modifiers: Iterable<Modifier>) {
         poetBuilder.jvmModifiers(modifiers = modifiers)
     }
 }
