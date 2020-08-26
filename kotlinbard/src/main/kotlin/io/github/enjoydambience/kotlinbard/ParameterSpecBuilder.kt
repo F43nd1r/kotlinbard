@@ -41,20 +41,20 @@ public class ParameterSpecBuilder internal constructor(
     public override val modifiers: MutableList<KModifier> get() = poetBuilder.modifiers
     public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
 
-    public override fun addAnnotation(annotationSpec: AnnotationSpec) {
-        poetBuilder.addAnnotation(annotationSpec = annotationSpec)
-    }
-
-    public override fun addAnnotations(annotationSpecs: Iterable<AnnotationSpec>) {
-        poetBuilder.addAnnotations(annotationSpecs = annotationSpecs)
-    }
-
     public fun addKdoc(block: CodeBlock) {
         poetBuilder.addKdoc(block = block)
     }
 
     public fun addKdoc(format: String, vararg args: Any) {
         poetBuilder.addKdoc(format = format, args = args)
+    }
+
+    public override fun addAnnotation(annotationSpec: AnnotationSpec) {
+        poetBuilder.addAnnotation(annotationSpec = annotationSpec)
+    }
+
+    public override fun addAnnotations(annotationSpecs: Iterable<AnnotationSpec>) {
+        poetBuilder.addAnnotations(annotationSpecs = annotationSpecs)
     }
 
     public override fun addModifiers(vararg modifiers: KModifier) {
@@ -65,7 +65,10 @@ public class ParameterSpecBuilder internal constructor(
         poetBuilder.addModifiers(modifiers = modifiers)
     }
 
-    public fun build(): ParameterSpec = poetBuilder.build()
+    public override fun jvmModifiers(modifiers: Iterable<Modifier>) {
+        poetBuilder.jvmModifiers(modifiers = modifiers)
+    }
+
     public fun defaultValue(codeBlock: CodeBlock) {
         poetBuilder.defaultValue(codeBlock = codeBlock)
     }
@@ -74,9 +77,8 @@ public class ParameterSpecBuilder internal constructor(
         poetBuilder.defaultValue(format = format, args = args)
     }
 
-    public override fun jvmModifiers(modifiers: Iterable<Modifier>) {
-        poetBuilder.jvmModifiers(modifiers = modifiers)
-    }
+
+    public fun build(): ParameterSpec = poetBuilder.build()
 }
 
 // -- build --

@@ -36,38 +36,8 @@ public class FileSpecBuilder internal constructor(
     public val name: String get() = poetBuilder.name
     public val packageName: String get() = poetBuilder.packageName
     public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
-    public fun addAliasedImport(className: ClassName, `as`: String) {
-        poetBuilder.addAliasedImport(className = className, `as` = `as`)
-    }
 
-    public fun addAliasedImport(
-        className: ClassName,
-        memberName: String,
-        `as`: String,
-    ) {
-        poetBuilder.addAliasedImport(className = className, memberName = memberName, `as` = `as`)
-    }
-
-    public fun addAliasedImport(memberName: MemberName, `as`: String) {
-        poetBuilder.addAliasedImport(memberName = memberName, `as` = `as`)
-    }
-
-    public fun addAliasedImport(`class`: Class<*>, `as`: String) {
-        poetBuilder.addAliasedImport(`class` = `class`, `as` = `as`)
-    }
-
-    public fun addAliasedImport(`class`: KClass<*>, `as`: String) {
-        poetBuilder.addAliasedImport(`class` = `class`, `as` = `as`)
-    }
-
-    public override fun addAnnotation(annotationSpec: AnnotationSpec) {
-        poetBuilder.addAnnotation(annotationSpec = annotationSpec)
-    }
-
-    public fun addComment(format: String, vararg args: Any) {
-        poetBuilder.addComment(format = format, args = args)
-    }
-
+    //region imports
     public fun addImport(className: ClassName, vararg names: String) {
         poetBuilder.addImport(className = className, names = names)
     }
@@ -108,6 +78,47 @@ public class FileSpecBuilder internal constructor(
         poetBuilder.addImport(`class` = `class`, names = names)
     }
 
+    public fun addAliasedImport(className: ClassName, `as`: String) {
+        poetBuilder.addAliasedImport(className = className, `as` = `as`)
+    }
+
+    public fun addAliasedImport(
+        className: ClassName,
+        memberName: String,
+        `as`: String,
+    ) {
+        poetBuilder.addAliasedImport(className = className, memberName = memberName, `as` = `as`)
+    }
+
+    public fun addAliasedImport(memberName: MemberName, `as`: String) {
+        poetBuilder.addAliasedImport(memberName = memberName, `as` = `as`)
+    }
+
+    public fun addAliasedImport(`class`: Class<*>, `as`: String) {
+        poetBuilder.addAliasedImport(`class` = `class`, `as` = `as`)
+    }
+
+    public fun addAliasedImport(`class`: KClass<*>, `as`: String) {
+        poetBuilder.addAliasedImport(`class` = `class`, `as` = `as`)
+    }
+
+    public fun clearImports() {
+        poetBuilder.clearImports()
+    }
+    //endregion
+
+    public fun addComment(format: String, vararg args: Any) {
+        poetBuilder.addComment(format = format, args = args)
+    }
+
+    public fun clearComment() {
+        poetBuilder.clearComment()
+    }
+
+    public override fun addAnnotation(annotationSpec: AnnotationSpec) {
+        poetBuilder.addAnnotation(annotationSpec = annotationSpec)
+    }
+
     public override fun addFunction(funSpec: FunSpec) {
         poetBuilder.addFunction(funSpec = funSpec)
     }
@@ -124,18 +135,11 @@ public class FileSpecBuilder internal constructor(
         poetBuilder.addTypeAlias(typeAliasSpec = typeAliasSpec)
     }
 
-    public fun build(): FileSpec = poetBuilder.build()
-    public fun clearComment() {
-        poetBuilder.clearComment()
-    }
-
-    public fun clearImports() {
-        poetBuilder.clearImports()
-    }
-
     public fun indent(indent: String) {
         poetBuilder.indent(indent = indent)
     }
+
+    public fun build(): FileSpec = poetBuilder.build()
 }
 
 // -- build --
@@ -143,9 +147,9 @@ public class FileSpecBuilder internal constructor(
 public inline fun file(
     packageName: String,
     fileName: String,
-    config: FileSpecBuilder.() -> Unit = {},
-): FileSpec = FileSpec.builder(packageName = packageName,
-    fileName = fileName).wrapBuilder().apply(config).build()
+    config: FileSpecBuilder.() -> Unit,
+): FileSpec =
+    FileSpec.builder(packageName = packageName, fileName = fileName).wrapBuilder().apply(config).build()
 
 // -- get --
 

@@ -27,9 +27,6 @@ public class CodeBlockBuilder internal constructor(
     public val poetBuilder: CodeBlock.Builder,
     @Suppress("UNUSED_PARAMETER") dummy: Boolean = false,
 ) : CodeBuilding() {
-    override fun clearCode() {
-        poetBuilder.clear()
-    }
 
     public override fun addCode(format: String, vararg args: Any?) {
         poetBuilder.add(format = format, args = args)
@@ -39,40 +36,42 @@ public class CodeBlockBuilder internal constructor(
         poetBuilder.add(codeBlock)
     }
 
-    public override fun addNamed(format: String, args: Map<String, *>) {
-        poetBuilder.addNamed(format = format, arguments = args)
-    }
-
     public override fun addStatement(format: String, vararg args: Any?) {
         poetBuilder.addStatement(format = format, args = args)
+    }
+
+    public override fun addNamed(format: String, args: Map<String, *>) {
+        poetBuilder.addNamed(format = format, arguments = args)
     }
 
     public override fun beginControlFlow(controlFlow: String, vararg args: Any) {
         poetBuilder.beginControlFlow(controlFlow = controlFlow, args = args)
     }
 
-    public fun build(): CodeBlock = poetBuilder.build()
-    public fun clear() {
-        poetBuilder.clear()
+    public override fun nextControlFlow(controlFlow: String, vararg args: Any) {
+        poetBuilder.nextControlFlow(controlFlow = controlFlow, args = args)
     }
 
     public override fun endControlFlow() {
         poetBuilder.endControlFlow()
     }
 
-    public fun indent() {
-        poetBuilder.indent()
+    override fun clearCode() {
+        poetBuilder.clear()
     }
 
-    public fun isEmpty(): Boolean = poetBuilder.isEmpty()
-    public fun isNotEmpty(): Boolean = poetBuilder.isNotEmpty()
-    public fun nextControlFlow(controlFlow: String, vararg args: Any?) {
-        poetBuilder.nextControlFlow(controlFlow = controlFlow, args = args)
+    public fun indent() {
+        poetBuilder.indent()
     }
 
     public fun unindent() {
         poetBuilder.unindent()
     }
+
+    public fun isEmpty(): Boolean = poetBuilder.isEmpty()
+    public fun isNotEmpty(): Boolean = poetBuilder.isNotEmpty()
+
+    public fun build(): CodeBlock = poetBuilder.build()
 }
 
 /**

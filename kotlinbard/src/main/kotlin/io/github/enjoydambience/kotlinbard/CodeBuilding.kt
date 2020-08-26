@@ -23,19 +23,18 @@ import com.squareup.kotlinpoet.CodeBlock
  */
 @CodegenDsl
 public abstract class CodeBuilding internal constructor() {
-    public abstract fun clearCode()
 
     public abstract fun addCode(codeBlock: CodeBlock)
     public abstract fun addCode(format: String, vararg args: Any?)
     public open fun addStatement(codeBlock: CodeBlock): Unit = addStatement("%L", codeBlock)
     public abstract fun addStatement(format: String, vararg args: Any?)
-
     public abstract fun addNamed(format: String, args: Map<String, *>)
 
     public abstract fun beginControlFlow(controlFlow: String, vararg args: Any)
-
-    //    public abstract fun nextControlFlow(controlFlow: String, vararg args: Any?)
+    public abstract fun nextControlFlow(controlFlow: String, vararg args: Any)
     public abstract fun endControlFlow()
+
+    public abstract fun clearCode()
 
     /**
      * Used to quickly create a codeblock.

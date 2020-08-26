@@ -48,47 +48,6 @@ public class FunSpecBuilder internal constructor(
     public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
     public val typeVariables: MutableList<TypeVariableName> get() = poetBuilder.typeVariables
 
-    public override fun addAnnotation(annotationSpec: AnnotationSpec) {
-        poetBuilder.addAnnotation(annotationSpec = annotationSpec)
-    }
-
-    public override fun addAnnotations(annotationSpecs: Iterable<AnnotationSpec>) {
-        poetBuilder.addAnnotations(annotationSpecs = annotationSpecs)
-    }
-
-    public override fun addCode(codeBlock: CodeBlock) {
-        poetBuilder.addCode(codeBlock = codeBlock)
-    }
-
-    public override fun addCode(format: String, vararg args: Any?) {
-        poetBuilder.addCode(format = format, args = args)
-    }
-
-    public override fun addStatement(format: String, vararg args: Any?) {
-        @Suppress("UNCHECKED_CAST")
-        poetBuilder.addStatement(format, *(args as Array<Any>))
-    }
-
-    override fun addNamed(format: String, args: Map<String, *>) {
-        poetBuilder.addNamedCode(format, args)
-    }
-
-    public override fun beginControlFlow(controlFlow: String, vararg args: Any) {
-        poetBuilder.beginControlFlow(controlFlow = controlFlow, args = args)
-    }
-
-    public override fun endControlFlow() {
-        poetBuilder.endControlFlow()
-    }
-
-    public override fun clearCode() {
-        poetBuilder.clearBody()
-    }
-
-    public fun addComment(format: String, vararg args: Any) {
-        poetBuilder.addComment(format = format, args = args)
-    }
-
     public fun addKdoc(block: CodeBlock) {
         poetBuilder.addKdoc(block = block)
     }
@@ -97,12 +56,63 @@ public class FunSpecBuilder internal constructor(
         poetBuilder.addKdoc(format = format, args = args)
     }
 
+    public override fun addAnnotation(annotationSpec: AnnotationSpec) {
+        poetBuilder.addAnnotation(annotationSpec = annotationSpec)
+    }
+
+    public override fun addAnnotations(annotationSpecs: Iterable<AnnotationSpec>) {
+        poetBuilder.addAnnotations(annotationSpecs = annotationSpecs)
+    }
+
     public override fun addModifiers(vararg modifiers: KModifier) {
         poetBuilder.addModifiers(modifiers = modifiers)
     }
 
     public override fun addModifiers(modifiers: Iterable<KModifier>) {
         poetBuilder.addModifiers(modifiers = modifiers)
+    }
+
+    public override fun jvmModifiers(modifiers: Iterable<Modifier>): Unit =
+        poetBuilder.jvmModifiers(modifiers = modifiers)
+
+
+    public fun addTypeVariable(typeVariable: TypeVariableName) {
+        poetBuilder.addTypeVariable(typeVariable = typeVariable)
+    }
+
+    public fun addTypeVariables(typeVariables: Iterable<TypeVariableName>) {
+        poetBuilder.addTypeVariables(typeVariables = typeVariables)
+    }
+
+    public fun receiver(receiverType: TypeName, kdoc: CodeBlock = emptyCodeBlock) {
+        poetBuilder.receiver(receiverType = receiverType, kdoc = kdoc)
+    }
+
+    public fun receiver(receiverType: Type, kdoc: CodeBlock = emptyCodeBlock) {
+        poetBuilder.receiver(receiverType = receiverType, kdoc = kdoc)
+    }
+
+    public fun receiver(
+        receiverType: Type,
+        kdoc: String,
+        vararg args: Any,
+    ) {
+        poetBuilder.receiver(receiverType = receiverType, kdoc = kdoc, args = args)
+    }
+
+    public fun receiver(
+        receiverType: KClass<*>,
+        kdoc: CodeBlock = emptyCodeBlock,
+    ) {
+        poetBuilder.receiver(receiverType = receiverType, kdoc = kdoc)
+    }
+
+    public fun receiver(
+        receiverType: KClass<*>,
+        kdoc: String,
+        vararg args: Any,
+    ) {
+        poetBuilder.receiver(receiverType = receiverType, kdoc = kdoc, args = args)
     }
 
     public fun addParameter(parameterSpec: ParameterSpec) {
@@ -161,16 +171,6 @@ public class FunSpecBuilder internal constructor(
         poetBuilder.addParameters(parameterSpecs = parameterSpecs)
     }
 
-
-    public fun addTypeVariable(typeVariable: TypeVariableName) {
-        poetBuilder.addTypeVariable(typeVariable = typeVariable)
-    }
-
-    public fun addTypeVariables(typeVariables: Iterable<TypeVariableName>) {
-        poetBuilder.addTypeVariables(typeVariables = typeVariables)
-    }
-
-    public fun build(): FunSpec = poetBuilder.build()
     public fun callSuperConstructor(vararg args: CodeBlock) {
         poetBuilder.callSuperConstructor(args = args)
     }
@@ -203,45 +203,6 @@ public class FunSpecBuilder internal constructor(
         poetBuilder.callThisConstructor(args = args)
     }
 
-
-    public override fun jvmModifiers(modifiers: Iterable<Modifier>): Unit =
-        poetBuilder.jvmModifiers(modifiers = modifiers)
-
-    public fun nextControlFlow(controlFlow: String, vararg args: Any) {
-        poetBuilder.nextControlFlow(controlFlow = controlFlow, args = args)
-    }
-
-    public fun receiver(receiverType: TypeName, kdoc: CodeBlock = emptyCodeBlock) {
-        poetBuilder.receiver(receiverType = receiverType, kdoc = kdoc)
-    }
-
-    public fun receiver(receiverType: Type, kdoc: CodeBlock = emptyCodeBlock) {
-        poetBuilder.receiver(receiverType = receiverType, kdoc = kdoc)
-    }
-
-    public fun receiver(
-        receiverType: Type,
-        kdoc: String,
-        vararg args: Any,
-    ) {
-        poetBuilder.receiver(receiverType = receiverType, kdoc = kdoc, args = args)
-    }
-
-    public fun receiver(
-        receiverType: KClass<*>,
-        kdoc: CodeBlock = emptyCodeBlock,
-    ) {
-        poetBuilder.receiver(receiverType = receiverType, kdoc = kdoc)
-    }
-
-    public fun receiver(
-        receiverType: KClass<*>,
-        kdoc: String,
-        vararg args: Any,
-    ) {
-        poetBuilder.receiver(receiverType = receiverType, kdoc = kdoc, args = args)
-    }
-
     public fun returns(returnType: TypeName, kdoc: CodeBlock = emptyCodeBlock) {
         poetBuilder.returns(returnType = returnType, kdoc = kdoc)
     }
@@ -269,6 +230,46 @@ public class FunSpecBuilder internal constructor(
     ) {
         poetBuilder.returns(returnType = returnType, kdoc = kdoc, args = args)
     }
+
+
+    public override fun addCode(codeBlock: CodeBlock) {
+        poetBuilder.addCode(codeBlock = codeBlock)
+    }
+
+    public override fun addCode(format: String, vararg args: Any?) {
+        poetBuilder.addCode(format = format, args = args)
+    }
+
+    public override fun addStatement(format: String, vararg args: Any?) {
+        @Suppress("UNCHECKED_CAST")
+        poetBuilder.addStatement(format, *(args as Array<Any>))
+    }
+
+    override fun addNamed(format: String, args: Map<String, *>) {
+        poetBuilder.addNamedCode(format, args)
+    }
+
+    public override fun beginControlFlow(controlFlow: String, vararg args: Any) {
+        poetBuilder.beginControlFlow(controlFlow = controlFlow, args = args)
+    }
+
+    public override fun nextControlFlow(controlFlow: String, vararg args: Any) {
+        poetBuilder.nextControlFlow(controlFlow = controlFlow, args = args)
+    }
+
+    public override fun endControlFlow() {
+        poetBuilder.endControlFlow()
+    }
+
+    public override fun clearCode() {
+        poetBuilder.clearBody()
+    }
+
+    public fun addComment(format: String, vararg args: Any) {
+        poetBuilder.addComment(format = format, args = args)
+    }
+
+    public fun build(): FunSpec = poetBuilder.build()
 }
 
 // -- build --

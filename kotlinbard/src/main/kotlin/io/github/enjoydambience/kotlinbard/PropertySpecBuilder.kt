@@ -39,20 +39,20 @@ public class PropertySpecBuilder internal constructor(
     public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
     public val typeVariables: MutableList<TypeVariableName> get() = poetBuilder.typeVariables
 
-    public override fun addAnnotation(annotationSpec: AnnotationSpec) {
-        poetBuilder.addAnnotation(annotationSpec = annotationSpec)
-    }
-
-    public override fun addAnnotations(annotationSpecs: Iterable<AnnotationSpec>) {
-        poetBuilder.addAnnotations(annotationSpecs = annotationSpecs)
-    }
-
     public fun addKdoc(block: CodeBlock) {
         poetBuilder.addKdoc(block = block)
     }
 
     public fun addKdoc(format: String, vararg args: Any) {
         poetBuilder.addKdoc(format = format, args = args)
+    }
+
+    public override fun addAnnotation(annotationSpec: AnnotationSpec) {
+        poetBuilder.addAnnotation(annotationSpec = annotationSpec)
+    }
+
+    public override fun addAnnotations(annotationSpecs: Iterable<AnnotationSpec>) {
+        poetBuilder.addAnnotations(annotationSpecs = annotationSpecs)
     }
 
     public override fun addModifiers(vararg modifiers: KModifier) {
@@ -63,37 +63,13 @@ public class PropertySpecBuilder internal constructor(
         poetBuilder.addModifiers(modifiers = modifiers)
     }
 
+
     public fun addTypeVariable(typeVariable: TypeVariableName) {
         poetBuilder.addTypeVariable(typeVariable = typeVariable)
     }
 
     public fun addTypeVariables(typeVariables: Iterable<TypeVariableName>) {
         poetBuilder.addTypeVariables(typeVariables = typeVariables)
-    }
-
-    public fun build(): PropertySpec = poetBuilder.build()
-    public fun delegate(codeBlock: CodeBlock) {
-        poetBuilder.delegate(codeBlock = codeBlock)
-    }
-
-    public fun delegate(format: String, vararg args: Any?) {
-        poetBuilder.delegate(format = format, args = args)
-    }
-
-    public fun getter(getter: FunSpec) {
-        poetBuilder.getter(getter = getter)
-    }
-
-    public fun initializer(codeBlock: CodeBlock) {
-        poetBuilder.initializer(codeBlock = codeBlock)
-    }
-
-    public fun initializer(format: String, vararg args: Any?) {
-        poetBuilder.initializer(format = format, args = args)
-    }
-
-    public fun mutable(mutable: Boolean = true) {
-        poetBuilder.mutable(mutable = mutable)
     }
 
     public fun receiver(receiverType: TypeName) {
@@ -108,9 +84,35 @@ public class PropertySpecBuilder internal constructor(
         poetBuilder.receiver(receiverType = receiverType)
     }
 
+    public fun initializer(codeBlock: CodeBlock) {
+        poetBuilder.initializer(codeBlock = codeBlock)
+    }
+
+    public fun initializer(format: String, vararg args: Any?) {
+        poetBuilder.initializer(format = format, args = args)
+    }
+
+    public fun delegate(codeBlock: CodeBlock) {
+        poetBuilder.delegate(codeBlock = codeBlock)
+    }
+
+    public fun delegate(format: String, vararg args: Any?) {
+        poetBuilder.delegate(format = format, args = args)
+    }
+
+    public fun getter(getter: FunSpec) {
+        poetBuilder.getter(getter = getter)
+    }
+
+    public fun mutable(mutable: Boolean = true) {
+        poetBuilder.mutable(mutable = mutable)
+    }
+
     public fun setter(setter: FunSpec) {
         poetBuilder.setter(setter = setter)
     }
+
+    public fun build(): PropertySpec = poetBuilder.build()
 }
 
 // -- build --
@@ -120,48 +122,48 @@ public inline fun property(
     type: TypeName,
     vararg modifiers: KModifier,
     config: PropertySpecBuilder.() -> Unit = {},
-): PropertySpec = PropertySpec.builder(name = name, type = type,
-    modifiers = modifiers).wrapBuilder().apply(config).build()
+): PropertySpec =
+    PropertySpec.builder(name = name, type = type, modifiers = modifiers).wrapBuilder().apply(config).build()
 
 public inline fun property(
     name: String,
     type: TypeName,
     modifiers: Iterable<KModifier>,
     config: PropertySpecBuilder.() -> Unit = {},
-): PropertySpec = PropertySpec.builder(name = name, type = type,
-    modifiers = modifiers).wrapBuilder().apply(config).build()
+): PropertySpec =
+    PropertySpec.builder(name = name, type = type, modifiers = modifiers).wrapBuilder().apply(config).build()
 
 public inline fun property(
     name: String,
     type: Type,
     vararg modifiers: KModifier,
     config: PropertySpecBuilder.() -> Unit = {},
-): PropertySpec = PropertySpec.builder(name = name, type = type,
-    modifiers = modifiers).wrapBuilder().apply(config).build()
+): PropertySpec =
+    PropertySpec.builder(name = name, type = type, modifiers = modifiers).wrapBuilder().apply(config).build()
 
 public inline fun property(
     name: String,
     type: Type,
     modifiers: Iterable<KModifier>,
     config: PropertySpecBuilder.() -> Unit = {},
-): PropertySpec = PropertySpec.builder(name = name, type = type,
-    modifiers = modifiers).wrapBuilder().apply(config).build()
+): PropertySpec =
+    PropertySpec.builder(name = name, type = type, modifiers = modifiers).wrapBuilder().apply(config).build()
 
 public inline fun property(
     name: String,
     type: KClass<*>,
     vararg modifiers: KModifier,
     config: PropertySpecBuilder.() -> Unit = {},
-): PropertySpec = PropertySpec.builder(name = name, type = type,
-    modifiers = modifiers).wrapBuilder().apply(config).build()
+): PropertySpec =
+    PropertySpec.builder(name = name, type = type, modifiers = modifiers).wrapBuilder().apply(config).build()
 
 public inline fun property(
     name: String,
     type: KClass<*>,
     modifiers: Iterable<KModifier>,
     config: PropertySpecBuilder.() -> Unit = {},
-): PropertySpec = PropertySpec.builder(name = name, type = type,
-    modifiers = modifiers).wrapBuilder().apply(config).build()
+): PropertySpec =
+    PropertySpec.builder(name = name, type = type, modifiers = modifiers).wrapBuilder().apply(config).build()
 
 // -- other --
 
@@ -169,4 +171,5 @@ public inline fun PropertySpec.modify(
     name: String = this.name,
     type: TypeName = this.type,
     config: PropertySpecBuilder.() -> Unit,
-): PropertySpec = toBuilder(name = name, type = type).wrapBuilder().apply(config).build()
+): PropertySpec =
+    toBuilder(name = name, type = type).wrapBuilder().apply(config).build()

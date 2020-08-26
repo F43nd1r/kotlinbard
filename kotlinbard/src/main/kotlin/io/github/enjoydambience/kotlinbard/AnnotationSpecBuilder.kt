@@ -34,6 +34,7 @@ public class AnnotationSpecBuilder internal constructor(
 ) : Taggable.Builder<AnnotationSpecBuilder> {
     public val members: MutableList<CodeBlock> get() = poetBuilder.members
     public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
+
     public fun addMember(codeBlock: CodeBlock) {
         poetBuilder.addMember(codeBlock = codeBlock)
     }
@@ -42,10 +43,11 @@ public class AnnotationSpecBuilder internal constructor(
         poetBuilder.addMember(format = format, args = args)
     }
 
-    public fun build(): AnnotationSpec = poetBuilder.build()
     public fun useSiteTarget(useSiteTarget: AnnotationSpec.UseSiteTarget?) {
         poetBuilder.useSiteTarget(useSiteTarget = useSiteTarget)
     }
+
+    public fun build(): AnnotationSpec = poetBuilder.build()
 }
 
 // -- build --

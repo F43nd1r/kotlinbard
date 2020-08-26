@@ -51,28 +51,20 @@ public class TypeSpecBuilder internal constructor(
     public val typeSpecs: MutableList<TypeSpec> get() = poetBuilder.typeSpecs
     public val typeVariables: MutableList<TypeVariableName> get() = poetBuilder.typeVariables
 
-    public override fun addAnnotation(annotationSpec: AnnotationSpec) {
-        poetBuilder.addAnnotation(annotationSpec = annotationSpec)
-    }
-
-    public override fun addAnnotations(annotationSpecs: Iterable<AnnotationSpec>) {
-        poetBuilder.addAnnotations(annotationSpecs = annotationSpecs)
-    }
-
-    public fun addEnumConstant(name: String, typeSpec: TypeSpec = anonymousClass()) {
-        poetBuilder.addEnumConstant(name = name, typeSpec = typeSpec)
-    }
-
-    public fun addInitializerBlock(block: CodeBlock) {
-        poetBuilder.addInitializerBlock(block = block)
-    }
-
     public fun addKdoc(block: CodeBlock) {
         poetBuilder.addKdoc(block = block)
     }
 
     public fun addKdoc(format: String, vararg args: Any) {
         poetBuilder.addKdoc(format = format, args = args)
+    }
+
+    public override fun addAnnotation(annotationSpec: AnnotationSpec) {
+        poetBuilder.addAnnotation(annotationSpec = annotationSpec)
+    }
+
+    public override fun addAnnotations(annotationSpecs: Iterable<AnnotationSpec>) {
+        poetBuilder.addAnnotations(annotationSpecs = annotationSpecs)
     }
 
     public override fun addModifiers(vararg modifiers: KModifier) {
@@ -83,30 +75,30 @@ public class TypeSpecBuilder internal constructor(
         poetBuilder.addModifiers(modifiers = modifiers)
     }
 
-
-    public override fun addFunction(funSpec: FunSpec) {
-        poetBuilder.addFunction(funSpec = funSpec)
+    public fun addTypeVariable(typeVariable: TypeVariableName) {
+        poetBuilder.addTypeVariable(typeVariable = typeVariable)
     }
 
-    public override fun addFunctions(funSpecs: Iterable<FunSpec>) {
-        poetBuilder.addFunctions(funSpecs = funSpecs)
+    public fun addTypeVariables(typeVariables: Iterable<TypeVariableName>) {
+        poetBuilder.addTypeVariables(typeVariables = typeVariables)
     }
 
-    public override fun addProperty(propertySpec: PropertySpec) {
-        poetBuilder.addProperty(propertySpec = propertySpec)
+    public fun primaryConstructor(primaryConstructor: FunSpec?) {
+        poetBuilder.primaryConstructor(primaryConstructor = primaryConstructor)
     }
 
-    public override fun addProperties(propertySpecs: Iterable<PropertySpec>) {
-        poetBuilder.addProperties(propertySpecs = propertySpecs)
+    public fun superclass(superclass: TypeName) {
+        poetBuilder.superclass(superclass = superclass)
     }
 
-    public override fun addType(typeSpec: TypeSpec) {
-        poetBuilder.addType(typeSpec = typeSpec)
+    public fun superclass(superclass: Type) {
+        poetBuilder.superclass(superclass = superclass)
     }
 
-    public override fun addTypes(typeSpecs: Iterable<TypeSpec>) {
-        poetBuilder.addTypes(typeSpecs = typeSpecs)
+    public fun superclass(superclass: KClass<*>) {
+        poetBuilder.superclass(superclass = superclass)
     }
+
 
     public fun addSuperclassConstructorParameter(codeBlock: CodeBlock) {
         poetBuilder.addSuperclassConstructorParameter(codeBlock = codeBlock)
@@ -151,30 +143,39 @@ public class TypeSpecBuilder internal constructor(
         poetBuilder.addSuperinterfaces(superinterfaces = superinterfaces)
     }
 
-    public fun addTypeVariable(typeVariable: TypeVariableName) {
-        poetBuilder.addTypeVariable(typeVariable = typeVariable)
+    public fun addEnumConstant(name: String, typeSpec: TypeSpec = anonymousClass()) {
+        poetBuilder.addEnumConstant(name = name, typeSpec = typeSpec)
     }
 
-    public fun addTypeVariables(typeVariables: Iterable<TypeVariableName>) {
-        poetBuilder.addTypeVariables(typeVariables = typeVariables)
+    public fun addInitializerBlock(block: CodeBlock) {
+        poetBuilder.addInitializerBlock(block = block)
+    }
+
+    public override fun addFunction(funSpec: FunSpec) {
+        poetBuilder.addFunction(funSpec = funSpec)
+    }
+
+    public override fun addFunctions(funSpecs: Iterable<FunSpec>) {
+        poetBuilder.addFunctions(funSpecs = funSpecs)
+    }
+
+    public override fun addProperty(propertySpec: PropertySpec) {
+        poetBuilder.addProperty(propertySpec = propertySpec)
+    }
+
+    public override fun addProperties(propertySpecs: Iterable<PropertySpec>) {
+        poetBuilder.addProperties(propertySpecs = propertySpecs)
+    }
+
+    public override fun addType(typeSpec: TypeSpec) {
+        poetBuilder.addType(typeSpec = typeSpec)
+    }
+
+    public override fun addTypes(typeSpecs: Iterable<TypeSpec>) {
+        poetBuilder.addTypes(typeSpecs = typeSpecs)
     }
 
     public fun build(): TypeSpec = poetBuilder.build()
-    public fun primaryConstructor(primaryConstructor: FunSpec?) {
-        poetBuilder.primaryConstructor(primaryConstructor = primaryConstructor)
-    }
-
-    public fun superclass(superclass: TypeName) {
-        poetBuilder.superclass(superclass = superclass)
-    }
-
-    public fun superclass(superclass: Type) {
-        poetBuilder.superclass(superclass = superclass)
-    }
-
-    public fun superclass(superclass: KClass<*>) {
-        poetBuilder.superclass(superclass = superclass)
-    }
 }
 
 // -- build --
@@ -233,4 +234,5 @@ public inline fun TypeSpec.modify(
     kind: TypeSpec.Kind = this.kind,
     name: String? = this.name,
     config: TypeSpecBuilder.() -> Unit,
-): TypeSpec = toBuilder(kind = kind, name = name).wrapBuilder().apply(config).build()
+): TypeSpec =
+    toBuilder(kind = kind, name = name).wrapBuilder().apply(config).build()
