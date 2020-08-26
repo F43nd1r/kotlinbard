@@ -16,15 +16,15 @@
 
 package io.github.enjoydambience.kotlinbard
 
-import com.squareup.kotlinpoet.CodeBlock.Builder
+import com.squareup.kotlinpoet.CodeBlock
 
 @Suppress("FunctionName")
-public fun CodeBlockBuilder(poetBuilder: Builder): CodeBlockBuilder =
+public fun CodeBlockBuilder(poetBuilder: CodeBlock.Builder): CodeBlockBuilder =
     CodeBlockBuilder(poetBuilder, false)
 
 @CodegenDsl
 public class CodeBlockBuilder internal constructor(
-    public val poetBuilder: Builder,
+    public val poetBuilder: CodeBlock.Builder,
     @Suppress("UNUSED_PARAMETER") dummy: Boolean = false,
 ) : CodeBuildingScope() {
     override fun clearCode() {

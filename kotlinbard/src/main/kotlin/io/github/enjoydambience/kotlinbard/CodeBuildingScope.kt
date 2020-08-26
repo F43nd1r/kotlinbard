@@ -16,6 +16,8 @@
 
 package io.github.enjoydambience.kotlinbard
 
+import com.squareup.kotlinpoet.CodeBlock
+
 @CodegenDsl
 public abstract class CodeBuildingScope internal constructor() {
     public abstract fun clearCode()
