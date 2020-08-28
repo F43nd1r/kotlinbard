@@ -34,23 +34,24 @@ public class TypeSpecBuilder internal constructor(
     WithModifiersBuilder,
     WithTypeVariablesBuilder,
     WithMembersBuilder,
-    Taggable.Builder<TypeSpecBuilder>, OriginatingElementsHolder.Builder<TypeSpecBuilder> {
+    Taggable.Builder<TypeSpecBuilder>,
+    OriginatingElementsHolder.Builder<TypeSpecBuilder> {
     public override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotationSpecs
-    public val enumConstants: MutableMap<String, TypeSpec> get() = poetBuilder.enumConstants
+    public override val modifiers: MutableSet<KModifier> get() = poetBuilder.modifiers
+    override val typeVariables: MutableList<TypeVariableName> get() = poetBuilder.typeVariables
     public val funSpecs: MutableList<FunSpec> get() = poetBuilder.funSpecs
+    public val propertySpecs: MutableList<PropertySpec> get() = poetBuilder.propertySpecs
+    public val typeSpecs: MutableList<TypeSpec> get() = poetBuilder.typeSpecs
+    public val enumConstants: MutableMap<String, TypeSpec> get() = poetBuilder.enumConstants
     public var initializerIndex: Int
         get() = poetBuilder.initializerIndex
         public set(value) {
             poetBuilder.initializerIndex = value
         }
-    public override val modifiers: MutableSet<KModifier> get() = poetBuilder.modifiers
-    override val originatingElements: MutableList<Element> get() = poetBuilder.originatingElements
-    public val propertySpecs: MutableList<PropertySpec> get() = poetBuilder.propertySpecs
     public val superclassConstructorParameters: MutableList<CodeBlock> get() = poetBuilder.superclassConstructorParameters
     public val superinterfaces: MutableMap<TypeName, CodeBlock?> get() = poetBuilder.superinterfaces
     public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
-    public val typeSpecs: MutableList<TypeSpec> get() = poetBuilder.typeSpecs
-    override val typeVariables: MutableList<TypeVariableName> get() = poetBuilder.typeVariables
+    override val originatingElements: MutableList<Element> get() = poetBuilder.originatingElements
 
     override fun addKdoc(block: CodeBlock) {
         poetBuilder.addKdoc(block = block)

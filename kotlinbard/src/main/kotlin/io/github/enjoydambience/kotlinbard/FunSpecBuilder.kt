@@ -45,10 +45,10 @@ public class FunSpecBuilder internal constructor(
     OriginatingElementsHolder.Builder<FunSpecBuilder> {
     public override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
     public override val modifiers: MutableList<KModifier> get() = poetBuilder.modifiers
-    override val originatingElements: MutableList<Element> get() = poetBuilder.originatingElements
+    public override val typeVariables: MutableList<TypeVariableName> get() = poetBuilder.typeVariables
     public val parameters: MutableList<ParameterSpec> get() = poetBuilder.parameters
     public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
-    public override val typeVariables: MutableList<TypeVariableName> get() = poetBuilder.typeVariables
+    override val originatingElements: MutableList<Element> get() = poetBuilder.originatingElements
 
     public override fun addKdoc(block: CodeBlock) {
         poetBuilder.addKdoc(block = block)

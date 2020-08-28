@@ -37,9 +37,9 @@ public class PropertySpecBuilder internal constructor(
     OriginatingElementsHolder.Builder<PropertySpecBuilder> {
     public override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
     public override val modifiers: MutableList<KModifier> get() = poetBuilder.modifiers
-    override val originatingElements: MutableList<Element> get() = poetBuilder.originatingElements
-    public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
     public override val typeVariables: MutableList<TypeVariableName> get() = poetBuilder.typeVariables
+    public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
+    override val originatingElements: MutableList<Element> get() = poetBuilder.originatingElements
 
     public override fun addKdoc(block: CodeBlock) {
         poetBuilder.addKdoc(block = block)

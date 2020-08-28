@@ -30,11 +30,11 @@ public class FileSpecBuilder internal constructor(
 ) : WithAnnotationsBuilder,
     WithMembersBuilder,
     Taggable.Builder<FileSpecBuilder> {
+    public val name: String get() = poetBuilder.name
     public override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
+    public val packageName: String get() = poetBuilder.packageName
     public val imports: List<Import> get() = poetBuilder.imports
     public val members: MutableList<Any> get() = poetBuilder.members
-    public val name: String get() = poetBuilder.name
-    public val packageName: String get() = poetBuilder.packageName
     public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
 
     //region imports
