@@ -35,42 +35,42 @@ public class PropertySpecBuilder internal constructor(
     WithTypeVariablesBuilder,
     Taggable.Builder<PropertySpecBuilder>,
     OriginatingElementsHolder.Builder<PropertySpecBuilder> {
-    public override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
-    public override val modifiers: MutableList<KModifier> get() = poetBuilder.modifiers
-    public override val typeVariables: MutableList<TypeVariableName> get() = poetBuilder.typeVariables
-    public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
+    override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
+    override val modifiers: MutableList<KModifier> get() = poetBuilder.modifiers
+    override val typeVariables: MutableList<TypeVariableName> get() = poetBuilder.typeVariables
+    override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
     override val originatingElements: MutableList<Element> get() = poetBuilder.originatingElements
 
-    public override fun addKdoc(block: CodeBlock) {
+    override fun addKdoc(block: CodeBlock) {
         poetBuilder.addKdoc(block = block)
     }
 
-    public override fun addKdoc(format: String, vararg args: Any) {
+    override fun addKdoc(format: String, vararg args: Any) {
         poetBuilder.addKdoc(format = format, args = args)
     }
 
-    public override fun addAnnotation(annotationSpec: AnnotationSpec) {
+    override fun addAnnotation(annotationSpec: AnnotationSpec) {
         poetBuilder.addAnnotation(annotationSpec = annotationSpec)
     }
 
-    public override fun addAnnotations(annotationSpecs: Iterable<AnnotationSpec>) {
+    override fun addAnnotations(annotationSpecs: Iterable<AnnotationSpec>) {
         poetBuilder.addAnnotations(annotationSpecs = annotationSpecs)
     }
 
-    public override fun addModifiers(vararg modifiers: KModifier) {
+    override fun addModifiers(vararg modifiers: KModifier) {
         poetBuilder.addModifiers(modifiers = modifiers)
     }
 
-    public override fun addModifiers(modifiers: Iterable<KModifier>) {
+    override fun addModifiers(modifiers: Iterable<KModifier>) {
         poetBuilder.addModifiers(modifiers = modifiers)
     }
 
 
-    public override fun addTypeVariable(typeVariable: TypeVariableName) {
+    override fun addTypeVariable(typeVariable: TypeVariableName) {
         poetBuilder.addTypeVariable(typeVariable = typeVariable)
     }
 
-    public override fun addTypeVariables(typeVariables: Iterable<TypeVariableName>) {
+    override fun addTypeVariables(typeVariables: Iterable<TypeVariableName>) {
         poetBuilder.addTypeVariables(typeVariables = typeVariables)
     }
 

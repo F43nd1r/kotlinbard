@@ -43,46 +43,46 @@ public class FunSpecBuilder internal constructor(
     WithTypeVariablesBuilder,
     Taggable.Builder<FunSpecBuilder>,
     OriginatingElementsHolder.Builder<FunSpecBuilder> {
-    public override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
-    public override val modifiers: MutableList<KModifier> get() = poetBuilder.modifiers
-    public override val typeVariables: MutableList<TypeVariableName> get() = poetBuilder.typeVariables
+    override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
+    override val modifiers: MutableList<KModifier> get() = poetBuilder.modifiers
+    override val typeVariables: MutableList<TypeVariableName> get() = poetBuilder.typeVariables
     public val parameters: MutableList<ParameterSpec> get() = poetBuilder.parameters
-    public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
+    override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
     override val originatingElements: MutableList<Element> get() = poetBuilder.originatingElements
 
-    public override fun addKdoc(block: CodeBlock) {
+    override fun addKdoc(block: CodeBlock) {
         poetBuilder.addKdoc(block = block)
     }
 
-    public override fun addKdoc(format: String, vararg args: Any) {
+    override fun addKdoc(format: String, vararg args: Any) {
         poetBuilder.addKdoc(format = format, args = args)
     }
 
-    public override fun addAnnotation(annotationSpec: AnnotationSpec) {
+    override fun addAnnotation(annotationSpec: AnnotationSpec) {
         poetBuilder.addAnnotation(annotationSpec = annotationSpec)
     }
 
-    public override fun addAnnotations(annotationSpecs: Iterable<AnnotationSpec>) {
+    override fun addAnnotations(annotationSpecs: Iterable<AnnotationSpec>) {
         poetBuilder.addAnnotations(annotationSpecs = annotationSpecs)
     }
 
-    public override fun addModifiers(vararg modifiers: KModifier) {
+    override fun addModifiers(vararg modifiers: KModifier) {
         poetBuilder.addModifiers(modifiers = modifiers)
     }
 
-    public override fun addModifiers(modifiers: Iterable<KModifier>) {
+    override fun addModifiers(modifiers: Iterable<KModifier>) {
         poetBuilder.addModifiers(modifiers = modifiers)
     }
 
-    public override fun jvmModifiers(modifiers: Iterable<Modifier>): Unit =
+    override fun jvmModifiers(modifiers: Iterable<Modifier>): Unit =
         poetBuilder.jvmModifiers(modifiers = modifiers)
 
 
-    public override fun addTypeVariable(typeVariable: TypeVariableName) {
+    override fun addTypeVariable(typeVariable: TypeVariableName) {
         poetBuilder.addTypeVariable(typeVariable = typeVariable)
     }
 
-    public override fun addTypeVariables(typeVariables: Iterable<TypeVariableName>) {
+    override fun addTypeVariables(typeVariables: Iterable<TypeVariableName>) {
         poetBuilder.addTypeVariables(typeVariables = typeVariables)
     }
 
@@ -234,15 +234,15 @@ public class FunSpecBuilder internal constructor(
     }
 
 
-    public override fun addCode(codeBlock: CodeBlock) {
+    override fun addCode(codeBlock: CodeBlock) {
         poetBuilder.addCode(codeBlock = codeBlock)
     }
 
-    public override fun addCode(format: String, vararg args: Any?) {
+    override fun addCode(format: String, vararg args: Any?) {
         poetBuilder.addCode(format = format, args = args)
     }
 
-    public override fun addStatement(format: String, vararg args: Any?) {
+    override fun addStatement(format: String, vararg args: Any?) {
         @Suppress("UNCHECKED_CAST")
         poetBuilder.addStatement(format, *(args as Array<Any>))
     }
@@ -251,19 +251,19 @@ public class FunSpecBuilder internal constructor(
         poetBuilder.addNamedCode(format, args)
     }
 
-    public override fun beginControlFlow(controlFlow: String, vararg args: Any) {
+    override fun beginControlFlow(controlFlow: String, vararg args: Any) {
         poetBuilder.beginControlFlow(controlFlow = controlFlow, args = args)
     }
 
-    public override fun nextControlFlow(controlFlow: String, vararg args: Any) {
+    override fun nextControlFlow(controlFlow: String, vararg args: Any) {
         poetBuilder.nextControlFlow(controlFlow = controlFlow, args = args)
     }
 
-    public override fun endControlFlow() {
+    override fun endControlFlow() {
         poetBuilder.endControlFlow()
     }
 
-    public override fun clearCode() {
+    override fun clearCode() {
         poetBuilder.clearBody()
     }
 

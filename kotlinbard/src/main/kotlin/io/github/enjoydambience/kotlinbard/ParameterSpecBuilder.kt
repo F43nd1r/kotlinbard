@@ -37,36 +37,36 @@ public class ParameterSpecBuilder internal constructor(
     WithModifiersBuilder,
     WithJvmModifiersBuilder,
     Taggable.Builder<ParameterSpecBuilder> {
-    public override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
+    override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
     public val kdoc: CodeBlock.Builder get() = poetBuilder.kdoc
-    public override val modifiers: MutableList<KModifier> get() = poetBuilder.modifiers
-    public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
+    override val modifiers: MutableList<KModifier> get() = poetBuilder.modifiers
+    override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
 
-    public override fun addKdoc(block: CodeBlock) {
+    override fun addKdoc(block: CodeBlock) {
         poetBuilder.addKdoc(block = block)
     }
 
-    public override fun addKdoc(format: String, vararg args: Any) {
+    override fun addKdoc(format: String, vararg args: Any) {
         poetBuilder.addKdoc(format = format, args = args)
     }
 
-    public override fun addAnnotation(annotationSpec: AnnotationSpec) {
+    override fun addAnnotation(annotationSpec: AnnotationSpec) {
         poetBuilder.addAnnotation(annotationSpec = annotationSpec)
     }
 
-    public override fun addAnnotations(annotationSpecs: Iterable<AnnotationSpec>) {
+    override fun addAnnotations(annotationSpecs: Iterable<AnnotationSpec>) {
         poetBuilder.addAnnotations(annotationSpecs = annotationSpecs)
     }
 
-    public override fun addModifiers(vararg modifiers: KModifier) {
+    override fun addModifiers(vararg modifiers: KModifier) {
         poetBuilder.addModifiers(modifiers = modifiers)
     }
 
-    public override fun addModifiers(modifiers: Iterable<KModifier>) {
+    override fun addModifiers(modifiers: Iterable<KModifier>) {
         poetBuilder.addModifiers(modifiers = modifiers)
     }
 
-    public override fun jvmModifiers(modifiers: Iterable<Modifier>) {
+    override fun jvmModifiers(modifiers: Iterable<Modifier>) {
         poetBuilder.jvmModifiers(modifiers = modifiers)
     }
 

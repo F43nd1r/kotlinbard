@@ -33,7 +33,7 @@ public class AnnotationSpecBuilder internal constructor(
     @Suppress("UNUSED_PARAMETER") dummy: Boolean,
 ) : Taggable.Builder<AnnotationSpecBuilder> {
     public val members: MutableList<CodeBlock> get() = poetBuilder.members
-    public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
+    override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
 
     public fun addMember(codeBlock: CodeBlock) {
         poetBuilder.addMember(codeBlock = codeBlock)

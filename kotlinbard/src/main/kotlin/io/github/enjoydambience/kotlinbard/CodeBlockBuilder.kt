@@ -28,7 +28,7 @@ public class CodeBlockBuilder internal constructor(
     @Suppress("UNUSED_PARAMETER") dummy: Boolean = false,
 ) : CodeBuilding() {
 
-    public override fun addCode(format: String, vararg args: Any?) {
+    override fun addCode(format: String, vararg args: Any?) {
         poetBuilder.add(format = format, args = args)
     }
 
@@ -36,23 +36,23 @@ public class CodeBlockBuilder internal constructor(
         poetBuilder.add(codeBlock)
     }
 
-    public override fun addStatement(format: String, vararg args: Any?) {
+    override fun addStatement(format: String, vararg args: Any?) {
         poetBuilder.addStatement(format = format, args = args)
     }
 
-    public override fun addNamed(format: String, args: Map<String, *>) {
+    override fun addNamed(format: String, args: Map<String, *>) {
         poetBuilder.addNamed(format = format, arguments = args)
     }
 
-    public override fun beginControlFlow(controlFlow: String, vararg args: Any) {
+    override fun beginControlFlow(controlFlow: String, vararg args: Any) {
         poetBuilder.beginControlFlow(controlFlow = controlFlow, args = args)
     }
 
-    public override fun nextControlFlow(controlFlow: String, vararg args: Any) {
+    override fun nextControlFlow(controlFlow: String, vararg args: Any) {
         poetBuilder.nextControlFlow(controlFlow = controlFlow, args = args)
     }
 
-    public override fun endControlFlow() {
+    override fun endControlFlow() {
         poetBuilder.endControlFlow()
     }
 

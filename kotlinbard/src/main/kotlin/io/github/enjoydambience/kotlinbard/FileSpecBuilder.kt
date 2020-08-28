@@ -31,11 +31,11 @@ public class FileSpecBuilder internal constructor(
     WithMembersBuilder,
     Taggable.Builder<FileSpecBuilder> {
     public val name: String get() = poetBuilder.name
-    public override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
+    override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
     public val packageName: String get() = poetBuilder.packageName
     public val imports: List<Import> get() = poetBuilder.imports
     public val members: MutableList<Any> get() = poetBuilder.members
-    public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
+    override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
 
     //region imports
     public fun addImport(className: ClassName, vararg names: String) {
@@ -115,19 +115,19 @@ public class FileSpecBuilder internal constructor(
         poetBuilder.clearComment()
     }
 
-    public override fun addAnnotation(annotationSpec: AnnotationSpec) {
+    override fun addAnnotation(annotationSpec: AnnotationSpec) {
         poetBuilder.addAnnotation(annotationSpec = annotationSpec)
     }
 
-    public override fun addFunction(funSpec: FunSpec) {
+    override fun addFunction(funSpec: FunSpec) {
         poetBuilder.addFunction(funSpec = funSpec)
     }
 
-    public override fun addProperty(propertySpec: PropertySpec) {
+    override fun addProperty(propertySpec: PropertySpec) {
         poetBuilder.addProperty(propertySpec = propertySpec)
     }
 
-    public override fun addType(typeSpec: TypeSpec) {
+    override fun addType(typeSpec: TypeSpec) {
         poetBuilder.addType(typeSpec = typeSpec)
     }
 

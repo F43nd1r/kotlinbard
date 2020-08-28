@@ -36,8 +36,8 @@ public class TypeSpecBuilder internal constructor(
     WithMembersBuilder,
     Taggable.Builder<TypeSpecBuilder>,
     OriginatingElementsHolder.Builder<TypeSpecBuilder> {
-    public override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotationSpecs
-    public override val modifiers: MutableSet<KModifier> get() = poetBuilder.modifiers
+    override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotationSpecs
+    override val modifiers: MutableSet<KModifier> get() = poetBuilder.modifiers
     override val typeVariables: MutableList<TypeVariableName> get() = poetBuilder.typeVariables
     public val funSpecs: MutableList<FunSpec> get() = poetBuilder.funSpecs
     public val propertySpecs: MutableList<PropertySpec> get() = poetBuilder.propertySpecs
@@ -50,7 +50,7 @@ public class TypeSpecBuilder internal constructor(
         }
     public val superclassConstructorParameters: MutableList<CodeBlock> get() = poetBuilder.superclassConstructorParameters
     public val superinterfaces: MutableMap<TypeName, CodeBlock?> get() = poetBuilder.superinterfaces
-    public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
+    override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
     override val originatingElements: MutableList<Element> get() = poetBuilder.originatingElements
 
     override fun addKdoc(block: CodeBlock) {
@@ -61,19 +61,19 @@ public class TypeSpecBuilder internal constructor(
         poetBuilder.addKdoc(format = format, args = args)
     }
 
-    public override fun addAnnotation(annotationSpec: AnnotationSpec) {
+    override fun addAnnotation(annotationSpec: AnnotationSpec) {
         poetBuilder.addAnnotation(annotationSpec = annotationSpec)
     }
 
-    public override fun addAnnotations(annotationSpecs: Iterable<AnnotationSpec>) {
+    override fun addAnnotations(annotationSpecs: Iterable<AnnotationSpec>) {
         poetBuilder.addAnnotations(annotationSpecs = annotationSpecs)
     }
 
-    public override fun addModifiers(vararg modifiers: KModifier) {
+    override fun addModifiers(vararg modifiers: KModifier) {
         poetBuilder.addModifiers(modifiers = modifiers)
     }
 
-    public override fun addModifiers(modifiers: Iterable<KModifier>) {
+    override fun addModifiers(modifiers: Iterable<KModifier>) {
         poetBuilder.addModifiers(modifiers = modifiers)
     }
 
@@ -153,27 +153,27 @@ public class TypeSpecBuilder internal constructor(
         poetBuilder.addInitializerBlock(block = block)
     }
 
-    public override fun addFunction(funSpec: FunSpec) {
+    override fun addFunction(funSpec: FunSpec) {
         poetBuilder.addFunction(funSpec = funSpec)
     }
 
-    public override fun addFunctions(funSpecs: Iterable<FunSpec>) {
+    override fun addFunctions(funSpecs: Iterable<FunSpec>) {
         poetBuilder.addFunctions(funSpecs = funSpecs)
     }
 
-    public override fun addProperty(propertySpec: PropertySpec) {
+    override fun addProperty(propertySpec: PropertySpec) {
         poetBuilder.addProperty(propertySpec = propertySpec)
     }
 
-    public override fun addProperties(propertySpecs: Iterable<PropertySpec>) {
+    override fun addProperties(propertySpecs: Iterable<PropertySpec>) {
         poetBuilder.addProperties(propertySpecs = propertySpecs)
     }
 
-    public override fun addType(typeSpec: TypeSpec) {
+    override fun addType(typeSpec: TypeSpec) {
         poetBuilder.addType(typeSpec = typeSpec)
     }
 
-    public override fun addTypes(typeSpecs: Iterable<TypeSpec>) {
+    override fun addTypes(typeSpecs: Iterable<TypeSpec>) {
         poetBuilder.addTypes(typeSpecs = typeSpecs)
     }
 
