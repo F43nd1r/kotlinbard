@@ -29,7 +29,8 @@ public fun PropertySpecBuilder(poetBuilder: PropertySpec.Builder): PropertySpecB
 public class PropertySpecBuilder internal constructor(
     public val poetBuilder: PropertySpec.Builder,
     @Suppress("UNUSED_PARAMETER") dummy: Boolean,
-) : WithAnnotationsBuilder,
+) : WithKdocBuilder,
+    WithAnnotationsBuilder,
     WithModifiersBuilder,
     Taggable.Builder<PropertySpecBuilder>,
     OriginatingElementsHolder.Builder<PropertySpecBuilder> {
@@ -39,11 +40,11 @@ public class PropertySpecBuilder internal constructor(
     public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
     public val typeVariables: MutableList<TypeVariableName> get() = poetBuilder.typeVariables
 
-    public fun addKdoc(block: CodeBlock) {
+    public override fun addKdoc(block: CodeBlock) {
         poetBuilder.addKdoc(block = block)
     }
 
-    public fun addKdoc(format: String, vararg args: Any) {
+    public override fun addKdoc(format: String, vararg args: Any) {
         poetBuilder.addKdoc(format = format, args = args)
     }
 

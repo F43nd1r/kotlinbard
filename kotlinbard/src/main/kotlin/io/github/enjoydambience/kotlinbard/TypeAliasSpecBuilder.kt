@@ -28,7 +28,8 @@ public fun TypeAliasSpecBuilder(poetBuilder: TypeAliasSpec.Builder): TypeAliasSp
 public class TypeAliasSpecBuilder internal constructor(
     public val poetBuilder: TypeAliasSpec.Builder,
     @Suppress("UNUSED_PARAMETER") dummy: Boolean,
-) : WithAnnotationsBuilder,
+) : WithKdocBuilder,
+    WithAnnotationsBuilder,
     WithModifiersBuilder,
     Taggable.Builder<TypeAliasSpecBuilder> {
     public override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
@@ -36,11 +37,11 @@ public class TypeAliasSpecBuilder internal constructor(
     public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
     public val typeVariables: MutableSet<TypeVariableName> get() = poetBuilder.typeVariables
 
-    public fun addKdoc(block: CodeBlock) {
+    public override fun addKdoc(block: CodeBlock) {
         poetBuilder.addKdoc(block = block)
     }
 
-    public fun addKdoc(format: String, vararg args: Any) {
+    public override fun addKdoc(format: String, vararg args: Any) {
         poetBuilder.addKdoc(format = format, args = args)
     }
 

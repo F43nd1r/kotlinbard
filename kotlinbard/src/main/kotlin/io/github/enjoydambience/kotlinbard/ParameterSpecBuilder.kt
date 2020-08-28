@@ -32,7 +32,8 @@ public fun ParameterSpecBuilder(poetBuilder: ParameterSpec.Builder): ParameterSp
 public class ParameterSpecBuilder internal constructor(
     public val poetBuilder: ParameterSpec.Builder,
     @Suppress("UNUSED_PARAMETER") dummy: Boolean,
-) : WithAnnotationsBuilder,
+) : WithKdocBuilder,
+    WithAnnotationsBuilder,
     WithModifiersBuilder,
     WithJvmModifiersBuilder,
     Taggable.Builder<ParameterSpecBuilder> {
@@ -41,11 +42,11 @@ public class ParameterSpecBuilder internal constructor(
     public override val modifiers: MutableList<KModifier> get() = poetBuilder.modifiers
     public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
 
-    public fun addKdoc(block: CodeBlock) {
+    public override fun addKdoc(block: CodeBlock) {
         poetBuilder.addKdoc(block = block)
     }
 
-    public fun addKdoc(format: String, vararg args: Any) {
+    public override fun addKdoc(format: String, vararg args: Any) {
         poetBuilder.addKdoc(format = format, args = args)
     }
 

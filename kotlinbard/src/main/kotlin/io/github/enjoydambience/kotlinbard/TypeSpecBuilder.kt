@@ -29,11 +29,11 @@ public fun TypeSpecBuilder(poetBuilder: TypeSpec.Builder): TypeSpecBuilder =
 public class TypeSpecBuilder internal constructor(
     public val poetBuilder: TypeSpec.Builder,
     @Suppress("UNUSED_PARAMETER") dummy: Boolean,
-) : WithAnnotationsBuilder,
+) : WithKdocBuilder,
+    WithAnnotationsBuilder,
     WithModifiersBuilder,
     WithMembersBuilder,
-    Taggable.Builder<TypeSpecBuilder>,
-    OriginatingElementsHolder.Builder<TypeSpecBuilder> {
+    Taggable.Builder<TypeSpecBuilder>, OriginatingElementsHolder.Builder<TypeSpecBuilder> {
     public override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotationSpecs
     public val enumConstants: MutableMap<String, TypeSpec> get() = poetBuilder.enumConstants
     public val funSpecs: MutableList<FunSpec> get() = poetBuilder.funSpecs
@@ -51,11 +51,11 @@ public class TypeSpecBuilder internal constructor(
     public val typeSpecs: MutableList<TypeSpec> get() = poetBuilder.typeSpecs
     public val typeVariables: MutableList<TypeVariableName> get() = poetBuilder.typeVariables
 
-    public fun addKdoc(block: CodeBlock) {
+    override fun addKdoc(block: CodeBlock) {
         poetBuilder.addKdoc(block = block)
     }
 
-    public fun addKdoc(format: String, vararg args: Any) {
+    override fun addKdoc(format: String, vararg args: Any) {
         poetBuilder.addKdoc(format = format, args = args)
     }
 

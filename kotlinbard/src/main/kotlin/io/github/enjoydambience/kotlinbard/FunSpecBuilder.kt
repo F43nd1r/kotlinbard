@@ -36,6 +36,7 @@ public class FunSpecBuilder internal constructor(
     public val poetBuilder: FunSpec.Builder,
     @Suppress("UNUSED_PARAMETER") dummy: Boolean,
 ) : CodeBuilding(),
+    WithKdocBuilder,
     WithAnnotationsBuilder,
     WithModifiersBuilder,
     WithJvmModifiersBuilder,
@@ -48,11 +49,11 @@ public class FunSpecBuilder internal constructor(
     public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
     public val typeVariables: MutableList<TypeVariableName> get() = poetBuilder.typeVariables
 
-    public fun addKdoc(block: CodeBlock) {
+    public override fun addKdoc(block: CodeBlock) {
         poetBuilder.addKdoc(block = block)
     }
 
-    public fun addKdoc(format: String, vararg args: Any) {
+    public override fun addKdoc(format: String, vararg args: Any) {
         poetBuilder.addKdoc(format = format, args = args)
     }
 
