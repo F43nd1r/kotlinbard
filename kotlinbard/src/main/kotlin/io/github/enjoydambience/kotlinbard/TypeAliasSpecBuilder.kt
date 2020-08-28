@@ -31,11 +31,12 @@ public class TypeAliasSpecBuilder internal constructor(
 ) : WithKdocBuilder,
     WithAnnotationsBuilder,
     WithModifiersBuilder,
+    WithTypeVariablesBuilder,
     Taggable.Builder<TypeAliasSpecBuilder> {
     public override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
     public override val modifiers: MutableSet<KModifier> get() = poetBuilder.modifiers
     public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
-    public val typeVariables: MutableSet<TypeVariableName> get() = poetBuilder.typeVariables
+    public override val typeVariables: MutableSet<TypeVariableName> get() = poetBuilder.typeVariables
 
     public override fun addKdoc(block: CodeBlock) {
         poetBuilder.addKdoc(block = block)
@@ -61,11 +62,11 @@ public class TypeAliasSpecBuilder internal constructor(
         poetBuilder.addModifiers(modifiers = modifiers)
     }
 
-    public fun addTypeVariable(typeVariable: TypeVariableName) {
+    public override fun addTypeVariable(typeVariable: TypeVariableName) {
         poetBuilder.addTypeVariable(typeVariable = typeVariable)
     }
 
-    public fun addTypeVariables(typeVariables: Iterable<TypeVariableName>) {
+    public override fun addTypeVariables(typeVariables: Iterable<TypeVariableName>) {
         poetBuilder.addTypeVariables(typeVariables = typeVariables)
     }
 

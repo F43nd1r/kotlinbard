@@ -32,6 +32,7 @@ public class TypeSpecBuilder internal constructor(
 ) : WithKdocBuilder,
     WithAnnotationsBuilder,
     WithModifiersBuilder,
+    WithTypeVariablesBuilder,
     WithMembersBuilder,
     Taggable.Builder<TypeSpecBuilder>, OriginatingElementsHolder.Builder<TypeSpecBuilder> {
     public override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotationSpecs
@@ -49,7 +50,7 @@ public class TypeSpecBuilder internal constructor(
     public val superinterfaces: MutableMap<TypeName, CodeBlock?> get() = poetBuilder.superinterfaces
     public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
     public val typeSpecs: MutableList<TypeSpec> get() = poetBuilder.typeSpecs
-    public val typeVariables: MutableList<TypeVariableName> get() = poetBuilder.typeVariables
+    override val typeVariables: MutableList<TypeVariableName> get() = poetBuilder.typeVariables
 
     override fun addKdoc(block: CodeBlock) {
         poetBuilder.addKdoc(block = block)
@@ -75,11 +76,11 @@ public class TypeSpecBuilder internal constructor(
         poetBuilder.addModifiers(modifiers = modifiers)
     }
 
-    public fun addTypeVariable(typeVariable: TypeVariableName) {
+    override fun addTypeVariable(typeVariable: TypeVariableName) {
         poetBuilder.addTypeVariable(typeVariable = typeVariable)
     }
 
-    public fun addTypeVariables(typeVariables: Iterable<TypeVariableName>) {
+    override fun addTypeVariables(typeVariables: Iterable<TypeVariableName>) {
         poetBuilder.addTypeVariables(typeVariables = typeVariables)
     }
 

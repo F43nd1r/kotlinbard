@@ -32,13 +32,14 @@ public class PropertySpecBuilder internal constructor(
 ) : WithKdocBuilder,
     WithAnnotationsBuilder,
     WithModifiersBuilder,
+    WithTypeVariablesBuilder,
     Taggable.Builder<PropertySpecBuilder>,
     OriginatingElementsHolder.Builder<PropertySpecBuilder> {
     public override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
     public override val modifiers: MutableList<KModifier> get() = poetBuilder.modifiers
     override val originatingElements: MutableList<Element> get() = poetBuilder.originatingElements
     public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
-    public val typeVariables: MutableList<TypeVariableName> get() = poetBuilder.typeVariables
+    public override val typeVariables: MutableList<TypeVariableName> get() = poetBuilder.typeVariables
 
     public override fun addKdoc(block: CodeBlock) {
         poetBuilder.addKdoc(block = block)
@@ -65,11 +66,11 @@ public class PropertySpecBuilder internal constructor(
     }
 
 
-    public fun addTypeVariable(typeVariable: TypeVariableName) {
+    public override fun addTypeVariable(typeVariable: TypeVariableName) {
         poetBuilder.addTypeVariable(typeVariable = typeVariable)
     }
 
-    public fun addTypeVariables(typeVariables: Iterable<TypeVariableName>) {
+    public override fun addTypeVariables(typeVariables: Iterable<TypeVariableName>) {
         poetBuilder.addTypeVariables(typeVariables = typeVariables)
     }
 

@@ -40,6 +40,7 @@ public class FunSpecBuilder internal constructor(
     WithAnnotationsBuilder,
     WithModifiersBuilder,
     WithJvmModifiersBuilder,
+    WithTypeVariablesBuilder,
     Taggable.Builder<FunSpecBuilder>,
     OriginatingElementsHolder.Builder<FunSpecBuilder> {
     public override val annotations: MutableList<AnnotationSpec> get() = poetBuilder.annotations
@@ -47,7 +48,7 @@ public class FunSpecBuilder internal constructor(
     override val originatingElements: MutableList<Element> get() = poetBuilder.originatingElements
     public val parameters: MutableList<ParameterSpec> get() = poetBuilder.parameters
     public override val tags: MutableMap<KClass<*>, Any> get() = poetBuilder.tags
-    public val typeVariables: MutableList<TypeVariableName> get() = poetBuilder.typeVariables
+    public override val typeVariables: MutableList<TypeVariableName> get() = poetBuilder.typeVariables
 
     public override fun addKdoc(block: CodeBlock) {
         poetBuilder.addKdoc(block = block)
@@ -77,11 +78,11 @@ public class FunSpecBuilder internal constructor(
         poetBuilder.jvmModifiers(modifiers = modifiers)
 
 
-    public fun addTypeVariable(typeVariable: TypeVariableName) {
+    public override fun addTypeVariable(typeVariable: TypeVariableName) {
         poetBuilder.addTypeVariable(typeVariable = typeVariable)
     }
 
-    public fun addTypeVariables(typeVariables: Iterable<TypeVariableName>) {
+    public override fun addTypeVariables(typeVariables: Iterable<TypeVariableName>) {
         poetBuilder.addTypeVariables(typeVariables = typeVariables)
     }
 
