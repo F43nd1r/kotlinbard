@@ -79,19 +79,19 @@ public inline fun typeAlias(
     name: String,
     type: TypeName,
     config: TypeAliasSpecBuilder.() -> Unit = {},
-): TypeAliasSpec = TypeAliasSpec.builder(name = name, type = type).wrapBuilder().apply(config).build()
+): TypeAliasSpec = TypeAliasSpec.builder(name = name, type = type).asKotlinBardBuilder().apply(config).build()
 
 public inline fun typeAlias(
     name: String,
     type: Type,
     config: TypeAliasSpecBuilder.() -> Unit = {},
-): TypeAliasSpec = TypeAliasSpec.builder(name = name, type = type).wrapBuilder().apply(config).build()
+): TypeAliasSpec = TypeAliasSpec.builder(name = name, type = type).asKotlinBardBuilder().apply(config).build()
 
 public inline fun typeAlias(
     name: String,
     type: KClass<*>,
     config: TypeAliasSpecBuilder.() -> Unit = {},
-): TypeAliasSpec = TypeAliasSpec.builder(name = name, type = type).wrapBuilder().apply(config).build()
+): TypeAliasSpec = TypeAliasSpec.builder(name = name, type = type).asKotlinBardBuilder().apply(config).build()
 
 // -- other --
 
@@ -99,4 +99,4 @@ public inline fun TypeAliasSpec.modify(
     name: String = this.name,
     type: TypeName = this.type,
     config: TypeAliasSpecBuilder.() -> Unit,
-): TypeAliasSpec = toBuilder(name = name, type = type).wrapBuilder().apply(config).build()
+): TypeAliasSpec = toBuilder(name = name, type = type).asKotlinBardBuilder().apply(config).build()

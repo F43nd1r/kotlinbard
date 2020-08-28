@@ -149,7 +149,7 @@ public inline fun file(
     fileName: String,
     config: FileSpecBuilder.() -> Unit,
 ): FileSpec =
-    FileSpec.builder(packageName = packageName, fileName = fileName).wrapBuilder().apply(config).build()
+    FileSpec.builder(packageName = packageName, fileName = fileName).asKotlinBardBuilder().apply(config).build()
 
 // -- get --
 
@@ -162,4 +162,4 @@ public inline fun FileSpec.modify(
     packageName: String = this.packageName,
     name: String = this.name,
     config: FileSpecBuilder.() -> Unit,
-): FileSpec = toBuilder(packageName = packageName, name = name).wrapBuilder().apply(config).build()
+): FileSpec = toBuilder(packageName = packageName, name = name).asKotlinBardBuilder().apply(config).build()

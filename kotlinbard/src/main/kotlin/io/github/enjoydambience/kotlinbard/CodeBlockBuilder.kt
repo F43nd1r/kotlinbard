@@ -85,10 +85,10 @@ public inline fun CodeBlockBuilder.indent(scope: CodeBlockBuilder.() -> Unit) {
 
 
 public inline fun codeBlock(config: CodeBlockBuilder.() -> Unit = {}): CodeBlock =
-    CodeBlock.builder().wrapBuilder().apply(config).build()
+    CodeBlock.builder().asKotlinBardBuilder().apply(config).build()
 
 public fun codeBlock(format: String, vararg args: Any?): CodeBlock =
     CodeBlock.of(format, *args)
 
 public inline fun CodeBlock.modify(config: CodeBlockBuilder.() -> Unit): CodeBlock =
-    toBuilder().wrapBuilder().apply(config).build()
+    toBuilder().asKotlinBardBuilder().apply(config).build()

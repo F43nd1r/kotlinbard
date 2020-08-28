@@ -125,7 +125,7 @@ public inline fun property(
     vararg modifiers: KModifier,
     config: PropertySpecBuilder.() -> Unit = {},
 ): PropertySpec =
-    PropertySpec.builder(name = name, type = type, modifiers = modifiers).wrapBuilder().apply(config).build()
+    PropertySpec.builder(name = name, type = type, modifiers = modifiers).asKotlinBardBuilder().apply(config).build()
 
 public inline fun property(
     name: String,
@@ -133,7 +133,7 @@ public inline fun property(
     modifiers: Iterable<KModifier>,
     config: PropertySpecBuilder.() -> Unit = {},
 ): PropertySpec =
-    PropertySpec.builder(name = name, type = type, modifiers = modifiers).wrapBuilder().apply(config).build()
+    PropertySpec.builder(name = name, type = type, modifiers = modifiers).asKotlinBardBuilder().apply(config).build()
 
 public inline fun property(
     name: String,
@@ -141,7 +141,7 @@ public inline fun property(
     vararg modifiers: KModifier,
     config: PropertySpecBuilder.() -> Unit = {},
 ): PropertySpec =
-    PropertySpec.builder(name = name, type = type, modifiers = modifiers).wrapBuilder().apply(config).build()
+    PropertySpec.builder(name = name, type = type, modifiers = modifiers).asKotlinBardBuilder().apply(config).build()
 
 public inline fun property(
     name: String,
@@ -149,7 +149,7 @@ public inline fun property(
     modifiers: Iterable<KModifier>,
     config: PropertySpecBuilder.() -> Unit = {},
 ): PropertySpec =
-    PropertySpec.builder(name = name, type = type, modifiers = modifiers).wrapBuilder().apply(config).build()
+    PropertySpec.builder(name = name, type = type, modifiers = modifiers).asKotlinBardBuilder().apply(config).build()
 
 public inline fun property(
     name: String,
@@ -157,7 +157,7 @@ public inline fun property(
     vararg modifiers: KModifier,
     config: PropertySpecBuilder.() -> Unit = {},
 ): PropertySpec =
-    PropertySpec.builder(name = name, type = type, modifiers = modifiers).wrapBuilder().apply(config).build()
+    PropertySpec.builder(name = name, type = type, modifiers = modifiers).asKotlinBardBuilder().apply(config).build()
 
 public inline fun property(
     name: String,
@@ -165,7 +165,7 @@ public inline fun property(
     modifiers: Iterable<KModifier>,
     config: PropertySpecBuilder.() -> Unit = {},
 ): PropertySpec =
-    PropertySpec.builder(name = name, type = type, modifiers = modifiers).wrapBuilder().apply(config).build()
+    PropertySpec.builder(name = name, type = type, modifiers = modifiers).asKotlinBardBuilder().apply(config).build()
 
 // -- other --
 
@@ -174,4 +174,4 @@ public inline fun PropertySpec.modify(
     type: TypeName = this.type,
     config: PropertySpecBuilder.() -> Unit,
 ): PropertySpec =
-    toBuilder(name = name, type = type).wrapBuilder().apply(config).build()
+    toBuilder(name = name, type = type).asKotlinBardBuilder().apply(config).build()

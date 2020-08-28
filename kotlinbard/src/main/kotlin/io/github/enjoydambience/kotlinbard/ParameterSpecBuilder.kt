@@ -90,7 +90,7 @@ public inline fun parameter(
     vararg modifiers: KModifier,
     config: ParameterSpecBuilder.() -> Unit = {},
 ): ParameterSpec = ParameterSpec.builder(name = name, type = type,
-    modifiers = modifiers).wrapBuilder().apply(config).build()
+    modifiers = modifiers).asKotlinBardBuilder().apply(config).build()
 
 public inline fun parameter(
     name: String,
@@ -98,7 +98,7 @@ public inline fun parameter(
     modifiers: Iterable<KModifier>,
     config: ParameterSpecBuilder.() -> Unit = {},
 ): ParameterSpec = ParameterSpec.builder(name = name, type = type,
-    modifiers = modifiers).wrapBuilder().apply(config).build()
+    modifiers = modifiers).asKotlinBardBuilder().apply(config).build()
 
 public inline fun parameter(
     name: String,
@@ -106,7 +106,7 @@ public inline fun parameter(
     vararg modifiers: KModifier,
     config: ParameterSpecBuilder.() -> Unit = {},
 ): ParameterSpec = ParameterSpec.builder(name = name, type = type,
-    modifiers = modifiers).wrapBuilder().apply(config).build()
+    modifiers = modifiers).asKotlinBardBuilder().apply(config).build()
 
 public inline fun parameter(
     name: String,
@@ -114,7 +114,7 @@ public inline fun parameter(
     modifiers: Iterable<KModifier>,
     config: ParameterSpecBuilder.() -> Unit = {},
 ): ParameterSpec = ParameterSpec.builder(name = name, type = type,
-    modifiers = modifiers).wrapBuilder().apply(config).build()
+    modifiers = modifiers).asKotlinBardBuilder().apply(config).build()
 
 public inline fun parameter(
     name: String,
@@ -122,7 +122,7 @@ public inline fun parameter(
     vararg modifiers: KModifier,
     config: ParameterSpecBuilder.() -> Unit = {},
 ): ParameterSpec = ParameterSpec.builder(name = name, type = type,
-    modifiers = modifiers).wrapBuilder().apply(config).build()
+    modifiers = modifiers).asKotlinBardBuilder().apply(config).build()
 
 public inline fun parameter(
     name: String,
@@ -130,7 +130,7 @@ public inline fun parameter(
     modifiers: Iterable<KModifier>,
     config: ParameterSpecBuilder.() -> Unit = {},
 ): ParameterSpec = ParameterSpec.builder(name = name, type = type,
-    modifiers = modifiers).wrapBuilder().apply(config).build()
+    modifiers = modifiers).asKotlinBardBuilder().apply(config).build()
 
 // -- get --
 
@@ -150,4 +150,4 @@ public inline fun ParameterSpec.modify(
     name: String = this.name,
     type: TypeName = this.type,
     config: ParameterSpecBuilder.() -> Unit,
-): ParameterSpec = toBuilder(name = name, type = type).wrapBuilder().apply(config).build()
+): ParameterSpec = toBuilder(name = name, type = type).asKotlinBardBuilder().apply(config).build()

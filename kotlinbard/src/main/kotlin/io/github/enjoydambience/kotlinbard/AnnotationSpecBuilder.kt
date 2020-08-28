@@ -53,16 +53,16 @@ public class AnnotationSpecBuilder internal constructor(
 // -- build --
 
 public inline fun annotation(type: ClassName, config: AnnotationSpecBuilder.() -> Unit = {}):
-        AnnotationSpec = AnnotationSpec.builder(type = type).wrapBuilder().apply(config).build()
+        AnnotationSpec = AnnotationSpec.builder(type = type).asKotlinBardBuilder().apply(config).build()
 
 public inline fun annotation(type: ParameterizedTypeName, config: AnnotationSpecBuilder.() -> Unit = {}):
-        AnnotationSpec = AnnotationSpec.builder(type = type).wrapBuilder().apply(config).build()
+        AnnotationSpec = AnnotationSpec.builder(type = type).asKotlinBardBuilder().apply(config).build()
 
 public inline fun annotation(type: Class<out Annotation>, config: AnnotationSpecBuilder.() -> Unit = {}):
-        AnnotationSpec = AnnotationSpec.builder(type = type).wrapBuilder().apply(config).build()
+        AnnotationSpec = AnnotationSpec.builder(type = type).asKotlinBardBuilder().apply(config).build()
 
 public inline fun annotation(type: KClass<out Annotation>, config: AnnotationSpecBuilder.() -> Unit = {}):
-        AnnotationSpec = AnnotationSpec.builder(type = type).wrapBuilder().apply(config).build()
+        AnnotationSpec = AnnotationSpec.builder(type = type).asKotlinBardBuilder().apply(config).build()
 
 // -- get --
 
@@ -77,4 +77,4 @@ public fun getAnnotation(annotation: Annotation, includeDefaultValues: Boolean):
 // -- other --
 
 public inline fun AnnotationSpec.modify(config: AnnotationSpecBuilder.() -> Unit): AnnotationSpec =
-    toBuilder().wrapBuilder().apply(config).build()
+    toBuilder().asKotlinBardBuilder().apply(config).build()

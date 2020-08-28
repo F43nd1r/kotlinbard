@@ -183,52 +183,52 @@ public class TypeSpecBuilder internal constructor(
 // -- build --
 
 public inline fun annotationClass(className: ClassName, config: TypeSpecBuilder.() -> Unit = {}): TypeSpec =
-    TypeSpec.annotationBuilder(className = className).wrapBuilder().apply(config).build()
+    TypeSpec.annotationBuilder(className = className).asKotlinBardBuilder().apply(config).build()
 
 public inline fun annotationClass(name: String, config: TypeSpecBuilder.() -> Unit = {}): TypeSpec =
-    TypeSpec.annotationBuilder(name = name).wrapBuilder().apply(config).build()
+    TypeSpec.annotationBuilder(name = name).asKotlinBardBuilder().apply(config).build()
 
 public inline fun anonymousClass(config: TypeSpecBuilder.() -> Unit = {}): TypeSpec =
-    TypeSpec.anonymousClassBuilder().wrapBuilder().apply(config).build()
+    TypeSpec.anonymousClassBuilder().asKotlinBardBuilder().apply(config).build()
 
 public inline fun `class`(className: ClassName, config: TypeSpecBuilder.() -> Unit = {}): TypeSpec =
-    TypeSpec.classBuilder(className = className).wrapBuilder().apply(config).build()
+    TypeSpec.classBuilder(className = className).asKotlinBardBuilder().apply(config).build()
 
 public inline fun `class`(name: String, config: TypeSpecBuilder.() -> Unit = {}): TypeSpec =
-    TypeSpec.classBuilder(name = name).wrapBuilder().apply(config).build()
+    TypeSpec.classBuilder(name = name).asKotlinBardBuilder().apply(config).build()
 
 public inline fun companionObject(name: String?, config: TypeSpecBuilder.() -> Unit = {}): TypeSpec =
-    TypeSpec.companionObjectBuilder(name = name).wrapBuilder().apply(config).build()
+    TypeSpec.companionObjectBuilder(name = name).asKotlinBardBuilder().apply(config).build()
 
 public inline fun enumClass(className: ClassName, config: TypeSpecBuilder.() -> Unit = {}): TypeSpec =
-    TypeSpec.enumBuilder(className = className).wrapBuilder().apply(config).build()
+    TypeSpec.enumBuilder(className = className).asKotlinBardBuilder().apply(config).build()
 
 public inline fun enumClass(name: String, config: TypeSpecBuilder.() -> Unit = {}): TypeSpec =
-    TypeSpec.enumBuilder(name = name).wrapBuilder().apply(config).build()
+    TypeSpec.enumBuilder(name = name).asKotlinBardBuilder().apply(config).build()
 
 public inline fun expectClass(className: ClassName, config: TypeSpecBuilder.() -> Unit = {}): TypeSpec =
-    TypeSpec.expectClassBuilder(className = className).wrapBuilder().apply(config).build()
+    TypeSpec.expectClassBuilder(className = className).asKotlinBardBuilder().apply(config).build()
 
 public inline fun expectClass(name: String, config: TypeSpecBuilder.() -> Unit = {}): TypeSpec =
-    TypeSpec.expectClassBuilder(name = name).wrapBuilder().apply(config).build()
+    TypeSpec.expectClassBuilder(name = name).asKotlinBardBuilder().apply(config).build()
 
 public inline fun funInterface(className: ClassName, config: TypeSpecBuilder.() -> Unit = {}): TypeSpec =
-    TypeSpec.funInterfaceBuilder(className = className).wrapBuilder().apply(config).build()
+    TypeSpec.funInterfaceBuilder(className = className).asKotlinBardBuilder().apply(config).build()
 
 public inline fun funInterface(name: String, config: TypeSpecBuilder.() -> Unit = {}): TypeSpec =
-    TypeSpec.funInterfaceBuilder(name = name).wrapBuilder().apply(config).build()
+    TypeSpec.funInterfaceBuilder(name = name).asKotlinBardBuilder().apply(config).build()
 
 public inline fun `interface`(className: ClassName, config: TypeSpecBuilder.() -> Unit = {}): TypeSpec =
-    TypeSpec.interfaceBuilder(className = className).wrapBuilder().apply(config).build()
+    TypeSpec.interfaceBuilder(className = className).asKotlinBardBuilder().apply(config).build()
 
 public inline fun `interface`(name: String, config: TypeSpecBuilder.() -> Unit = {}): TypeSpec =
-    TypeSpec.interfaceBuilder(name = name).wrapBuilder().apply(config).build()
+    TypeSpec.interfaceBuilder(name = name).asKotlinBardBuilder().apply(config).build()
 
 public inline fun `object`(className: ClassName, config: TypeSpecBuilder.() -> Unit = {}): TypeSpec =
-    TypeSpec.objectBuilder(className = className).wrapBuilder().apply(config).build()
+    TypeSpec.objectBuilder(className = className).asKotlinBardBuilder().apply(config).build()
 
 public inline fun `object`(name: String, config: TypeSpecBuilder.() -> Unit = {}): TypeSpec =
-    TypeSpec.objectBuilder(name = name).wrapBuilder().apply(config).build()
+    TypeSpec.objectBuilder(name = name).asKotlinBardBuilder().apply(config).build()
 
 // -- other --
 
@@ -237,4 +237,4 @@ public inline fun TypeSpec.modify(
     name: String? = this.name,
     config: TypeSpecBuilder.() -> Unit,
 ): TypeSpec =
-    toBuilder(kind = kind, name = name).wrapBuilder().apply(config).build()
+    toBuilder(kind = kind, name = name).asKotlinBardBuilder().apply(config).build()

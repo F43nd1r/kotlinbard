@@ -277,18 +277,18 @@ public class FunSpecBuilder internal constructor(
 // -- build --
 
 public inline fun function(name: String, config: FunSpecBuilder.() -> Unit = {}): FunSpec =
-    FunSpec.builder(name = name).wrapBuilder().apply(config).build()
+    FunSpec.builder(name = name).asKotlinBardBuilder().apply(config).build()
 
 public inline fun constructor(config: FunSpecBuilder.() -> Unit = {}): FunSpec =
-    FunSpec.constructorBuilder().wrapBuilder().apply(config).build()
+    FunSpec.constructorBuilder().asKotlinBardBuilder().apply(config).build()
 
 public inline fun getter(config: FunSpecBuilder.() -> Unit = {}): FunSpec =
-    FunSpec.getterBuilder().wrapBuilder().apply(config).build()
+    FunSpec.getterBuilder().asKotlinBardBuilder().apply(config).build()
 
 @Deprecated(message =
 "Element APIs don't give complete information on Kotlin types. Consider using the kotlinpoet-metadata APIs instead.")
 public inline fun overriding(method: ExecutableElement, config: FunSpecBuilder.() -> Unit = {}): FunSpec =
-    FunSpec.overriding(method = method).wrapBuilder().apply(config).build()
+    FunSpec.overriding(method = method).asKotlinBardBuilder().apply(config).build()
 
 @Deprecated(message =
 "Element APIs don't give complete information on Kotlin types. Consider using the kotlinpoet-metadata APIs instead.")
@@ -298,12 +298,12 @@ public inline fun overriding(
     types: Types,
     config: FunSpecBuilder.() -> Unit = {},
 ): FunSpec = FunSpec.overriding(method = method, enclosing = enclosing,
-    types = types).wrapBuilder().apply(config).build()
+    types = types).asKotlinBardBuilder().apply(config).build()
 
 public inline fun setter(config: FunSpecBuilder.() -> Unit = {}): FunSpec =
-    FunSpec.setterBuilder().wrapBuilder().apply(config).build()
+    FunSpec.setterBuilder().asKotlinBardBuilder().apply(config).build()
 
 // -- other --
 
 public inline fun FunSpec.modify(name: String, config: FunSpecBuilder.() -> Unit): FunSpec =
-    toBuilder(name = name).wrapBuilder().apply(config).build()
+    toBuilder(name = name).asKotlinBardBuilder().apply(config).build()
