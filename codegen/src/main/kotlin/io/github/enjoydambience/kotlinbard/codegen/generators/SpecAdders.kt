@@ -46,7 +46,7 @@ object SpecAdders : SpecFunctionFileGenerator() {
         /** The name of the resulting generated function */
         val generatedName: String,
         /** The name of the builder function this delegates to */
-        val builderFunName: String
+        val builderFunName: String,
     )
 
     private class GroupBuildingScope {
@@ -62,7 +62,7 @@ object SpecAdders : SpecFunctionFileGenerator() {
         operator fun String.invoke(
             //receiver = creatorFunName
             generatedName: String = "add" + this.toPascalCase(),
-            delegatesTo: String = generatedName
+            delegatesTo: String = generatedName,
         ) {
             mappings += AddFunctionGroup(SpecBuilders.funPrefix + this.toPascalCase(), generatedName, delegatesTo)
         }
@@ -187,7 +187,7 @@ object SpecAdders : SpecFunctionFileGenerator() {
         generatedName: String,
         builderSpec: SpecInfo,
         delegatesTo: String,
-        creatorFun: FunSpec
+        creatorFun: FunSpec,
     ): FunSpec = buildFunction(generatedName) {
         addModifiers(KModifier.INLINE)
         receiver(builderSpec.builderName)

@@ -99,7 +99,7 @@ object SpecBuilders : SpecFunctionFileGenerator() {
     private fun generateFunction(
         spec: SpecInfo,
         function: KFunction<*>,
-        nameWithoutPrefix: String
+        nameWithoutPrefix: String,
     ): FunSpec = buildFunction(funPrefix + nameWithoutPrefix.toPascalCase()) {
         tag(function)
         copyDeprecationOf(function)

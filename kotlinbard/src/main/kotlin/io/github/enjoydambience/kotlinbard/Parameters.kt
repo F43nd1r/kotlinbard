@@ -75,7 +75,7 @@ public abstract class BaseParametersBuilder internal constructor() {
     }
 
     public open class Parameter internal constructor(
-        @PublishedApi internal val poetBuilder: ParameterSpecBuilder
+        @PublishedApi internal val poetBuilder: ParameterSpecBuilder,
     ) {
         internal constructor(name: String, type: TypeName) : this(ParameterSpec.builder(name, type))
     }

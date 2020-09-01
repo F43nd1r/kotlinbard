@@ -27,7 +27,7 @@ import kotlin.reflect.full.companionObject
  */
 class SpecInfo private constructor(
     /** Class of the spec. */
-    val specClass: KClass<*>
+    val specClass: KClass<*>,
 ) {
     /** Name of spec, minus "Spec" suffix */
     val name = specClass.simpleName!!.removeSuffix("Spec")
