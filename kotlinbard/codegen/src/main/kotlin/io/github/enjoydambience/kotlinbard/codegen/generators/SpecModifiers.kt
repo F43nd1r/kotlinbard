@@ -41,7 +41,11 @@ object SpecModifiers : SpecFunctionFileGenerator() {
         returns(spec.specClass)
 
         val (call, params) = codeCallReflected(function)
-        addParameters(params)
+        addParameters(params.map {
+            it.toBuilder().apply {
+                defaultValue("this.%N", it.name)
+            }.build()
+        })
 
         val configParam = LambdaTypeName.get(
             receiver = spec.builderName,
