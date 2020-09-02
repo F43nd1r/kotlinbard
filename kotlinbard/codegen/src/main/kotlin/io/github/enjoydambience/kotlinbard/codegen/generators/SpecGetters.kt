@@ -16,6 +16,7 @@
 
 package io.github.enjoydambience.kotlinbard.codegen.generators
 
+import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.asTypeName
 import io.github.enjoydambience.kotlinbard.buildFunction
@@ -30,8 +31,12 @@ import kotlin.reflect.full.declaredMemberFunctions
  * Derived from spec companion functions that return (their own) spec type.
  */
 object SpecGetters : SpecFunctionFileGenerator() {
-    override fun generateFunctionsForSpec(spec: SpecInfo): List<FunSpec> =
-        spec.companionClass.declaredMemberFunctions
+    private val excludedSpecs = setOf(CodeBlock::class)
+
+    override fun generateFunctionsForSpec(spec: SpecInfo): List<FunSpec> {
+        if (spec.specClass in excludedSpecs) return emptyList()
+
+        return spec.companionClass.declaredMemberFunctions
             .filter {
                 it.returnType.classifier == spec.specClass
             }
@@ -44,4 +49,5 @@ object SpecGetters : SpecFunctionFileGenerator() {
                     addStatement("return %L", call)
                 }
             }
+    }
 }
