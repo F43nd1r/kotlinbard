@@ -68,7 +68,7 @@ class ControlFlowTest : FreeSpec({
                 val block = codeBlock {
                     `if`("%L.isEmpty()", "taco") {
                         addStatement("addToppings()")
-                    } `else` "eat(%L)".code("taco")
+                    } `else` "eat(%L)".codeFmt("taco")
                 }
                 block.toString() shouldBe """
                     |if (taco.isEmpty()) {
@@ -162,7 +162,7 @@ class ControlFlowTest : FreeSpec({
         "without arg" {
             val block = codeBlock {
                 `when` {
-                    "isOk()" - "println(%S)".code("OK")
+                    "isOk()" - "println(%S)".codeFmt("OK")
                 }
             }
             block.toString() shouldBe """
@@ -174,7 +174,7 @@ class ControlFlowTest : FreeSpec({
         "with arg" {
             val block = codeBlock {
                 `when`("%L", "a") {
-                    3.literal - "println(%S)".code("is 3")
+                    "3" - "println(%S)".codeFmt("is 3")
                 }
             }
             block.toString() shouldBe """
@@ -186,8 +186,8 @@ class ControlFlowTest : FreeSpec({
         "then {}" {
             val block = codeBlock {
                 `when`("a") {
-                    3.literal - {
-                        "println(%S)".code("is 3")
+                    "3" - {
+                        "println(%S)".codeFmt("is 3")
                     }
                 }
             }
@@ -235,7 +235,7 @@ class ControlFlowTest : FreeSpec({
                 }
                 `when`("o") {
                     "in p" - "q"
-                    "!is %T".code(Int::class) - "r"
+                    "!is %T".codeFmt(Int::class) - "r"
                     "else" - "s"
                 }
             }

@@ -67,8 +67,6 @@ class ReadmeExamples : StringSpec({
 //        println(prop)
     }
     "Code block shortcuts"{
-        val myCode = "doStuff()".code
-        val print = "println(%S)".code("Hello, World")
-        val literal = "string literal".strLiteral
+        val print = "println(%S)".codeFmt("Hello, World")
     }
 })

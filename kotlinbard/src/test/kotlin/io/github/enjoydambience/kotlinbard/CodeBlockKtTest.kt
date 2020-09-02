@@ -22,21 +22,11 @@ import io.kotest.matchers.shouldBe
 
 class CodeBlockKtTest : StringSpec({
 
-    "code" {
-        "this is code".code shouldBe CodeBlock.of("this is code")
-
-        "Hello %S".code("foo") shouldBe CodeBlock.of("Hello \"foo\"")
+    "codeBlock" {
+        codeBlock("this is %L", "Code") shouldBe CodeBlock.of("this is %L", "Code")
+    }
+    "codeFmt" {
+        "hello(%S)".codeFmt("world") shouldBe CodeBlock.of("hello(%S)", "world")
     }
 
-    "strLiteral" {
-        "\$literally".strLiteral shouldBe CodeBlock.of(""""${"$"}{'$'}literally"""")
-    }
-
-    "template" {
-        "\$template".template shouldBe CodeBlock.of("\"\"\"\$template\"\"\"")
-    }
-
-    "literal" {
-        5.literal shouldBe CodeBlock.of("5")
-    }
 })
