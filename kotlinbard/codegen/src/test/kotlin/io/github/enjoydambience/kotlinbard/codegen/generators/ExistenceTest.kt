@@ -16,6 +16,7 @@
 
 package io.github.enjoydambience.kotlinbard.codegen.generators
 
+import com.squareup.kotlinpoet.CodeBlock
 import io.github.enjoydambience.kotlinbard.codegen.SpecInfo
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.core.spec.style.scopes.FreeScope
@@ -36,8 +37,9 @@ class ExistenceTest : FreeSpec({
         }
     }
     "SpecAdders" - {
+        val excludes = mapOf(SpecInfo.of(CodeBlock::class)!! to setOf("add"))
         testAllSpecs { spec ->
-            val allAdders = SpecAdders.addersFrom(spec).keys
+            val allAdders = SpecAdders.addersFrom(spec).keys - excludes[spec].orEmpty()
             val usedAdders = SpecAdders.allGroups[spec]?.map { it.delegateFunName }.orEmpty()
 
             usedAdders shouldContainAll allAdders

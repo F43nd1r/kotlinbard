@@ -102,6 +102,7 @@ object SpecAdders : SpecFunctionFileGenerator() {
                 generatedName = "superclassConstructorParameter",
                 delegatesTo = "addSuperclassConstructorParameter"
             )
+            builds("codeBlock", generatedName = "kdoc")
         }
         PropertySpec::class {
             builds("annotation")
@@ -109,18 +110,25 @@ object SpecAdders : SpecFunctionFileGenerator() {
             builds("setter", generatedName = "set", delegatesTo = "setter")
             builds("codeBlock", generatedName = "delegate", delegatesTo = "delegate")
             builds("codeBlock", generatedName = "init", delegatesTo = "initializer")
+            builds("codeBlock", generatedName = "kdoc")
         }
         FunSpec::class {
             builds("annotation")
             builds("parameter")
             builds("codeBlock", generatedName = "addCode", delegatesTo = "addCode")
+            builds("codeBlock", generatedName = "kdoc")
         }
         ParameterSpec::class {
             builds("annotation")
             builds("codeBlock", generatedName = "defaultValue", delegatesTo = "defaultValue")
+            builds("codeBlock", generatedName = "kdoc")
+        }
+        AnnotationSpec::class{
+            builds("codeBlock", generatedName = "member")
         }
         TypeAliasSpec::class {
             builds("annotation")
+            builds("codeBlock", generatedName = "kdoc")
         }
         result
     }
