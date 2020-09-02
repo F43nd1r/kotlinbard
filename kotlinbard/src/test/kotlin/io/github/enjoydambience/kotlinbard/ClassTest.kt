@@ -37,8 +37,8 @@ class ClassTest : StringSpec({
     }
     "secondary constructor" {
         val type = buildClass("Foo") {
-            addConstructor {
-                addParameter("foo", String::class)
+            constructor {
+                parameter("foo", String::class)
                 addStatement("println(%S)", "foo")
             }
         }

@@ -16,6 +16,6 @@
 
 package io.github.enjoydambience.kotlinbard
 
-public inline fun TypeSpecBuilder.addEnumConstant(name: String, config: TypeSpecBuilder.() -> Unit) {
+public inline fun TypeSpecBuilder.enumConstant(name: String, config: TypeSpecBuilder.() -> Unit) {
     addEnumConstant(name, buildAnonymousClass(config))
 }

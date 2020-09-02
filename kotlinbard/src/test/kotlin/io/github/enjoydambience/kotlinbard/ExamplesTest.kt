@@ -27,18 +27,18 @@ class ExamplesTest : StringSpec({
     "KotlinPoet's first example"{
         val withBard = buildFile("", "HelloWorld") {
             val greeterClass = ClassName("", "Greeter")
-            addClass(greeterClass) {
+            `class`(greeterClass) {
                 primaryConstructor {
-                    addParameter("name", String::class)
+                    parameter("name", String::class)
                 }
-                addProperty("name", String::class) {
+                property("name", String::class) {
                     initializer("name")
                 }
-                addFunction("greet") {
+                function("greet") {
                     addStatement("println(%P)", "Hello, \$name")
                 }
             }
-            addFunction("main") {
+            function("main") {
                 addParameter("args", String::class, VARARG)
                 addStatement("%T(args[0]).greet()", greeterClass)
             }
@@ -75,7 +75,7 @@ class ExamplesTest : StringSpec({
     }
     "kotlin.collections.Collection" {
         val file = buildFile("kotlin.collections", "Collections") {
-            addInterface("Collection") {
+            `interface`("Collection") {
                 val E = TypeVariableName("E")
                 val outE = TypeVariableName("E", variance = OUT)
                 val unsafeE = E.copy(annotations = listOf(buildAnnotation(UnsafeVariance::class)))
@@ -88,29 +88,29 @@ class ExamplesTest : StringSpec({
                 )
                 addTypeVariable(outE)
                 addSuperinterface(ITERABLE.parameterizedBy(E))
-                addProperty("size", Int::class) {
+                property("size", Int::class) {
                     addKdoc("Returns the size of the collection.")
                     addModifiers(OVERRIDE)
                 }
-                addFunction("isEmpty") {
+                function("isEmpty") {
                     addKdoc("Returns `true` if the collection is empty (contains no elements), `false` otherwise.")
                     addModifiers(OVERRIDE)
                     addModifiers(ABSTRACT)
                     returns(Boolean::class)
                 }
-                addFunction("contains") {
+                function("contains") {
                     addKdoc("Checks if the specified element is contained in this collection.")
                     addModifiers(OVERRIDE)
                     addModifiers(ABSTRACT)
                     addParameter("element", unsafeE)
                     returns(Boolean::class)
                 }
-                addFunction("iterator") {
+                function("iterator") {
                     addModifiers(OVERRIDE)
                     addModifiers(ABSTRACT)
                     returns(Iterator::class.asTypeName().parameterizedBy(E))
                 }
-                addFunction("containsAll") {
+                function("containsAll") {
                     addKdoc("Checks if all elements in the specified collection are contained in this collection.")
                     addModifiers(OVERRIDE)
                     addModifiers(ABSTRACT)

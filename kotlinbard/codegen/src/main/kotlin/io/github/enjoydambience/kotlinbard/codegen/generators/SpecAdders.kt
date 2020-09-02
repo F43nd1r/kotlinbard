@@ -54,8 +54,8 @@ object SpecAdders : SpecFunctionFileGenerator() {
          */
         fun builds(
             builderFunName: String,
-            generatedName: String = "add" + builderFunName.toPascalCase(),
-            delegatesTo: String = generatedName,
+            generatedName: String = builderFunName,
+            delegatesTo: String = "add" + generatedName.toPascalCase(),
         ) {
             groups += AddFunctionGroup(builderFunName, generatedName, delegatesTo)
         }
@@ -95,8 +95,8 @@ object SpecAdders : SpecFunctionFileGenerator() {
             builds("funInterface", delegatesTo = "addType")
             builds("interface", delegatesTo = "addType")
             builds("object", delegatesTo = "addType")
-            builds("constructor", generatedName = "primaryConstructor")
-            builds("constructor", generatedName = "addConstructor", delegatesTo = "addFunction")
+            builds("constructor", generatedName = "primaryConstructor", delegatesTo = "primaryConstructor")
+            builds("constructor", generatedName = "constructor", delegatesTo = "addFunction")
             builds("codeBlock", generatedName = "init", delegatesTo = "addInitializerBlock")
             builds("codeBlock",
                 generatedName = "superclassConstructorParameter",
@@ -107,17 +107,17 @@ object SpecAdders : SpecFunctionFileGenerator() {
             builds("annotation")
             builds("getter", generatedName = "get", delegatesTo = "getter")
             builds("setter", generatedName = "set", delegatesTo = "setter")
-            builds("codeBlock", generatedName = "delegate")
+            builds("codeBlock", generatedName = "delegate", delegatesTo = "delegate")
             builds("codeBlock", generatedName = "init", delegatesTo = "initializer")
         }
         FunSpec::class {
             builds("annotation")
             builds("parameter")
-            builds("codeBlock", generatedName = "addCode")
+            builds("codeBlock", generatedName = "addCode", delegatesTo = "addCode")
         }
         ParameterSpec::class {
             builds("annotation")
-            builds("codeBlock", generatedName = "defaultValue")
+            builds("codeBlock", generatedName = "defaultValue", delegatesTo = "defaultValue")
         }
         TypeAliasSpec::class {
             builds("annotation")
@@ -141,7 +141,8 @@ object SpecAdders : SpecFunctionFileGenerator() {
 
         return allGroups[spec]
             ?.flatMap { group ->
-                val addingSpec = adderFunctions.getValue(group.delegateFunName)
+                val addingSpec = adderFunctions[group.delegateFunName]
+                    ?: error("No builder function of ${spec.name} named ${group.delegateFunName}")
                 SpecBuilders.functionsBySpec.getValue(addingSpec)
                     .filter {
                         it.tag<SpecBuilders.ReferenceName>()?.name == group.builderFunName
