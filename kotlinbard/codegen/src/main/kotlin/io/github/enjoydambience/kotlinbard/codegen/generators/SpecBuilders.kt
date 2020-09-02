@@ -37,7 +37,7 @@ import kotlin.reflect.full.declaredMemberFunctions
  */
 object SpecBuilders : SpecFunctionFileGenerator() {
 
-    private data class BuildFunctionGroup(
+    data class BuildFunctionGroup(
         /** The name of the builder function; this is for reference by [SpecAdders] */
         val referenceName: String,
         /** The name of the generated function */
@@ -56,25 +56,26 @@ object SpecBuilders : SpecFunctionFileGenerator() {
          */
         fun from(
             delegatesTo: String,
-            name: String = deriveDefaultName(delegatesTo, spec),
+            name: String = getDefaultName(delegatesTo, spec),
             generatedName: String = "build" + name.toPascalCase(),
         ) {
             groups += BuildFunctionGroup(name, generatedName, delegatesTo)
         }
     }
 
-    private fun deriveDefaultName(delegateName: String, spec: SpecInfo): String {
+    private fun getDefaultName(delegateName: String, spec: SpecInfo): String {
         if (delegateName == "builder") return spec.name.toCamelCase()
         return delegateName.removeSuffix("Builder")
     }
 
-    private val allGroups: Map<SpecInfo, List<BuildFunctionGroup>> = run {
+    val allGroups: Map<SpecInfo, List<BuildFunctionGroup>> = run {
         //local dsl setup
         val result = mutableMapOf<SpecInfo, List<BuildFunctionGroup>>()
         operator fun KClass<*>.invoke(config: BuildFunctionsScope.() -> Unit) {
             val spec = SpecInfo.of(this)!!
             result[spec] = BuildFunctionsScope(spec).apply(config).groups
         }
+
         FileSpec::class {
             from("builder")
         }
@@ -116,18 +117,23 @@ object SpecBuilders : SpecFunctionFileGenerator() {
     }
 
     override fun generateFunctionsForSpec(spec: SpecInfo): List<FunSpec> {
-        val possibleDelegates = spec.companionClass.declaredMemberFunctions
-            .filter { function ->
-                function.returnType.classifier == spec.builderClass
-            }
+        val possibleDelegatesByName = delegatesFrom(spec)
             .groupBy { it.name }
 
         return allGroups.getValue(spec)
             .flatMap {
-                (possibleDelegates[it.delegateFunName] ?: error("No builder function called ${it.delegateFunName}"))
+                (possibleDelegatesByName[it.delegateFunName]
+                    ?: error("No builder function called ${it.delegateFunName}"))
                     .map { function ->
                         generateFunction(spec, function, it.generatedName, it.referenceName)
                     }
+            }
+    }
+
+    fun delegatesFrom(spec: SpecInfo): List<KFunction<*>> {
+        return spec.companionClass.declaredMemberFunctions
+            .filter { function ->
+                function.returnType.classifier == spec.builderClass
             }
     }
 

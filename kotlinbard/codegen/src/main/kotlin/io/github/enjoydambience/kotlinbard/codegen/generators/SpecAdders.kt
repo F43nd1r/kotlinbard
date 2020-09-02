@@ -35,7 +35,7 @@ import kotlin.reflect.full.declaredMemberFunctions
  */
 object SpecAdders : SpecFunctionFileGenerator() {
 
-    private data class AddFunctionGroup(
+    data class AddFunctionGroup(
         /** The name of the creator function to use ([SpecBuilders]] */
         val builderFunName: String,
         /** The name of the resulting generated function */
@@ -61,7 +61,7 @@ object SpecAdders : SpecFunctionFileGenerator() {
         }
     }
 
-    private val allGroups: Map<SpecInfo, List<AddFunctionGroup>> = run {
+    val allGroups: Map<SpecInfo, List<AddFunctionGroup>> = run {
         //local dsl setup
         val result = mutableMapOf<SpecInfo, List<AddFunctionGroup>>()
         operator fun KClass<*>.invoke(config: AddFunctionsScope.() -> Unit) {
@@ -126,22 +126,11 @@ object SpecAdders : SpecFunctionFileGenerator() {
     }
 
     override fun generateFunctionsForSpec(spec: SpecInfo): List<FunSpec> {
-        val adderFunctions = spec.builderClass.declaredMemberFunctions
-            .asSequence()
-            //find functions with a single parameter that is a spec type
-            //associate function's name to spec type
-            .filter { it.parameters.size == 2 }
-            .mapNotNull {
-                val parameterSpec =
-                    (it.parameters[1].type.classifier as? KClass<*>)?.let { klass -> SpecInfo.of(klass) }
-                        ?: return@mapNotNull null
-                it to parameterSpec
-            }
-            .associate { (function, spec) -> function.name to spec }
+        val possibleAdders = addersFrom(spec)
 
         return allGroups[spec]
             ?.flatMap { group ->
-                val addingSpec = adderFunctions[group.delegateFunName]
+                val addingSpec = possibleAdders[group.delegateFunName]
                     ?: error("No builder function of ${spec.name} named ${group.delegateFunName}")
                 SpecBuilders.functionsBySpec.getValue(addingSpec)
                     .filter {
@@ -162,6 +151,20 @@ object SpecAdders : SpecFunctionFileGenerator() {
                     }
             }
             .orEmpty()
+    }
+
+    fun addersFrom(spec: SpecInfo): Map<String, SpecInfo> {
+        return spec.builderClass.declaredMemberFunctions.asSequence()
+            //find functions with a single parameter that is a spec type
+            //associate function's name to spec type
+            .filter { it.parameters.size == 2 } //first parameter is "this"
+            .mapNotNull {
+                val parameterSpec =
+                    (it.parameters[1].type.classifier as? KClass<*>)?.let { klass -> SpecInfo.of(klass) }
+                        ?: return@mapNotNull null
+                it to parameterSpec
+            }
+            .associate { (function, spec) -> function.name to spec }
     }
 
     private fun generateFunction(

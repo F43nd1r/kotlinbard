@@ -48,17 +48,18 @@ compileKotlin.kotlinOptions {
 val generatedSrc = "$buildDir/generated-src"
 val codegenProject = project("codegen")
 
-fun codegenTask() {
+fun configureCodegenTask() {
     val codegen by tasks.creating(JavaExec::class) {
         group = "build"
         description = "Runs codegen"
 
-        dependsOn(codegenProject.tasks.build)
+        dependsOn(codegenProject.tasks.assemble)
+
         inputs.files(codegenProject.tasks.jar.get().outputs.files)
         outputs.dir(generatedSrc)
 
         doFirst {
-            codegenProject.delete(generatedSrc)
+            delete(generatedSrc)
         }
 
         classpath = codegenProject.sourceSets.main.get().runtimeClasspath
@@ -66,10 +67,11 @@ fun codegenTask() {
         args(generatedSrc)
     }
     compileKotlin.dependsOn(codegen)
+    tasks.test.get().dependsOn(codegenProject.tasks.test)
 }
 
 codegenProject.afterEvaluate {
-    codegenTask()
+    configureCodegenTask()
 }
 
 sourceSets.main {
