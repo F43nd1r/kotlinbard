@@ -27,172 +27,152 @@ import kotlin.reflect.full.declaredMemberFunctions
 // "builder" refers to XXXSpec.Builder
 // "creator" refers to functions made by SpecCreate
 /**
- * Generates `addXXX` extension functions for spec builders. These create a spec using a
- * [spec creator][SpecBuilders], using a given config, then add them using the builder.
+ * Generates extension functions for builders corresponding to a combination of adding and building.
  *
- * These are derived from spec builder functions that take a single spec as a parameter, and return
- * (its own) builder type.
+ * These are derived from spec builder functions that take a single spec as a parameter.
  *
- * These functions have the form `addXXX(creatorFunction(<params>,config))`
+ * These have the form `addXXX(buildXXX(...))`
  */
 object SpecAdders : SpecFunctionFileGenerator() {
-    /**
-     * Represents a _group_ of "add" functions.
-     * All functions that match all the name.
-     */
+
     private data class AddFunctionGroup(
         /** The name of the creator function to use ([SpecBuilders]] */
-        val creatorFunName: String,
+        val builderFunName: String,
         /** The name of the resulting generated function */
         val generatedName: String,
         /** The name of the builder function this delegates to */
-        val builderFunName: String,
+        val delegateFunName: String,
     )
 
-    private class GroupBuildingScope {
-        val mappings = mutableListOf<AddFunctionGroup>()
+    private class AddFunctionsScope {
+        val groups = mutableListOf<AddFunctionGroup>()
 
         /**
-         * Adds a [AddFunctionGroup].
-         *
-         * @receiver name of creator function (in [SpecBuilders]), without the "create" prefix.
+         * @receiver reference builder function name (in [SpecBuilders])
          * @param generatedName name of the generated function. Defaults to `add<Receiver>`
          * @param delegatesTo the name of the builder function this delegates to. Defaults to [generatedName]
          */
-        operator fun String.invoke(
-            //receiver = creatorFunName
-            generatedName: String = "add" + this.toPascalCase(),
+        fun builds(
+            builderFunName: String,
+            generatedName: String = "add" + builderFunName.toPascalCase(),
             delegatesTo: String = generatedName,
         ) {
-            mappings += AddFunctionGroup(SpecBuilders.funPrefix + this.toPascalCase(), generatedName, delegatesTo)
+            groups += AddFunctionGroup(builderFunName, generatedName, delegatesTo)
         }
     }
 
-
-    private val allAddGroups: Map<SpecInfo, List<AddFunctionGroup>> = run {
+    private val allGroups: Map<SpecInfo, List<AddFunctionGroup>> = run {
         //local dsl setup
         val result = mutableMapOf<SpecInfo, List<AddFunctionGroup>>()
-        operator fun KClass<*>.invoke(config: GroupBuildingScope.() -> Unit) {
+        operator fun KClass<*>.invoke(config: AddFunctionsScope.() -> Unit) {
             val spec = SpecInfo.of(this)!!
-            result[spec] = GroupBuildingScope().apply(config).mappings
+            result[spec] = AddFunctionsScope().apply(config).groups
         }
 
         FileSpec::class {
-            "annotation"()
-            "function"()
-            "property"()
-            "annotationClass"(delegatesTo = "addType")
-            "anonymousClass"(delegatesTo = "addType")
-            "class"(delegatesTo = "addType")
-            "enum"(delegatesTo = "addType")
-            "expectClass"(delegatesTo = "addType")
-            "funInterface"(delegatesTo = "addType")
-            "interface"(delegatesTo = "addType")
-            "object"(delegatesTo = "addType")
-            "typeAlias"()
+            builds("annotation")
+            builds("function")
+            builds("property")
+            builds("annotationClass", delegatesTo = "addType")
+            builds("anonymousClass", delegatesTo = "addType")
+            builds("class", delegatesTo = "addType")
+            builds("enum", delegatesTo = "addType")
+            builds("expectClass", delegatesTo = "addType")
+            builds("funInterface", delegatesTo = "addType")
+            builds("interface", delegatesTo = "addType")
+            builds("object", delegatesTo = "addType")
+            builds("typeAlias")
         }
         TypeSpec::class {
-            "annotation"()
-            "function"()
-            "property"()
-            "annotationClass"(delegatesTo = "addType")
-            "anonymousClass"(delegatesTo = "addType")
-            "class"(delegatesTo = "addType")
-            "enum"(delegatesTo = "addType")
-            "expectClass"(delegatesTo = "addType")
-            "funInterface"(delegatesTo = "addType")
-            "interface"(delegatesTo = "addType")
-            "object"(delegatesTo = "addType")
-            "constructor"(generatedName = "primaryConstructor")
-            "constructor"(generatedName = "addConstructor", delegatesTo = "addFunction")
-            "codeBlock"(generatedName = "init", delegatesTo = "addInitializerBlock")
-            "codeBlock"(
+            builds("annotation")
+            builds("function")
+            builds("property")
+            builds("annotationClass", delegatesTo = "addType")
+            builds("anonymousClass", delegatesTo = "addType")
+            builds("class", delegatesTo = "addType")
+            builds("enum", delegatesTo = "addType")
+            builds("expectClass", delegatesTo = "addType")
+            builds("funInterface", delegatesTo = "addType")
+            builds("interface", delegatesTo = "addType")
+            builds("object", delegatesTo = "addType")
+            builds("constructor", generatedName = "primaryConstructor")
+            builds("constructor", generatedName = "addConstructor", delegatesTo = "addFunction")
+            builds("codeBlock", generatedName = "init", delegatesTo = "addInitializerBlock")
+            builds("codeBlock",
                 generatedName = "superclassConstructorParameter",
                 delegatesTo = "addSuperclassConstructorParameter"
             )
-            //no overriding method; that is deprecated
         }
         PropertySpec::class {
-            "annotation"()
-            "getter"(generatedName = "get", delegatesTo = "getter")
-            "setter"(generatedName = "set", delegatesTo = "setter")
-            "codeBlock"(generatedName = "delegate")
-            "codeBlock"(generatedName = "init", delegatesTo = "initializer")
+            builds("annotation")
+            builds("getter", generatedName = "get", delegatesTo = "getter")
+            builds("setter", generatedName = "set", delegatesTo = "setter")
+            builds("codeBlock", generatedName = "delegate")
+            builds("codeBlock", generatedName = "init", delegatesTo = "initializer")
         }
         FunSpec::class {
-            "annotation"()
-            "parameter"()
-            "codeBlock"(generatedName = "addCode")
+            builds("annotation")
+            builds("parameter")
+            builds("codeBlock", generatedName = "addCode")
         }
         ParameterSpec::class {
-            "annotation"()
-            "codeBlock"(generatedName = "defaultValue")
+            builds("annotation")
+            builds("codeBlock", generatedName = "defaultValue")
         }
         TypeAliasSpec::class {
-            "annotation"()
+            builds("annotation")
         }
-
         result
     }
 
     override fun generateFunctionsForSpec(spec: SpecInfo): List<FunSpec> {
-        val builderFunctions = spec.builderClass.declaredMemberFunctions
+        val adderFunctions = spec.builderClass.declaredMemberFunctions
+            .asSequence()
+            //find functions with a single parameter that is a spec type
+            //associate function's name to spec type
+            .filter { it.parameters.size == 2 }
+            .mapNotNull {
+                val parameterSpec =
+                    (it.parameters[1].type.classifier as? KClass<*>)?.let { klass -> SpecInfo.of(klass) }
+                        ?: return@mapNotNull null
+                it to parameterSpec
+            }
+            .associate { (function, spec) -> function.name to spec }
 
-//        builderFunctions.forEach { function ->
-//            val group = allAddGroups[spec] ?: return@forEach
-//            if (function.parameters.size != 2) return@forEach
-//            val paramClass = (function.parameters[1].type.classifier as? KClass<*>)
-//                ?: return@forEach
-//            if (SpecInfo.of(paramClass) == null) return@forEach
-//            if (group.none { it.builderFunName == function.name })
-//                println("No function for $function")
-//        }
-
-        return (allAddGroups[spec] ?: return emptyList())
-            .associateWith { group ->
-                // find builder function, with same name, 1 parameter, that 1 parameter is spec type
-                // The first parameter is the `this` parameter
-                val buildSpec = builderFunctions.asSequence()
-                    .mapNotNull { function ->
-                        if (!(function.name == group.builderFunName
-                                    && function.parameters.size == 2)
-                        ) return@mapNotNull null
-                        val paramClass = (function.parameters[1].type.classifier as? KClass<*>)
-                            ?: return@mapNotNull null
-                        return@mapNotNull SpecInfo.of(paramClass) //null if not exist
-                    }.singleOrNull()
-                    ?: error("Cannot find function ${group.builderFunName} in ${spec.builderClass.qualifiedName}")
-                // get all creator functions that create that type, and have the requested name.
-                val creatorFuns = SpecBuilders.functionsBySpec.getValue(buildSpec)
-                    .filter { creatorFun ->
-                        creatorFun.name == group.creatorFunName
+        return allGroups[spec]
+            ?.flatMap { group ->
+                val addingSpec = adderFunctions.getValue(group.delegateFunName)
+                SpecBuilders.functionsBySpec.getValue(addingSpec)
+                    .filter {
+                        it.tag<SpecBuilders.ReferenceName>()?.name == group.builderFunName
                     }
-                check(creatorFuns.isNotEmpty()) { "No matching mappings for for $spec, $group" }
-                return@associateWith creatorFuns
+                    .also {
+                        if (it.isEmpty()) {
+                            error("No builder functions that return ${addingSpec.name} named ${group.builderFunName}")
+                        }
+                    }
+                    .map { builderFun ->
+                        generateFunction(
+                            generatedName = group.generatedName,
+                            builderSpec = spec,
+                            delegatesTo = group.delegateFunName,
+                            builderFun = builderFun
+                        )
+                    }
             }
-            .flatMap { (mapping, creatorFuns) ->
-                creatorFuns.map { creatorFun ->
-                    generateFunction(
-                        generatedName = mapping.generatedName,
-                        builderSpec = spec,
-                        delegatesTo = mapping.builderFunName,
-                        creatorFun = creatorFun
-                    )
-                }
-            }
-
+            .orEmpty()
     }
 
     private fun generateFunction(
         generatedName: String,
         builderSpec: SpecInfo,
         delegatesTo: String,
-        creatorFun: FunSpec,
+        builderFun: FunSpec,
     ): FunSpec = buildFunction(generatedName) {
         addModifiers(KModifier.INLINE)
         receiver(builderSpec.builderName)
-        addParameters(creatorFun.parameters)
-        val builderCall = codeCall(creatorFun)
+        addParameters(builderFun.parameters)
+        val builderCall = codeCall(builderFun)
         addStatement("%N(%L)", delegatesTo, builderCall)
     }
 }
