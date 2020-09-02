@@ -33,7 +33,7 @@ class ControlFlowTest : FreeSpec({
             |""".trimMargin()
     }
 
-    "if" - {
+    "if/else" - {
         "simple if" {
             val block = codeBlock {
                 `if`("%L.isEmpty()", "taco") {
@@ -183,11 +183,11 @@ class ControlFlowTest : FreeSpec({
                 |}
                 |""".trimMargin()
         }
-        "then {}" {
+        "branch {}" {
             val block = codeBlock {
                 `when`("a") {
                     "3" - {
-                        "println(%S)".codeFmt("is 3")
+                        addStatement("println(%S)", "is 3")
                     }
                 }
             }
@@ -199,7 +199,7 @@ class ControlFlowTest : FreeSpec({
                 |}
                 |""".trimMargin()
         }
-        "else"{
+        "else" {
             val block = codeBlock {
                 `when` {
                     "else" - "celebrate()"
@@ -212,64 +212,27 @@ class ControlFlowTest : FreeSpec({
                 |}
                 |""".trimMargin()
         }
-    }
-    "full house" {
-        val func = buildFunction("foo") {
-            addCode {
-                `if`("a") {
-                    addStatement("b")
-                }.`else if`("c") {
-                    addStatement("d")
-                }.`else`("e")
-                `while`("f") {
-                    `do` {
-                        addStatement("g")
-                    }.`while`("h")
-                }
-                `for`("i in j") {
-                    addStatement("k")
-                }
+        "case" {
+            val block = codeBlock {
                 `when` {
-                    "l" - "s"
-                    "else" - { addStatement("n") }
-                }
-                `when`("o") {
-                    "in p" - "q"
-                    "!is %T".codeFmt(Int::class) - "r"
-                    "else" - "s"
+                    case("foo") {
+                        addStatement("celebrate()")
+                    }
+                    case(codeBlock("bar")) {
+                        addStatement("celebrate()")
+                    }
                 }
             }
+            block.toString() shouldBe """
+                |when {
+                |  foo -> {
+                |    celebrate()
+                |  }
+                |  bar -> {
+                |    celebrate()
+                |  }
+                |}
+                |""".trimMargin()
         }
-        func.toString() shouldBe """
-            fun foo() {
-              if (a) {
-                b
-              }
-              else if (c) {
-                d
-              }
-              else e
-              while (f) {
-                do {
-                  g
-                } while (h)
-              }
-              for (i in j) {
-                k
-              }
-              when {
-                l -> s
-                else -> {
-                  n
-                }
-              }
-              when (o) {
-                in p -> q
-                !is kotlin.Int -> r
-                else -> s
-              }
-            }
-            
-            """.trimIndent()
     }
 })

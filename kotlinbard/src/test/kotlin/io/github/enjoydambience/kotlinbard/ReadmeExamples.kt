@@ -45,7 +45,7 @@ class ReadmeExamples : StringSpec({
                     "is SpicyTaco" - {
                         addStatement("println(%S)", "Spicy!!")
                     }
-                    "else" - CodeBlock.of("eat(%L)", "taco")
+                    "else" - "eat(%L)".codeFmt("taco")
                 }
             }
         }

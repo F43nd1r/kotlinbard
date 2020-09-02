@@ -35,32 +35,6 @@ class ClassTest : StringSpec({
             
         """.trimIndent()
     }
-    "multiple init block" {
-        val type = buildClass("Foo") {
-            init {
-                addStatement("println(%S)", "init")
-            }
-            addProperty("foo", String::class) {
-                initializer("%S", "foo")
-            }
-            init {
-                addStatement("println(%S)", "init2")
-            }
-        }
-        type.toString() shouldBe """
-            class Foo {
-              val foo: kotlin.String = "foo"
-            
-              init {
-                println("init")
-              }
-              init {
-                println("init2")
-              }
-            }
-
-        """.trimIndent()
-    }
     "secondary constructor" {
         val type = buildClass("Foo") {
             addConstructor {
