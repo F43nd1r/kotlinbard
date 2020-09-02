@@ -29,7 +29,7 @@ class ExamplesTest : StringSpec({
             val greeterClass = ClassName("", "Greeter")
             addClass(greeterClass) {
                 primaryConstructor {
-                    params { "name" of String::class }
+                    addParameter("name", String::class)
                 }
                 addProperty("name", String::class) {
                     initializer("name")
@@ -102,7 +102,7 @@ class ExamplesTest : StringSpec({
                     addKdoc("Checks if the specified element is contained in this collection.")
                     addModifiers(OVERRIDE)
                     addModifiers(ABSTRACT)
-                    params { "element" of unsafeE }
+                    addParameter("element", unsafeE)
                     returns(Boolean::class)
                 }
                 addFunction("iterator") {
@@ -114,7 +114,7 @@ class ExamplesTest : StringSpec({
                     addKdoc("Checks if all elements in the specified collection are contained in this collection.")
                     addModifiers(OVERRIDE)
                     addModifiers(ABSTRACT)
-                    params { "elements" of COLLECTION.parameterizedBy(unsafeE) }
+                    addParameter("elements", COLLECTION.parameterizedBy(unsafeE))
                     returns(Boolean::class)
                 }
             }

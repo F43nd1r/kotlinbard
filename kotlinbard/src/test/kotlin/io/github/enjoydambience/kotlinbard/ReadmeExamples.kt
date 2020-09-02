@@ -16,7 +16,6 @@
 
 package io.github.enjoydambience.kotlinbard
 
-import com.squareup.kotlinpoet.KModifier.VARARG
 import io.kotest.core.spec.style.StringSpec
 
 class ReadmeExamples : StringSpec({
@@ -71,15 +70,5 @@ class ReadmeExamples : StringSpec({
         val myCode = "doStuff()".code
         val print = "println(%S)".code("Hello, World")
         val literal = "string literal".strLiteral
-    }
-    "function params" {
-        val function = buildFunction("foo") {
-            params {
-                "string" of String::class
-                "number" of Int::class init 5.literal
-                ("args" of Any::class) { addModifiers(VARARG) }
-            }
-        }
-//        println(function)
     }
 })
