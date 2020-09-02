@@ -39,8 +39,7 @@ class SpecInfo private constructor(
     /**
      * Name for the builder, which is actually a type alias.
      *
-     * Type aliases are used so builders can have a DSL annotation.
-     * @see BuilderTypeAliases
+     * Type aliases are used for DSL annotation.
      */
     val builderName = ClassName(destinationPackage, specClass.simpleName + "Builder")
 

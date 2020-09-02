@@ -26,6 +26,9 @@ import io.github.enjoydambience.kotlinbard.codegen.codeCallReflected
 import kotlin.reflect.KFunction
 import kotlin.reflect.full.declaredMemberFunctions
 
+/**
+ * Create functions of the form `toBuilder().apply(build).build()`
+ */
 object SpecModifiers : SpecFunctionFileGenerator() {
     override fun generateFunctionsForSpec(spec: SpecInfo): List<FunSpec> {
         return spec.specClass.declaredMemberFunctions.filter {
