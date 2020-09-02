@@ -109,7 +109,7 @@ object SpecBuilders : SpecFunctionFileGenerator() {
             from("builder")
         }
         CodeBlock::class {
-            from("builder")
+            from("builder", generatedName = "codeBlock")
         }
 
         result

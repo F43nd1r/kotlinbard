@@ -21,7 +21,7 @@ import com.squareup.kotlinpoet.CodeBlock
 /**
  * Short for [buildCodeBlock]
  */
-public inline fun cb(config: CodeBlockBuilder.() -> Unit): CodeBlock = buildCodeBlock(config)
+public inline fun cb(config: CodeBlockBuilder.() -> Unit): CodeBlock = codeBlock(config)
 
 
 /**
