@@ -53,10 +53,10 @@ class ReadmeExamples : StringSpec({
     }
     "prop" {
         val prop = buildProperty("prop", String::class) {
-            get {
+            getter {
                 addStatement("return field")
             }
-            set("value") {
+            setter("value") {
                 addStatement("field = value")
             }
             //or, for parameterless set

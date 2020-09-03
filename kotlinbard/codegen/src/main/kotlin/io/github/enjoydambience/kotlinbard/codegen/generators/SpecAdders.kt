@@ -54,8 +54,8 @@ object SpecAdders : SpecFunctionFileGenerator() {
          */
         fun builds(
             builderFunName: String,
-            generatedName: String = builderFunName,
-            delegatesTo: String = "add" + generatedName.toPascalCase(),
+            generatedName: String = "add" + builderFunName.toPascalCase(),
+            delegatesTo: String = generatedName,
         ) {
             groups += AddFunctionGroup(builderFunName, generatedName, delegatesTo)
         }
@@ -95,40 +95,37 @@ object SpecAdders : SpecFunctionFileGenerator() {
             builds("funInterface", delegatesTo = "addType")
             builds("interface", delegatesTo = "addType")
             builds("object", delegatesTo = "addType")
-            builds("constructor", generatedName = "primaryConstructor", delegatesTo = "primaryConstructor")
-            builds("constructor", generatedName = "constructor", delegatesTo = "addFunction")
-            builds("codeBlock", generatedName = "init", delegatesTo = "addInitializerBlock")
-            builds("codeBlock",
-                generatedName = "superclassConstructorParameter",
-                delegatesTo = "addSuperclassConstructorParameter"
-            )
-            builds("codeBlock", generatedName = "kdoc")
+            builds("constructor", generatedName = "primaryConstructor")
+            builds("constructor", generatedName = "addConstructor", delegatesTo = "addFunction")
+            builds("codeBlock", generatedName = "addInitializerBlock")
+            builds("codeBlock", generatedName = "addSuperclassConstructorParameter")
+            builds("codeBlock", generatedName = "addKdoc")
         }
         PropertySpec::class {
             builds("annotation")
-            builds("getter", generatedName = "get", delegatesTo = "getter")
-            builds("setter", generatedName = "set", delegatesTo = "setter")
-            builds("codeBlock", generatedName = "delegate", delegatesTo = "delegate")
-            builds("codeBlock", generatedName = "init", delegatesTo = "initializer")
-            builds("codeBlock", generatedName = "kdoc")
+            builds("getter", generatedName = "getter")
+            builds("setter", generatedName = "setter")
+            builds("codeBlock", generatedName = "delegate")
+            builds("codeBlock", generatedName = "initializer")
+            builds("codeBlock", generatedName = "addKdoc")
         }
         FunSpec::class {
             builds("annotation")
             builds("parameter")
-            builds("codeBlock", generatedName = "addCode", delegatesTo = "addCode")
-            builds("codeBlock", generatedName = "kdoc")
+            builds("codeBlock", generatedName = "addCode")
+            builds("codeBlock", generatedName = "addKdoc")
         }
         ParameterSpec::class {
             builds("annotation")
-            builds("codeBlock", generatedName = "defaultValue", delegatesTo = "defaultValue")
-            builds("codeBlock", generatedName = "kdoc")
+            builds("codeBlock", generatedName = "defaultValue")
+            builds("codeBlock", generatedName = "addKdoc")
         }
         AnnotationSpec::class{
-            builds("codeBlock", generatedName = "member")
+            builds("codeBlock", generatedName = "addMember")
         }
         TypeAliasSpec::class {
             builds("annotation")
-            builds("codeBlock", generatedName = "kdoc")
+            builds("codeBlock", generatedName = "addKdoc")
         }
         result
     }

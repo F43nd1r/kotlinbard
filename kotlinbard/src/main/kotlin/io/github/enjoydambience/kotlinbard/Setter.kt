@@ -30,7 +30,7 @@ public inline fun buildSetter(paramName: String, config: FunSpecBuilder.() -> Un
 /**
  * Adds a setter with parameter, with the given [parameter name][paramName].
  */
-public inline fun PropertySpecBuilder.set(
+public inline fun PropertySpecBuilder.setter(
     paramName: String,
     config: FunSpecBuilder.() -> Unit,
 ) {
