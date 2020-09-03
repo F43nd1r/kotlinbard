@@ -1,17 +1,17 @@
 /*
- *    Copyright 2020 Benjamin Ye
+ * Copyright (c) 2020 Benjamin Ye
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package io.github.enjoydambience.kotlinbard
@@ -23,7 +23,7 @@ import io.kotest.matchers.shouldBe
 class PropertyTest : StringSpec({
     "getter" {
         val prop = buildProperty("prop", Int::class) {
-            get {
+            getter {
                 addStatement("return 0")
             }
         }
@@ -35,7 +35,7 @@ class PropertyTest : StringSpec({
     "setter" {
         val prop = buildProperty("prop", Int::class) {
             mutable()
-            set("myValue") {
+            setter("myValue") {
                 addStatement("println(myValue)")
             }
         }
@@ -49,10 +49,10 @@ class PropertyTest : StringSpec({
     "getter and setter" {
         val prop = buildProperty("prop", String::class) {
             mutable()
-            get {
+            getter {
                 addStatement("return %S", "foo")
             }
-            set("value") {
+            setter("value") {
                 addStatement("println(value)")
             }
         }
@@ -68,7 +68,7 @@ class PropertyTest : StringSpec({
     "empty setter" {
         val prop = buildProperty("prop", String::class) {
             mutable()
-            set {
+            setter {
                 addModifiers(KModifier.PRIVATE)
             }
         }

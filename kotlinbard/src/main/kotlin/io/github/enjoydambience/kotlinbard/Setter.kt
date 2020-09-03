@@ -14,18 +14,25 @@
  * limitations under the License.
  */
 
-plugins {
-    `kotlin-dsl`
-    `java-gradle-plugin`
-}
-repositories {
-    jcenter()
-}
-gradlePlugin {
-    plugins {
-        create("deps") {
-            id = "deps"
-            implementationClass = "Deps"
-        }
+package io.github.enjoydambience.kotlinbard
+
+import com.squareup.kotlinpoet.FunSpec
+
+/**
+ * Creates a setter with parameter, with the given [parameter name][paramName].
+ */
+public inline fun buildSetter(paramName: String, config: FunSpecBuilder.() -> Unit): FunSpec =
+    buildSetter {
+        addParameter(paramName, Any::class)
+        config()
     }
+
+/**
+ * Adds a setter with parameter, with the given [parameter name][paramName].
+ */
+public inline fun PropertySpecBuilder.setter(
+    paramName: String,
+    config: FunSpecBuilder.() -> Unit,
+) {
+    setter(buildSetter(paramName, config))
 }

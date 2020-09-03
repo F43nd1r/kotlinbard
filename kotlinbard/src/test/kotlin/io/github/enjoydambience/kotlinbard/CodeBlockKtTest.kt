@@ -1,17 +1,17 @@
 /*
- *    Copyright 2020 Benjamin Ye
+ * Copyright (c) 2020 Benjamin Ye
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package io.github.enjoydambience.kotlinbard
@@ -22,21 +22,11 @@ import io.kotest.matchers.shouldBe
 
 class CodeBlockKtTest : StringSpec({
 
-    "code" {
-        "this is code".code shouldBe CodeBlock.of("this is code")
-
-        "Hello %S".code("foo") shouldBe CodeBlock.of("Hello \"foo\"")
+    "codeBlock" {
+        codeBlock("this is %L", "Code") shouldBe CodeBlock.of("this is %L", "Code")
+    }
+    "codeFmt" {
+        "hello(%S)".codeFmt("world") shouldBe CodeBlock.of("hello(%S)", "world")
     }
 
-    "strLiteral" {
-        "\$literally".strLiteral shouldBe CodeBlock.of(""""${"$"}{'$'}literally"""")
-    }
-
-    "template" {
-        "\$template".template shouldBe CodeBlock.of("\"\"\"\$template\"\"\"")
-    }
-
-    "literal" {
-        5.literal shouldBe CodeBlock.of("5")
-    }
 })

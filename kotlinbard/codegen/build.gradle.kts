@@ -15,17 +15,21 @@
  */
 
 plugins {
-    `kotlin-dsl`
-    `java-gradle-plugin`
+    kotlin("jvm")
 }
 repositories {
     jcenter()
 }
-gradlePlugin {
-    plugins {
-        create("deps") {
-            id = "deps"
-            implementationClass = "Deps"
-        }
-    }
+
+dependencies {
+    implementation(kotlin("reflect"))
+    implementation(Deps.kotlinPoet)
+    implementation(Deps.kaseChange)
+    implementation("io.github.enjoydambience:kotlinbard:0.2.0")
+
+    testImplementation(Deps.Test.jUnit)
+    testImplementation(Deps.Test.kotestRunner)
+    testImplementation(Deps.Test.kotestAssertions)
 }
+
+val mainClass by ext("io.github.enjoydambience.kotlinbard.codegen.MainKt")

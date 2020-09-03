@@ -14,18 +14,9 @@
  * limitations under the License.
  */
 
-plugins {
-    `kotlin-dsl`
-    `java-gradle-plugin`
-}
-repositories {
-    jcenter()
-}
-gradlePlugin {
-    plugins {
-        create("deps") {
-            id = "deps"
-            implementationClass = "Deps"
-        }
-    }
-}
+package io.github.enjoydambience.kotlinbard.codegen
+
+import kotlin.reflect.KClass
+
+val KClass<*>.declaringClass: KClass<*>?
+    get() = java.declaringClass?.kotlin

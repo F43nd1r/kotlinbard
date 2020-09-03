@@ -1,20 +1,19 @@
 /*
- *    Copyright 2020 Benjamin Ye
+ * Copyright (c) 2020 Benjamin Ye
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
-import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -29,19 +28,15 @@ plugins {
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8", version = Versions.Kotlin.stdlib))
     api(Deps.kotlinPoet)
 
     testImplementation(Deps.Test.jUnit)
     testImplementation(Deps.Test.kotestRunner)
     testImplementation(Deps.Test.kotestAssertions)
-    testImplementation(Deps.Test.kotestConsole)
 }
 
-pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
-    configure<KotlinProjectExtension> {
-        explicitApiWarning()
-    }
+kotlin {
+    explicitApiWarning()
 }
 
 val compileKotlin: KotlinCompile by tasks
@@ -49,33 +44,35 @@ compileKotlin.kotlinOptions {
     freeCompilerArgs += listOf("-Xinline-classes")
 }
 
-tasks.named<Test>("test") {
-    useJUnitPlatform()
-}
-
 // codegen
 val generatedSrc = "$buildDir/generated-src"
-val codegenProject = project(":codegen")
-val codegen: Task by tasks.creating {
-    group = "build"
-    description = "Runs codegen"
+val codegenProject = project("codegen")
 
-    dependsOn(codegenProject.tasks.build)
+fun configureCodegenTask() {
+    val codegen by tasks.creating(JavaExec::class) {
+        group = "build"
+        description = "Runs codegen"
 
-    //redo codegen when codegen compilation changes
-    inputs.dir(codegenProject.buildDir.resolve("libs"))
-    outputs.dir(generatedSrc)
+        dependsOn(codegenProject.tasks.assemble)
 
-    doFirst {
-        delete(generatedSrc)
-        javaexec {
-            classpath = codegenProject.sourceSets.main.get().runtimeClasspath
-            main = codegenProject.ext["mainClass"] as String
-            args(generatedSrc)
+        inputs.files(codegenProject.tasks.jar.get().outputs.files)
+        outputs.dir(generatedSrc)
+
+        doFirst {
+            delete(generatedSrc)
         }
+
+        classpath = codegenProject.sourceSets.main.get().runtimeClasspath
+        main = codegenProject.ext["mainClass"] as String
+        args(generatedSrc)
     }
+    compileKotlin.dependsOn(codegen)
+    tasks.test.get().dependsOn(codegenProject.tasks.test)
 }
-compileKotlin.dependsOn(codegen)
+
+codegenProject.afterEvaluate {
+    configureCodegenTask()
+}
 
 sourceSets.main {
     java {
@@ -91,8 +88,7 @@ idea {
 // publish
 
 group = "io.github.enjoydambience"
-val VERSION: String by project
-version = VERSION
+version = project.property("VERSION")!!
 
 tasks.dokka {
     outputFormat = "html"

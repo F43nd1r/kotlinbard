@@ -1,17 +1,17 @@
 /*
- *    Copyright 2020 Benjamin Ye
+ * Copyright (c) 2020 Benjamin Ye
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package io.github.enjoydambience.kotlinbard
@@ -21,7 +21,7 @@ import io.kotest.matchers.shouldBe
 
 class ControlFlowTest : FreeSpec({
     "control flow" {
-        val block = buildCodeBlock {
+        val block = codeBlock {
             controlFlow("taco.let") {
                 addStatement("eat(it)")
             }
@@ -33,10 +33,10 @@ class ControlFlowTest : FreeSpec({
             |""".trimMargin()
     }
 
-    "if" - {
+    "if/else" - {
         "simple if" {
-            val block = buildCodeBlock {
-                If("%L.isEmpty()", "taco") {
+            val block = codeBlock {
+                `if`("%L.isEmpty()", "taco") {
                     addStatement("addToppings()")
                 }
             }
@@ -48,10 +48,10 @@ class ControlFlowTest : FreeSpec({
         }
         "else" - {
             "else {}" {
-                val block = buildCodeBlock {
-                    If("%L.isEmpty()", "taco") {
+                val block = codeBlock {
+                    `if`("%L.isEmpty()", "taco") {
                         addStatement("addToppings()")
-                    } Else {
+                    } `else` {
                         addStatement("eat(taco)")
                     }
                 }
@@ -65,10 +65,10 @@ class ControlFlowTest : FreeSpec({
                     |""".trimMargin()
             }
             "else (format)" {
-                val block = buildCodeBlock {
-                    If("%L.isEmpty()", "taco") {
+                val block = codeBlock {
+                    `if`("%L.isEmpty()", "taco") {
                         addStatement("addToppings()")
-                    }.Else("eat(%L)", "taco")
+                    } `else` "eat(%L)".codeFmt("taco")
                 }
                 block.toString() shouldBe """
                     |if (taco.isEmpty()) {
@@ -79,10 +79,10 @@ class ControlFlowTest : FreeSpec({
             }
         }
         "else if" {
-            val block = buildCodeBlock {
-                If("%L.isEmpty()", "taco") {
+            val block = codeBlock {
+                `if`("%L.isEmpty()", "taco") {
                     addStatement("addToppings()")
-                }.ElseIf("%L()", "isHungry") {
+                }.`else if`("%L()", "isHungry") {
                     addStatement("eat(taco)")
                 }
             }
@@ -96,12 +96,12 @@ class ControlFlowTest : FreeSpec({
                 |""".trimMargin()
         }
         "else if else" {
-            val block = buildCodeBlock {
-                If("%L.isEmpty()", "taco") {
+            val block = codeBlock {
+                `if`("%L.isEmpty()", "taco") {
                     addStatement("addToppings()")
-                }.ElseIf("%L()", "isHungry") {
+                }.`else if`("%L()", "isHungry") {
                     addStatement("eat(taco)")
-                } Else {
+                } `else` {
                     addStatement("saveForLater(taco)")
                 }
             }
@@ -120,8 +120,8 @@ class ControlFlowTest : FreeSpec({
     }
     "while" - {
         "simple while" {
-            val block = buildCodeBlock {
-                While("%L.isHungry()", "me") {
+            val block = codeBlock {
+                `while`("%L.isHungry()", "me") {
                     addStatement("eatATaco()")
                 }
             }
@@ -132,10 +132,10 @@ class ControlFlowTest : FreeSpec({
                 |""".trimMargin()
         }
         "do while" {
-            val block = buildCodeBlock {
-                Do {
+            val block = codeBlock {
+                `do` {
                     addStatement("eatATaco()")
-                }.While("%L.isHungry()", "me")
+                } `while` "me.isHungry()"
             }
             block.toString() shouldBe """
                 |do {
@@ -146,8 +146,8 @@ class ControlFlowTest : FreeSpec({
     }
     "for" - {
         "simple for" {
-            val block = buildCodeBlock {
-                For("i in 0..2") {
+            val block = codeBlock {
+                `for`("i in 0..2") {
                     addStatement("println(i)")
                 }
             }
@@ -160,9 +160,9 @@ class ControlFlowTest : FreeSpec({
     }
     "when" - {
         "without arg" {
-            val block = buildCodeBlock {
-                When {
-                    e("isOk()").then("println(%S)", "OK")
+            val block = codeBlock {
+                `when` {
+                    "isOk()" - "println(%S)".codeFmt("OK")
                 }
             }
             block.toString() shouldBe """
@@ -172,9 +172,9 @@ class ControlFlowTest : FreeSpec({
                 |""".trimMargin()
         }
         "with arg" {
-            val block = buildCodeBlock {
-                When("%L", "a") {
-                    e("3").then("println(%S)", "is 3")
+            val block = codeBlock {
+                `when`("%L", "a") {
+                    "3" - "println(%S)".codeFmt("is 3")
                 }
             }
             block.toString() shouldBe """
@@ -183,10 +183,10 @@ class ControlFlowTest : FreeSpec({
                 |}
                 |""".trimMargin()
         }
-        "then {}" {
-            val block = buildCodeBlock {
-                When("a") {
-                    e("3") then {
+        "branch {}" {
+            val block = codeBlock {
+                `when`("a") {
+                    "3" - {
                         addStatement("println(%S)", "is 3")
                     }
                 }
@@ -199,10 +199,10 @@ class ControlFlowTest : FreeSpec({
                 |}
                 |""".trimMargin()
         }
-        "else"{
-            val block = buildCodeBlock {
-                When {
-                    Else("celebrate()")
+        "else" {
+            val block = codeBlock {
+                `when` {
+                    "else" - "celebrate()"
                 }
 
             }
@@ -212,70 +212,27 @@ class ControlFlowTest : FreeSpec({
                 |}
                 |""".trimMargin()
         }
-    }
-    "full house" {
-        val func = buildFunction("foo") {
-            addCode {
-                If("a") {
-                    addStatement("b")
-                }.ElseIf("c") {
-                    addStatement("d")
-                }.Else("e")
-                While("f") {
-                    Do {
-                        addStatement("g")
-                    }.While("h")
-                }
-                For("i in j") {
-                    addStatement("k")
-                }
-                When {
-                    e("l") then {
-                        addStatement("s")
+        "case" {
+            val block = codeBlock {
+                `when` {
+                    case("foo") {
+                        addStatement("celebrate()")
                     }
-                    Else {
-                        addStatement("n")
+                    case(codeBlock("bar")) {
+                        addStatement("celebrate()")
                     }
-                }
-                When("o") {
-                    e("in p").then("q")
-                    e("!is %T", Int::class).then("r")
-                    Else("s")
                 }
             }
+            block.toString() shouldBe """
+                |when {
+                |  foo -> {
+                |    celebrate()
+                |  }
+                |  bar -> {
+                |    celebrate()
+                |  }
+                |}
+                |""".trimMargin()
         }
-        func.toString() shouldBe """
-            fun foo() {
-              if (a) {
-                b
-              }
-              else if (c) {
-                d
-              }
-              else e
-              while (f) {
-                do {
-                  g
-                } while (h)
-              }
-              for (i in j) {
-                k
-              }
-              when {
-                l -> {
-                  s
-                }
-                else -> {
-                  n
-                }
-              }
-              when (o) {
-                in p -> q
-                !is kotlin.Int -> r
-                else -> s
-              }
-            }
-            
-            """.trimIndent()
     }
 })

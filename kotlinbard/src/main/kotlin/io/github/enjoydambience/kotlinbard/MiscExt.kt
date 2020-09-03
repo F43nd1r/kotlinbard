@@ -14,18 +14,8 @@
  * limitations under the License.
  */
 
-plugins {
-    `kotlin-dsl`
-    `java-gradle-plugin`
-}
-repositories {
-    jcenter()
-}
-gradlePlugin {
-    plugins {
-        create("deps") {
-            id = "deps"
-            implementationClass = "Deps"
-        }
-    }
+package io.github.enjoydambience.kotlinbard
+
+public inline fun TypeSpecBuilder.addEnumConstant(name: String, config: TypeSpecBuilder.() -> Unit) {
+    addEnumConstant(name, buildAnonymousClass(config))
 }
