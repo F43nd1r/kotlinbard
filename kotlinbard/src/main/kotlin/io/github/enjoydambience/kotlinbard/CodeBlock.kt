@@ -21,6 +21,6 @@ import com.squareup.kotlinpoet.CodeBlock
 public fun codeBlock(format: String, vararg args: Any?): CodeBlock = CodeBlock.of(format, *args)
 
 /**
- * Creates a codeblock, with [this] as its format and the given [args].
+ * Creates a CodeBlock, with [this] as its format and the given [args].
  */
 public fun String.codeFmt(vararg args: Any?): CodeBlock = CodeBlock.of(this, *args)

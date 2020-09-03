@@ -46,9 +46,9 @@ public fun <T : TypeName> T.setAnnotations(vararg annotations: AnnotationSpec): 
 }
 
 /**
- * Returns this TypeName with an given tag.
+ * Returns this TypeName with a given tag.
  *
- * If the [tag] is null, the tag will be removed
+ * If the [tag] is null, the tag will be removed.
  */
 @Suppress("UNCHECKED_CAST")
 public fun <T : TypeName> T.plusTag(type: KClass<*>, tag: Any?): T {

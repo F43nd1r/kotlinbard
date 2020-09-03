@@ -20,8 +20,6 @@ import com.squareup.kotlinpoet.CodeBlock
 
 /**
  * Creates a control flow surrounding a [body].
- *
- * The [controlFlow] string should not contain braces or newlines.
  */
 public inline fun CodeBlockBuilder.controlFlow(
     controlFlow: String,
@@ -48,7 +46,7 @@ public inline fun CodeBlockBuilder.`if`(
 /**
  * Adds an if-statement control flow.
  *
- * After the body, the if statement can be continued with [Else][IfEnd] or [ElseIf][IfEnd].
+ * This can be continued with [else][IfEnd.else] or [else if][IfEnd.`else if`].
  */
 public inline fun CodeBlockBuilder.`if`(
     argument: CodeBlock,
@@ -65,7 +63,7 @@ public class IfEnd(@PublishedApi internal val builder: CodeBlockBuilder) {
     /**
      * Adds an `else if` block.
      *
-     * An else/if chain can still be continued after this.
+     * An else/if chain can be continued after this.
      */
     @Suppress("FunctionName")
     public inline fun `else if`(argument: String, vararg args: Any, body: CodeBlockBuilder.() -> Unit): IfEnd = apply {
@@ -75,7 +73,7 @@ public class IfEnd(@PublishedApi internal val builder: CodeBlockBuilder) {
     /**
      * Adds an `else if` block.
      *
-     * An else/if chain can still be continued after this.
+     * An else/if chain can be continued after this.
      */
     @Suppress("FunctionName")
     public inline fun `else if`(argument: CodeBlock, body: CodeBlockBuilder.() -> Unit): IfEnd = apply {
@@ -166,7 +164,7 @@ public inline fun CodeBlockBuilder.`for`(codeBlock: CodeBlock, body: CodeBlockBu
 }
 
 /**
- * Adds a `when` control flow, without an argument.
+ * Adds a `when` control flow, without a when argument.
  */
 public inline fun CodeBlockBuilder.`when`(body: WhenBody.() -> Unit) {
     controlFlow("when") {
@@ -175,19 +173,19 @@ public inline fun CodeBlockBuilder.`when`(body: WhenBody.() -> Unit) {
 }
 
 /**
- * Adds a `when` control flow, with an argument.
+ * Adds a `when` control flow, with a when argument.
  */
-public inline fun CodeBlockBuilder.`when`(argument: String, vararg args: Any, body: WhenBody.() -> Unit) {
-    controlFlow("when ($argument)", *args) {
+public inline fun CodeBlockBuilder.`when`(whenArg: String, vararg args: Any, body: WhenBody.() -> Unit) {
+    controlFlow("when ($whenArg)", *args) {
         WhenBody(this).body()
     }
 }
 
 /**
- * Adds a `when` control flow, with an argument.
+ * Adds a `when` control flow, with a when argument.
  */
-public inline fun CodeBlockBuilder.`when`(argument: CodeBlock, body: WhenBody.() -> Unit) {
-    controlFlow("when (%L)", argument) {
+public inline fun CodeBlockBuilder.`when`(whenArg: CodeBlock, body: WhenBody.() -> Unit) {
+    controlFlow("when (%L)", whenArg) {
         WhenBody(this).body()
     }
 }
