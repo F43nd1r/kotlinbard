@@ -51,22 +51,26 @@ class ReadmeExamples : StringSpec({
         }
 //        println(function)
     }
-    "prop" {
+    "setter" {
+        val mySetter = buildSetter("value") {
+            addStatement("field = value")
+        }
+
         val prop = buildProperty("prop", String::class) {
-            getter {
-                addStatement("return field")
-            }
+            mutable()
             setter("value") {
+                addStatement("println(%S)", "setting!")
                 addStatement("field = value")
             }
-            //or, for parameterless set
-//            set {
-//                addModifiers(KModifier.PRIVATE)
-//            }
         }
-//        println(prop)
     }
-    "Code block shortcuts"{
-        val print = "println(%S)".codeFmt("Hello, World")
+    "typeName" {
+        /*
+        val myTypeVarName = TypeVariableName("T")
+            .reified
+            .plusTag(ATag::class, myTag)
+        val myTypeDecName = Int::class.asTypeName()
+            .plusAnnotations(annotationSpec)
+        */
     }
 })
