@@ -1,6 +1,8 @@
-Many source files are auto-generated using code generation, from the codegen module.
+### KotlinBard
+This module contains the main sources for KotlinBard.
 
-Run the `codegen` gradle task to redo code generation.
- 
-This will also automatically run before gradle compiles this module (`classes` task). This will create the generated source files in `/build/generated-src`.
+Many source files (for extension functions) are done using code generation. The code generation logic is done in the `kotlinbard:codegen` submodule.
 
+Running the `codegen` gradle task will redo code generation. The generated source files are currently placed in `/build/generated-src`. Codegen is also automatically run by gradle before compiling this module.
+
+Some tests are also in the codegen submodule in addition to the tests in this module.
