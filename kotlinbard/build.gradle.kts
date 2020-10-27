@@ -139,7 +139,7 @@ bintray {
     user = getProp("bintrayUser", "BINTRAY_USER")
     key = getProp("bintrayKey", "BINTRAY_KEY")
     setPublications("default")
-    publish = false
+    publish = true
     pkg.apply {
         repo = "maven"
         name = "kotlinbard"
