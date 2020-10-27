@@ -128,28 +128,28 @@ import kotlin.UnsafeVariance
  * @param E the type of elements contained in the collection. The collection is covariant on its
  * element type.
  */
-interface Collection<out E> : Iterable<E> {
+public interface Collection<out E> : Iterable<E> {
   /**
    * Returns the size of the collection.
    */
-  override val size: Int
+  public override val size: Int
 
   /**
    * Returns `true` if the collection is empty (contains no elements), `false` otherwise.
    */
-  override fun isEmpty(): Boolean
+  public override fun isEmpty(): Boolean
 
   /**
    * Checks if the specified element is contained in this collection.
    */
-  override fun contains(element: @UnsafeVariance E): Boolean
+  public override fun contains(element: @UnsafeVariance E): Boolean
 
-  override fun iterator(): Iterator<E>
+  public override fun iterator(): Iterator<E>
 
   /**
    * Checks if all elements in the specified collection are contained in this collection.
    */
-  override fun containsAll(elements: Collection<@UnsafeVariance E>): Boolean
+  public override fun containsAll(elements: Collection<@UnsafeVariance E>): Boolean
 }
 
         """.trimMargin()
@@ -163,7 +163,7 @@ interface Collection<out E> : Iterable<E> {
             addParameter("i", Int::class)
         }
         modified.toString() shouldBe """
-            private fun bar(s: kotlin.String, i: kotlin.Int) {
+            private fun bar(s: kotlin.String, i: kotlin.Int): kotlin.Unit {
             }
             
         """.trimIndent()

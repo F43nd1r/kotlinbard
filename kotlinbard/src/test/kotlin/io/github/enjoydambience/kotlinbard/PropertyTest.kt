@@ -75,7 +75,6 @@ class PropertyTest : StringSpec({
         prop.toString() shouldBe """
             |var prop: kotlin.String
             |  private set
-            """.trimMargin()
-        //add newline when KotlinPoet#953 is released
+            |""".trimMargin()
     }
 })

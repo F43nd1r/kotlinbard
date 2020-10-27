@@ -16,6 +16,8 @@
 
 package io.github.enjoydambience.kotlinbard
 
+import com.squareup.kotlinpoet.TypeVariableName
+import com.squareup.kotlinpoet.asTypeName
 import io.kotest.core.spec.style.StringSpec
 
 class ReadmeExamples : StringSpec({
@@ -65,12 +67,15 @@ class ReadmeExamples : StringSpec({
         }
     }
     "typeName" {
-        /*
+        class ATag
+
+        val myTag = ATag()
+        val annotationSpec = buildAnnotation(Deprecated::class)
+
         val myTypeVarName = TypeVariableName("T")
             .reified
             .plusTag(ATag::class, myTag)
         val myTypeDecName = Int::class.asTypeName()
             .plusAnnotations(annotationSpec)
-        */
     }
 })
