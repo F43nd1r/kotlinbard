@@ -20,13 +20,13 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 
 object Versions {
-    const val kotlinPoet = "1.6.0"
+    const val kotlinPoet = "1.7.2"
 
     const val kaseChange = "1.3.0"
 
 
     const val jUnit = "5.6.2"
-    const val kotest = "4.2.0"
+    const val kotest = "4.3.0"
 }
 
 class Plugin : Plugin<Project> {
