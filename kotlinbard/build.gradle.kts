@@ -22,7 +22,7 @@ plugins {
 
     idea
 
-    id("org.jetbrains.dokka") version "0.10.1"
+    id("org.jetbrains.dokka") version "1.4.10.2"
     `maven-publish`
     id("com.jfrog.bintray") version "1.8.5"
 }
@@ -90,14 +90,14 @@ idea {
 group = "io.github.enjoydambience"
 version = project.property("VERSION")!!
 
-tasks.dokka {
-    outputFormat = "html"
-    outputDirectory = "$buildDir/javadoc"
+
+tasks.dokkaHtml {
+    outputDirectory.v = buildDir.resolve("javadoc")
 }
 val dokkaJar by tasks.creating(Jar::class) {
     group = "documentation"
     archiveClassifier.set("javadoc")
-    from(tasks.dokka)
+    from(tasks.dokkaHtml)
 }
 val sourcesJar by tasks.creating(Jar::class) {
     archiveClassifier.set("sources")
@@ -112,7 +112,8 @@ publishing {
             artifactId = "kotlinbard"
             pom {
                 name.v = "KotlinBard"
-                description.v = "A fluent kotlin dsl to generate kotlin code, built on top of kotlin-poet"
+                description.v =
+                    "KotlinBard is a collection of extension functions for KotlinPoet to provide a fluent kotlin DSL for code generation."
                 licenses {
                     license {
                         name.v = "Apache License, Version 2.0"
