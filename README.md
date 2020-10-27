@@ -1,9 +1,12 @@
 # KotlinBard
 
-KotlinBard is a collections of extension functions for [KotlinPoet](https://github.com/square/kotlinpoet) to provide a fluent kotlin DSL for code generation.
+KotlinBard is a collection of extension functions for [KotlinPoet](https://github.com/square/kotlinpoet) to provide a
+fluent kotlin DSL for kotlin code generation.
 
 ### Example
-KotlinPoet's first example is generated using by:
+
+KotlinPoet's first example is generated with the following:
+
 ```kotlin
 val file = buildFile("", "HelloWorld") {
     val greeterClass = ClassName("", "Greeter")
@@ -27,33 +30,37 @@ val file = buildFile("", "HelloWorld") {
 file.writeTo(System.out)
 ```
 
-Fun fact: to cover all functions consistently, KotlinBard uses code generation to generate many extension functions -- it uses a previous version of itself to generate itself!
+Fun fact: to cover all of KotlinPoet's functions, KotlinBard uses code generation to generate many extension functions
+-- it uses a previous version of itself to generate itself!
 
 ## Features
 
 ### `buildXXX {}` and `addXXX {}` functions for every builder
+
 ```kotlin
 val file = buildFile {
-    addClass(...){...}
-    addInterface(...){...} //Each variant of TypeSpec and FunSpec have separate functions
-    addTypeAlias(...){...}
+    addClass(...){ ... }
+    addInterface(...){ ... } //Each variant of TypeSpec and FunSpec have separate functions
+    addTypeAlias(...){ ... }
 }
-val annotation = buildAnnotation(...){...} //AnnotationSpec
-val annotationType = buildAnnotationClass(...){...} //TypeSpec that is an annotation class
+val annotation = buildAnnotation(...){ ... } //AnnotationSpec
+val annotationType = buildAnnotationClass(...){ ... } //TypeSpec that is an annotation class
 
 //Each type of Spec has its own function
-val enum = buildEnum(...){...}
-val intf = buildInterface(...){...}
-val constructor = buildContructor{}
-val getter = buildGetter{}
+val enum = buildEnum(...){ ... }
+val intf = buildInterface(...){ ... }
+val constructor = buildContructor {}
+val getter = buildGetter {}
 ```
 
 ### `modify` extensions for every Spec, corresponding to converting to a builder then applying actions
+
 ```kotlin
-val newClass = klass.modify(name = newName){...}
+val newClass = klass.modify(name = newName) { ... }
 ```
 
 ### CodeBlock creation functions
+
 ```
 val aBlock = codeBlock("println(%S)", "Hello, weird world")
 //or, for a more inline syntax:
@@ -61,16 +68,18 @@ val aBlock = "println(%S)".codeFmt("Hello, weird world")
 ```
 
 ### Builders are marked with DslMarker
+
 ```kotlin
-val file = buildFile("","File"){
+val file = buildFile("", "File") {
     addImport(String::class)
-    addClass("Foo"){
+    addClass("Foo") {
         addImport(Int::class) //compile error
     }
 }
 ```
 
 ### Extensions and DSLs for control flow
+
 ```kotlin
 val function = buildFunction("analyzeTaco") {
     addCode { //functions are defined in the CodeBlockBuilder scope
@@ -102,39 +111,40 @@ val function = buildFunction("analyzeTaco") {
     }
 }
 ```
+
 This generates the following:
+
 ```kotlin
 fun analyzeTaco() {
-  taco.let {
-    println(it)
-  }
-  if (taco.isSpicy()) {
-    println("spicy!!")
-  }
-  else if (me.isHungry) {
-    eat(taco)
-  }
-  else {
-    saveForLater(taco)
-  }
-  do {
-    makeTaco()
-  } while (tacos < 5)
-  for (taco in tacos) {
-    println("""taco information: $taco""")
-  }
-  when (taco) {
-    is SpicyTaco -> {
-      println("Spicy!!")
+    taco.let {
+        println(it)
     }
-    else -> eat(taco)
-  }
+    if (taco.isSpicy()) {
+        println("spicy!!")
+    } else if (me.isHungry) {
+        eat(taco)
+    } else {
+        saveForLater(taco)
+    }
+    do {
+        makeTaco()
+    } while (tacos < 5)
+    for (taco in tacos) {
+        println("""taco information: $taco""")
+    }
+    when (taco) {
+        is SpicyTaco -> {
+            println("Spicy!!")
+        }
+        else -> eat(taco)
+    }
 }
 ```
 
 ### Quick property setter with parameter
+
 ```kotlin
-val mySetter = buildSetter("value"){
+val mySetter = buildSetter("value") {
     addStatement("field = value")
 }
 
@@ -147,7 +157,8 @@ val prop = buildProperty("prop", String::class) {
 }
 ```
 
-### Extensions for all `TypeName`s
+### Extensions for `TypeName`s
+
 ```kotlin
 val myTypeVarName = TypeVariableName("T")
     .reified
@@ -156,9 +167,10 @@ val myTypeDecName = Int::class.asTypeName()
     .plusAnnotations(annotationSpec)
 ```
 
-### Usage
+## Usage
 
 With gradle:
+
 ```groovy
 repositories {
     jcenter()
@@ -169,7 +181,8 @@ dependencies {
 }
 ```
 
-KotlinBard is open source:
+----
 
-If you have feedback or suggestions, feel free to open an issue.
-If you are feeling ambitious, feel free to open a pull request.
+### lKotlinBard is open source!
+
+If you have feedback or suggestions, feel free to open an issue or submit a pull request.
