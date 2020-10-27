@@ -177,7 +177,7 @@ repositories {
 }
 
 dependencies {
-    implementation("io.github.enjoydambience:kotlinbard:0.3.0")
+    implementation("io.github.enjoydambience:kotlinbard:0.4.0")
 }
 ```
 
