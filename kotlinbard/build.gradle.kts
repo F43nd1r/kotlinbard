@@ -136,6 +136,8 @@ fun getProp(projectProp: String, systemProp: String): String? {
 }
 
 bintray {
+    //no snapshot publications for now
+    if ("SNAPSHOT" in version.toString()) return@bintray
     user = getProp("bintrayUser", "BINTRAY_USER")
     key = getProp("bintrayKey", "BINTRAY_KEY")
     setPublications("default")
