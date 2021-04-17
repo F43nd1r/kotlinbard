@@ -1,3 +1,8 @@
+# THIS REPO IS NOT ACTIVELY MAINTAINED
+This repository is hosted on bintray, which will shut down on May 1st, 2021. After that date this library will no longer be directly available.
+
+You may still fork or download this repository for your own use.
+
 # KotlinBard
 
 KotlinBard is a collection of extension functions for [KotlinPoet](https://github.com/square/kotlinpoet) to provide a
@@ -180,9 +185,3 @@ dependencies {
     implementation("io.github.enjoydambience:kotlinbard:0.4.0")
 }
 ```
-
-----
-
-### lKotlinBard is open source!
-
-If you have feedback or suggestions, feel free to open an issue or submit a pull request.
