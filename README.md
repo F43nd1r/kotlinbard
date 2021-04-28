@@ -1,7 +1,7 @@
-# THIS REPO IS NOT ACTIVELY MAINTAINED
-This repository is hosted on bintray, which will shut down on May 1st, 2021. After that date this library will no longer be directly available.
+# Rehost
+The original KotlinBard was hosted on bintray, which shut down on May 1st, 2021. 
 
-You may still fork or download this repository for your own use.
+This fork republishes it to maven central.
 
 # KotlinBard
 
@@ -178,10 +178,10 @@ With gradle:
 
 ```groovy
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
-    implementation("io.github.enjoydambience:kotlinbard:0.4.0")
+    implementation("com.faendir:kotlinbard:0.4.0")
 }
 ```

@@ -24,7 +24,7 @@ plugins {
 
     id("org.jetbrains.dokka") version "1.4.10.2"
     `maven-publish`
-    id("com.jfrog.bintray") version "1.8.5"
+    signing
 }
 
 dependencies {
@@ -87,12 +87,8 @@ idea {
 
 // publish
 
-group = "io.github.enjoydambience"
-version = project.property("VERSION")!!
-
-
 tasks.dokkaHtml {
-    outputDirectory.v = buildDir.resolve("javadoc")
+    outputDirectory.set(buildDir.resolve("javadoc"))
 }
 val dokkaJar by tasks.creating(Jar::class) {
     group = "documentation"
@@ -111,20 +107,30 @@ publishing {
             artifact(sourcesJar)
             artifactId = "kotlinbard"
             pom {
-                name.v = "KotlinBard"
-                description.v =
-                    "KotlinBard is a collection of extension functions for KotlinPoet to provide a fluent kotlin DSL for code generation."
+                name.set("KotlinBard")
+                url.set("https://github.com/F43nd1r/kotlinbard")
+                description.set("KotlinBard is a collection of extension functions for KotlinPoet to provide a fluent kotlin DSL for code generation.")
                 licenses {
                     license {
-                        name.v = "Apache License, Version 2.0"
-                        url.v = "https://www.apache.org/licenses/LICENSE-2.0.txt"
-                        distribution.v = "repo"
+                        name.set("Apache License, Version 2.0")
+                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                        distribution.set("repo")
                     }
                 }
                 scm {
-                    connection.v = "scm:git:https://github.com/enjoydambience/kotlinbard.git"
-                    developerConnection.v = "scm:git:https://github.com/enjoydambience/kotlinbard.git"
-                    url.v = "https://github.com/enjoydambience/kotlinbard.git"
+                    connection.set("scm:git:https://github.com/F43nd1r/kotlinbard.git")
+                    developerConnection.set("scm:git:https://github.com/F43nd1r/kotlinbard.git")
+                    url.set("https://github.com/F43nd1r/kotlinbard.git")
+                }
+                developers {
+                    developer {
+                        id.set("enjoydambience")
+                        name.set("enjoydambience")
+                    }
+                    developer {
+                        id.set("f43nd1r")
+                        name.set("Lukas Morawietz")
+                    }
                 }
             }
         }
@@ -135,21 +141,11 @@ fun getProp(projectProp: String, systemProp: String): String? {
     return project.findProperty(projectProp) as? String ?: System.getenv(systemProp)
 }
 
-bintray {
-    user = getProp("bintrayUser", "BINTRAY_USER")
-    key = getProp("bintrayKey", "BINTRAY_KEY")
-    setPublications("default")
-    publish = true
-    pkg.apply {
-        repo = "maven"
-        name = "kotlinbard"
-        setLicenses("Apache-2.0")
-        vcsUrl = "https://github.com/enjoydambience/kotlinbard"
-    }
+signing {
+    val signingKey = project.findProperty("signingKey") as? String ?: System.getenv("SIGNING_KEY")
+    val signingPassword = project.findProperty("signingPassword") as? String ?: System.getenv("SIGNING_PASSWORD")
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign(publishing.publications["default"])
 }
 
 tasks.publish { dependsOn(tasks.check) }
-
-inline var <T> Property<T>.v
-    get() = get()
-    set(value) = set(value)

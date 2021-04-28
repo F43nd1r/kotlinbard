@@ -18,14 +18,14 @@ plugins {
     kotlin("jvm")
 }
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
     implementation(kotlin("reflect"))
     implementation(Deps.kotlinPoet)
     implementation(Deps.kaseChange)
-    implementation("io.github.enjoydambience:kotlinbard:0.3.0")
+    implementation("com.faendir:kotlinbard:0.4.0")
 
     testImplementation(Deps.Test.jUnit)
     testImplementation(Deps.Test.kotestRunner)
