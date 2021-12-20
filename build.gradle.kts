@@ -44,6 +44,10 @@ subprojects {
     tasks.withType<Test> {
         useJUnitPlatform()
     }
+
+    tasks.withType<GenerateModuleMetadata> {
+        enabled = false
+    }
 }
 
 tasks.register("publish") {
@@ -58,6 +62,8 @@ tasks.register("publish") {
 nexusPublishing {
     repositories {
         sonatype {
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
             username.set(project.findProperty("ossrhUser") as? String ?: System.getenv("OSSRH_USER"))
             password.set(project.findProperty("ossrhPassword") as? String ?: System.getenv("OSSRH_PASSWORD"))
         }
