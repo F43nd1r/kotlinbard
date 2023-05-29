@@ -27,6 +27,7 @@ class PropertyTest : StringSpec({
                 addStatement("return 0")
             }
         }
+        // language=kotlin
         prop.toString() shouldBe """
             |val prop: kotlin.Int
             |  get() = 0
@@ -39,6 +40,7 @@ class PropertyTest : StringSpec({
                 addStatement("println(myValue)")
             }
         }
+        // language=kotlin
         prop.toString() shouldBe """
             |var prop: kotlin.Int
             |  set(myValue) {
@@ -52,15 +54,16 @@ class PropertyTest : StringSpec({
             getter {
                 addStatement("return %S", "foo")
             }
-            setter("value") {
-                addStatement("println(value)")
+            setter("myValue") {
+                addStatement("println(myValue)")
             }
         }
+        // language=kotlin
         prop.toString() shouldBe """
             |var prop: kotlin.String
             |  get() = "foo"
-            |  set(value) {
-            |    println(value)
+            |  set(myValue) {
+            |    println(myValue)
             |  }
             |""".trimMargin()
     }
@@ -72,6 +75,7 @@ class PropertyTest : StringSpec({
                 addModifiers(KModifier.PRIVATE)
             }
         }
+        // language=kotlin
         prop.toString() shouldBe """
             |var prop: kotlin.String
             |  private set

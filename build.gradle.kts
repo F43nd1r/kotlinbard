@@ -14,31 +14,18 @@
  * limitations under the License.
  */
 
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 
 plugins {
-    id("deps") apply false
-    kotlin("jvm") version "1.4.10"
-    id("io.github.gradle-nexus.publish-plugin") version "1.0.0"
-}
-
-repositories {
-    mavenCentral()
-//    maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
+    alias(libs.plugins.kotlin) apply false
+    alias(libs.plugins.nexusPublish)
 }
 
 
 subprojects {
-    repositories {
-        mavenCentral()
-        jcenter()
-//        maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
-    }
-
-    tasks.withType<KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = "1.8"
-            freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
+    extensions.findByType<KotlinProjectExtension>()?.apply {
+        jvmToolchain {
+            languageVersion.set(JavaLanguageVersion.of(8))
         }
     }
     tasks.withType<Test> {
@@ -54,13 +41,12 @@ tasks.register("publish") {
     group = "publishing"
     subprojects {
         tasks.findByName("publish")?.let { dependsOn(it) }
-        tasks.findByName("publishToSonatype")?.let { dependsOn(it) }
     }
     dependsOn("closeAndReleaseSonatypeStagingRepository")
 }
 
 nexusPublishing {
-    repositories {
+    this.repositories {
         sonatype {
             nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
             snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))

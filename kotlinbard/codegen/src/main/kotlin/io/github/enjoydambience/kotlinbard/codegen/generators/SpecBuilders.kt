@@ -78,6 +78,7 @@ object SpecBuilders : SpecFunctionFileGenerator() {
 
         FileSpec::class {
             from("builder")
+            from("scriptBuilder")
         }
         TypeSpec::class {
             from("annotationBuilder", name = "annotationClass")
@@ -89,6 +90,7 @@ object SpecBuilders : SpecFunctionFileGenerator() {
             from("funInterfaceBuilder")
             from("interfaceBuilder")
             from("objectBuilder")
+            from("valueClassBuilder")
         }
         PropertySpec::class {
             from("builder")

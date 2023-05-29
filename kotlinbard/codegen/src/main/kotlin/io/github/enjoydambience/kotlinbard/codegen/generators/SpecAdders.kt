@@ -82,6 +82,7 @@ object SpecAdders : SpecFunctionFileGenerator() {
             builds("interface", delegatesTo = "addType")
             builds("object", delegatesTo = "addType")
             builds("typeAlias")
+            builds("codeBlock", delegatesTo = "addCode")
         }
         TypeSpec::class {
             builds("annotation")

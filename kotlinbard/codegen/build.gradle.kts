@@ -15,21 +15,17 @@
  */
 
 plugins {
-    kotlin("jvm")
-}
-repositories {
-    mavenCentral()
+    alias(libs.plugins.kotlin)
 }
 
 dependencies {
-    implementation(kotlin("reflect"))
-    implementation(Deps.kotlinPoet)
-    implementation(Deps.kaseChange)
-    implementation("com.faendir:kotlinbard:0.4.0")
+    implementation(libs.kotlin.reflect)
+    implementation(libs.kotlinpoet)
+    implementation(libs.kasechange)
+    implementation(libs.kotlinbard)
 
-    testImplementation(Deps.Test.jUnit)
-    testImplementation(Deps.Test.kotestRunner)
-    testImplementation(Deps.Test.kotestAssertions)
+    testImplementation(libs.junit)
+    testImplementation(libs.bundles.kotest)
 }
 
 val mainClass by ext("io.github.enjoydambience.kotlinbard.codegen.MainKt")

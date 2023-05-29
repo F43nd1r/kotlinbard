@@ -114,6 +114,7 @@ class ExamplesTest : StringSpec({
                 }
             }
         }
+        // language=kotlin
         file.toString() shouldBe """
 package kotlin.collections
 
@@ -132,24 +133,24 @@ public interface Collection<out E> : Iterable<E> {
   /**
    * Returns the size of the collection.
    */
-  public override val size: Int
+  override val size: Int
 
   /**
    * Returns `true` if the collection is empty (contains no elements), `false` otherwise.
    */
-  public override fun isEmpty(): Boolean
+  override fun isEmpty(): Boolean
 
   /**
    * Checks if the specified element is contained in this collection.
    */
-  public override fun contains(element: @UnsafeVariance E): Boolean
+  override fun contains(element: @UnsafeVariance E): Boolean
 
-  public override fun iterator(): Iterator<E>
+  override fun iterator(): Iterator<E>
 
   /**
    * Checks if all elements in the specified collection are contained in this collection.
    */
-  public override fun containsAll(elements: Collection<@UnsafeVariance E>): Boolean
+  override fun containsAll(elements: Collection<@UnsafeVariance E>): Boolean
 }
 
         """.trimMargin()
@@ -162,8 +163,9 @@ public interface Collection<out E> : Iterable<E> {
             addModifiers(PRIVATE)
             addParameter("i", Int::class)
         }
+        // language=kotlin
         modified.toString() shouldBe """
-            private fun bar(s: kotlin.String, i: kotlin.Int): kotlin.Unit {
+            private fun bar(s: kotlin.String, i: kotlin.Int) {
             }
             
         """.trimIndent()

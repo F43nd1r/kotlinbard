@@ -13,18 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/*pluginManagement {
-    repositories {
-        mavenCentral()
-        gradlePluginPortal()
-
-        maven("https://dl.bintray.com/kotlin/kotlin-eap")
-        maven("https://plugins.gradle.org/m2/")
-    }
-}*/
 rootProject.name = "KotlinBard"
 
-includeBuild("deps")
 include("kotlinbard:codegen")
 include("kotlinbard")
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        maven { setUrl("https://s01.oss.sonatype.org/content/repositories/snapshots") }
+    }
+}

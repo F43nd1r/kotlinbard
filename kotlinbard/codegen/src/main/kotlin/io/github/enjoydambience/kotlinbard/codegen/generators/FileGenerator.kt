@@ -27,7 +27,7 @@ import io.github.enjoydambience.kotlinbard.addAnnotation
 interface FileGenerator {
     val fileName: String get() = "_" + javaClass.simpleName
     fun FileSpec.Builder.header() {
-        addComment(
+        addFileComment(
             """
             NOTE: This file is auto generated from $generatorSourceFileName
             and should not be modified by hand.

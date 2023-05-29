@@ -1,0 +1,23 @@
+[versions]
+kotlin = "1.8.21"
+dokka = "1.8.10"
+kotest = "4.6.3"
+
+
+[plugins]
+kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+nexusPublish = "io.github.gradle-nexus.publish-plugin:1.1.0"
+
+[libraries]
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+kotlinpoet = "com.squareup:kotlinpoet:1.15.0-SNAPSHOT"
+kotlinbard = "com.faendir:kotlinbard:0.4.1"
+kasechange = "net.pearx.kasechange:kasechange:1.4.1"
+junit = "junit:junit:4.13.2"
+kotest-runner = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
+kotest-assertions = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "kotest" }
+kotest-property = { module = "io.kotest:kotest-property-jvm", version.ref = "kotest" }
+
+[bundles]
+kotest = ["kotest-runner", "kotest-assertions", "kotest-property"]
