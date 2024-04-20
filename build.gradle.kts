@@ -21,11 +21,13 @@ plugins {
     alias(libs.plugins.nexusPublish)
 }
 
-
+val kotlinPluginId = libs.plugins.kotlin.get().pluginId
 subprojects {
-    extensions.findByType<KotlinProjectExtension>()?.apply {
-        jvmToolchain {
-            languageVersion.set(JavaLanguageVersion.of(8))
+    pluginManager.withPlugin(kotlinPluginId) {
+        extensions.configure<KotlinProjectExtension> {
+            jvmToolchain {
+                languageVersion.set(JavaLanguageVersion.of(8))
+            }
         }
     }
     tasks.withType<Test> {

@@ -24,7 +24,6 @@ dependencies {
     implementation(libs.kasechange)
     implementation(libs.kotlinbard)
 
-    testImplementation(libs.junit)
     testImplementation(libs.bundles.kotest)
 }
 

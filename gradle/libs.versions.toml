@@ -1,7 +1,7 @@
 [versions]
-kotlin = "1.8.21"
-dokka = "1.8.10"
-kotest = "4.6.3"
+kotlin = "1.9.23"
+dokka = "1.9.20"
+kotest = "5.8.1"
 
 
 [plugins]
@@ -14,10 +14,9 @@ kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref =
 kotlinpoet = "com.squareup:kotlinpoet:1.14.2"
 kotlinbard = "com.faendir:kotlinbard:0.4.1"
 kasechange = "net.pearx.kasechange:kasechange:1.4.1"
-junit = "junit:junit:4.13.2"
-kotest-runner = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
-kotest-assertions = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "kotest" }
-kotest-property = { module = "io.kotest:kotest-property-jvm", version.ref = "kotest" }
+kotest-runner = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
+kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
 
 [bundles]
 kotest = ["kotest-runner", "kotest-assertions", "kotest-property"]
